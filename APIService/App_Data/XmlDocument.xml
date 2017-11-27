@@ -1,0 +1,277 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>APIService</name>
+  </assembly>
+  <members>
+    <member name="T:APIService.Controllers.DevicesController">
+      <summary>
+        設備API
+      </summary>
+    </member>
+    <member name="M:APIService.Controllers.DevicesController.GetDevice(System.String)">
+      <summary>
+        取得設備資訊
+      </summary>
+      <param name="id">設備編號</param>
+      <returns></returns>
+    </member>
+    <member name="M:APIService.Controllers.DevicesController.Repair(ModelLibrary.API.APIDeviceLog)">
+      <summary>
+        設備維修
+      </summary>
+      <param name="log"></param>
+      <returns></returns>
+    </member>
+    <member name="M:APIService.Controllers.DevicesController.GetUserInfo">
+      <summary>
+        使用者資料取得
+      </summary>
+      <returns></returns>
+    </member>
+    <member name="T:APIService.Controllers.DeviceLogsController">
+      <summary>
+        設備紀錄API
+      </summary>
+    </member>
+    <member name="M:APIService.Controllers.DeviceLogsController.ModifyLog(ModelLibrary.API.APIDeviceLog)">
+      <summary>
+        紀錄更新
+      </summary>
+      <param name="log"></param>
+      <returns></returns>
+    </member>
+    <member name="T:APIService.Controllers.UserController">
+      <summary>
+        取得使用者 API
+      </summary>
+    </member>
+    <member name="M:APIService.Controllers.UserController.GetUser">
+      <summary>
+        取得使用者
+      </summary>
+      <returns></returns>
+    </member>
+    <member name="M:APIService.Controllers.UserController.GetUserInfo">
+      <summary>
+        使用者資料取得
+      </summary>
+      <returns></returns>
+    </member>
+    <member name="T:APIService.Controllers.GroupsController">
+      <summary>
+        取得群組 API
+      </summary>
+    </member>
+    <member name="M:APIService.Controllers.GroupsController.GetGroups">
+      <summary>
+        取得群組清單
+      </summary>
+      <returns></returns>
+    </member>
+    <member name="M:APIService.Controllers.GroupsController.GetGroupMembers(System.String)">
+      <summary>
+        取得群組成員
+      </summary>
+      <param name="gorupId">群組編號</param>
+      <returns></returns>
+    </member>
+    <member name="M:APIService.Controllers.GroupsController.GetGroupDevices(System.String)">
+      <summary>
+        取得群組成員
+      </summary>
+      <param name="gorupId">群組編號</param>
+      <returns></returns>
+    </member>
+    <member name="M:APIService.Controllers.GroupsController.GetUserInfo">
+      <summary>
+        使用者資料取得
+      </summary>
+      <returns></returns>
+    </member>
+    <member name="M:APIService.Controllers.SlackIncomingController.Authenticate(System.String)">
+      <summary>
+        token驗證
+      </summary>
+      <param name="token">Slack token</param>
+      <returns></returns>
+    </member>
+    <member name="M:APIService.Controllers.SlackIncomingController.GetUser(System.String)">
+      <summary>
+        使用者帳號取得
+      </summary>
+      <param name="id">Slack id</param>
+      <returns></returns>
+    </member>
+    <member name="P:APIService.Models.DeviceLog.ACTION_TYPE">
+      <summary>
+        動作類型
+      </summary>
+    </member>
+    <member name="P:APIService.Models.DeviceLog.DEVICE_ID">
+      <summary>
+        設備對應ID
+      </summary>
+    </member>
+    <member name="P:APIService.Models.DeviceLog.LOG_INFO">
+      <summary>
+        紀錄資訊
+      </summary>
+    </member>
+    <member name="P:APIService.Models.DeviceLog.LOG_TIME">
+      <summary>
+        紀錄時間
+      </summary>
+    </member>
+    <member name="T:APIService.Models.SlackAuthResponse">
+      <summary>
+        Slack 驗證回傳資料
+      </summary>
+    </member>
+    <member name="P:APIService.Models.SlackAuthResponse.AUTH_STATUS">
+      <summary>
+        驗證狀態
+      </summary>
+    </member>
+    <member name="P:APIService.Models.SlackAuthResponse.TEAM_URL">
+      <summary>
+        Slack版網址
+      </summary>
+    </member>
+    <member name="P:APIService.Models.SlackAuthResponse.TEAM_NAME">
+      <summary>
+        Slack版名稱
+      </summary>
+    </member>
+    <member name="P:APIService.Models.SlackAuthResponse.USER_NAME">
+      <summary>
+        使用者名稱
+      </summary>
+    </member>
+    <member name="P:APIService.Models.SlackAuthResponse.TEAM_ID">
+      <summary>
+        Slack版ID
+      </summary>
+    </member>
+    <member name="P:APIService.Models.SlackAuthResponse.SLACK_ID">
+      <summary>
+        Slack ID
+      </summary>
+    </member>
+    <member name="T:Models.Device">
+      <summary>
+        設備資料
+      </summary>
+    </member>
+    <member name="P:Models.Device.DEVICE_SN">
+      <summary>
+        設備編號
+      </summary>
+    </member>
+    <member name="P:Models.Device.DEVICE_ID">
+      <summary>
+        設備對應ID
+      </summary>
+    </member>
+    <member name="P:Models.Device.DEVICE_NAME">
+      <summary>
+        設備名稱
+      </summary>
+    </member>
+    <member name="P:Models.Device.DEVICE_STATUS">
+      <summary>
+        設備狀態 N - 正常, E - 異常, R-修復中
+      </summary>
+    </member>
+    <member name="P:Models.Device.REPAIRMAN_ID">
+      <summary>
+        修復人員帳號
+      </summary>
+    </member>
+    <member name="P:Models.Device.USERID">
+      <summary>
+        使用者帳號
+      </summary>
+    </member>
+    <member name="P:Models.Device.REPAIRMAN_INFO">
+      <summary>
+        修復人員資訊
+      </summary>
+    </member>
+    <member name="P:Models.Device.MAINTAINER_LIST">
+      <summary>
+        管理人清單
+      </summary>
+    </member>
+    <member name="T:Models.DeviceMaintainer">
+      <summary>
+        設備管理人資料
+      </summary>
+    </member>
+    <member name="P:Models.DeviceMaintainer.DEVICE_SN">
+      <summary>
+        設備編號
+      </summary>
+    </member>
+    <member name="P:Models.DeviceMaintainer.USERID">
+      <summary>
+        設備管理人帳號
+      </summary>
+    </member>
+    <member name="P:Models.DeviceMaintainer.USER_NAME">
+      <summary>
+        設備管理人名稱
+      </summary>
+    </member>
+    <member name="T:Models.Log">
+      <summary>
+        設備紀錄資料
+      </summary>
+    </member>
+    <member name="P:Models.Log.LOG_SN">
+      <summary>
+        紀錄編號
+      </summary>
+    </member>
+    <member name="P:Models.Log.DEVICE_SN">
+      <summary>
+        設備編號
+      </summary>
+    </member>
+    <member name="P:Models.Log.ERROR_TIME">
+      <summary>
+        異常時間
+      </summary>
+    </member>
+    <member name="P:Models.Log.ERROR_INFO">
+      <summary>
+        異常資訊
+      </summary>
+    </member>
+    <member name="P:Models.Log.USERID">
+      <summary>
+        修復人員帳號
+      </summary>
+    </member>
+    <member name="P:Models.Log.REPAIR_TIME">
+      <summary>
+        修復起始時間
+      </summary>
+    </member>
+    <member name="P:Models.Log.REPAIR_INFO">
+      <summary>
+        修復說明
+      </summary>
+    </member>
+    <member name="P:Models.Log.UP_TIME">
+      <summary>
+        恢復時間
+      </summary>
+    </member>
+    <member name="P:Models.Log.DEVICE_INFO">
+      <summary>
+        設備資訊
+      </summary>
+    </member>
+  </members>
+</doc>

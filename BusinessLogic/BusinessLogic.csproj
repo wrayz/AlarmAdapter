@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AA9B9E11-1F16-4A27-B217-6BA9EA0EA5C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BusinessLogic</RootNamespace>
+    <AssemblyName>BusinessLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SIT|AnyCPU'">
+    <OutputPath>bin\SIT\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DataExpansion, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DataExpansion.1.2.0.0-beta\lib\DataExpansion.dll</HintPath>
+    </Reference>
+    <Reference Include="FileHelper, Version=3.2.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FileHelper.3.2.0.1\lib\FileHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+      <HintPath>..\packages\Magick.NET-Q16-AnyCPU.7.0.6.101\lib\net40\Magick.NET-Q16-AnyCPU.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PDFHelper.Configuration, Version=3.1.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFHelper.3.1.5.2\lib\PDFHelper.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="LicenseHelper.Token">
+      <HintPath>..\packages\LicenseHelper\LicenseHelper.Token.dll</HintPath>
+    </Reference>
+    <Reference Include="LicenseHelper.Decrypt">
+      <HintPath>..\packages\LicenseHelper\LicenseHelper.Decrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="PDFHelper.Core">
+      <HintPath>..\packages\PDFHelper\PDFHelper.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SlackAPIHelper">
+      <HintPath>..\packages\SlackAPIHelper\SlackAPIHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TSAHelper.Infrastructure, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TSAHelper.Infrastructure.1.0.0.2\lib\TSAHelper.Infrastructure.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Event\EventBusinessLogic.cs" />
+    <Compile Include="Event\PushMessage\Model\Action.cs" />
+    <Compile Include="Event\PushMessage\Model\Attachment.cs" />
+    <Compile Include="Event\PushMessage\Model\Field.cs" />
+    <Compile Include="Event\PushMessage\Model\Payload.cs" />
+    <Compile Include="Event\PushMessage\PushIM.cs" />
+    <Compile Include="Event\PushMessage\PushSlack.cs" />
+    <Compile Include="Generic\GenericBusinessFactory.cs" />
+    <Compile Include="Generic\GenericBusinessLogicT.cs" />
+    <Compile Include="Generic\IBusinessLogicT.cs" />
+    <Compile Include="Event\CorrespondDeviceFactory.cs" />
+    <Compile Include="Event\PushMessage\IPushAction.cs" />
+    <Compile Include="Event\Enum\EventType.cs" />
+    <Compile Include="License\LicenseConfig.cs" />
+    <Compile Include="License\LicenseLogic.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{6eed5c73-e1bd-4f92-a3b3-0025f02cf5c5}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ModelLibrary\ModelLibrary.csproj">
+      <Project>{3a26d8ac-2fda-4d98-ac3e-2fb348b731c3}</Project>
+      <Name>ModelLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
