@@ -85,12 +85,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Event\EventBusinessLogic.cs" />
+    <Compile Include="Event\Update\ModifyAction.cs" />
     <Compile Include="Event\PushMessage\Model\Action.cs" />
     <Compile Include="Event\PushMessage\Model\Attachment.cs" />
     <Compile Include="Event\PushMessage\Model\Field.cs" />
-    <Compile Include="Event\PushMessage\Model\Payload.cs" />
+    <Compile Include="Event\PushMessage\Model\IMPayload.cs" />
     <Compile Include="Event\PushMessage\PushIM.cs" />
     <Compile Include="Event\PushMessage\PushSlack.cs" />
+    <Compile Include="Event\Update\ModifyActionFactory.cs" />
     <Compile Include="Generic\GenericBusinessFactory.cs" />
     <Compile Include="Generic\GenericBusinessLogicT.cs" />
     <Compile Include="Generic\IBusinessLogicT.cs" />

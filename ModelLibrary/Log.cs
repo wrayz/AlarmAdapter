@@ -6,7 +6,7 @@ namespace ModelLibrary
     /// <summary>
     /// 設備紀錄
     /// </summary>
-    public class APILog
+    public class Log
     {
         /// <summary>
         /// 紀錄編號

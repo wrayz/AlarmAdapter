@@ -17,6 +17,8 @@ namespace BusinessLogic.Event
         /// <param name="log">設備紀錄詳細資料</param>
         public Attachment(EventType type, LogDetail log)
         {
+            //訊息辨識ID(紀錄編號)
+            CALLBACK_ID = log.LOG_SN;
             //卡片區塊設置
             SetField(log);
             //動作類型資料設置
@@ -28,6 +30,12 @@ namespace BusinessLogic.Event
         /// </summary>
         //[JsonProperty("pretext")]
         public string TEXT_CONTENT { get; set; }
+
+        /// <summary>
+        /// 訊息辨識ID
+        /// </summary>
+        [JsonProperty("callback_id")]
+        public string CALLBACK_ID { get; set; }
 
         /// <summary>
         /// 狀態顏色

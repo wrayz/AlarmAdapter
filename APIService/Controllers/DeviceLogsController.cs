@@ -4,6 +4,7 @@ using ModelLibrary;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace APIService.Controllers
@@ -16,29 +17,33 @@ namespace APIService.Controllers
         /// <param name="log"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IHttpActionResult> ModifyLog(APILog log)
+        public async Task<IHttpActionResult> ModifyLog(Log log)
         {
             try
             {
+                //來源IP驗證
+                if (!Validate())
+                    return Content(HttpStatusCode.Unauthorized, new APIResponse("來源IP未認證"));
+
                 if (LicenseLogic.Token == null)
                 {
-                    return StatusCode(HttpStatusCode.Forbidden);
+                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 無效，請檢察License Key"));
                 }
 
                 var token = LicenseLogic.Token;
 
                 if (!(log.LOG_TIME >= token.StartDate && log.LOG_TIME <= token.EndDate))
-                    return Unauthorized();
+                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 已過期，請檢察License Key"));
 
                 //紀錄動作處理物件
                 var bll = new EventBusinessLogic();
-                //對應設備
-                var device = bll.GetDevice(log);
+                //對應設備編號
+                string device = bll.GetDeviceByID(log);
 
-                if (device.DEVICE_SN != null)
+                if (!string.IsNullOrEmpty(device))
                 {
                     //對應設備編號擴充
-                    log.DEVICE_SN = device.DEVICE_SN;
+                    log.DEVICE_SN = device;
 
                     //log編號取得
                     if (log.ACTION_TYPE == "Recover")
@@ -51,20 +56,29 @@ namespace APIService.Controllers
                     //訊息推送結果
                     var responses = await bll.PushEvent(log.ACTION_TYPE, detail);
 
-                    if(Array.IndexOf(responses, HttpStatusCode.Unauthorized) == -1)
-                        return Content(HttpStatusCode.Unauthorized, "Log紀錄成功，但推送至IM或Slack未獲得授權");
+                    if (Array.IndexOf(responses, HttpStatusCode.Unauthorized) != -1)
+                        return Content(HttpStatusCode.Unauthorized, new APIResponse("Log紀錄成功，但推送至IM或Slack未獲得授權"));
 
                     return Ok();
                 }
                 else
                 {
-                    return Content(HttpStatusCode.Forbidden, "無對應設備，或對應設備狀態不符");
+                    return Content(HttpStatusCode.Forbidden, new APIResponse("無對應設備，或對應設備狀態不符"));
                 }
             }
             catch (Exception ex)
             {
-                return InternalServerError(ex);
+                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
+        }
+
+        /// <summary>
+        /// 來源IP驗證
+        /// </summary>
+        /// <returns></returns>
+        private bool Validate()
+        {
+            return HttpContext.Current.Request.ServerVariables["LOCAL_ADDR"] == HttpContext.Current.Request.UserHostAddress;
         }
     }
 }

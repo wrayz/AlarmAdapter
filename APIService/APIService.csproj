@@ -113,10 +113,17 @@
     <Compile Include="Controllers\DevicesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\LanguagesController.cs" />
+    <Compile Include="Controllers\SlackMessageReactController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\APIResponse.cs" />
+    <Compile Include="Model\SlackButton.cs" />
+    <Compile Include="Model\SlackChannel.cs" />
+    <Compile Include="Model\SlackInteractMessage.cs" />
+    <Compile Include="Model\SlackPayload.cs" />
+    <Compile Include="Model\SlackUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +135,7 @@
     </Content>
     <Content Include="Entity\Config.config" />
     <Content Include="Entity\Device.config" />
-    <Content Include="Entity\APILog.config" />
+    <Content Include="Entity\Log.config" />
     <Content Include="Entity\Supplier.config" />
     <Content Include="Entity\User.config" />
     <Content Include="Entity\LogDetail.config">
@@ -159,6 +166,8 @@
       <IsTransformFile>True</IsTransformFile>
     </None>
     <Content Include="Entity\MemberDevice.config" />
+    <Content Include="Entity\LicenseConfig.config" />
+    <Content Include="Entity\LogSlackStamp.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
@@ -189,6 +198,10 @@
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj">
       <Project>{aa9b9e11-1f16-4a27-b217-6ba9ea0ea5c4}</Project>
       <Name>BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{6EED5C73-E1BD-4F92-A3B3-0025F02CF5C5}</Project>
+      <Name>DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\ModelLibrary\ModelLibrary.csproj">
       <Project>{3a26d8ac-2fda-4d98-ac3e-2fb348b731c3}</Project>

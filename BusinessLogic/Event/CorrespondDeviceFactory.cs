@@ -14,7 +14,7 @@ namespace BusinessLogic.Event
         /// </summary>
         /// <param name="log">設備紀錄</param>
         /// <returns></returns>
-        public static Device GetDevice(APILog log)
+        public static Device GetDevice(Log log)
         {
             //查詢ID
             string id = log.DEVICE_ID;

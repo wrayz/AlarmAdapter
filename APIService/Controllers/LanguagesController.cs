@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace APIService.Controllers
@@ -22,13 +23,17 @@ namespace APIService.Controllers
         {
             try
             {
+                //身分驗證
+                if (HttpContext.Current.Session["User"] == null)
+                    return Content(HttpStatusCode.Unauthorized, new APIResponse("沒有取得資源的權限"));
+
                 var voices = await GetInstalledVoice();
 
                 return Ok(voices);
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, ex.Message);
+                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
 

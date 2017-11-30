@@ -36,7 +36,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, ex.Message);
+                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
 

@@ -2,8 +2,6 @@
 using ModelLibrary;
 using ModelLibrary.Generic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -15,14 +13,25 @@ namespace BusinessLogic.Event
     public class EventBusinessLogic
     {
         /// <summary>
-        /// 對應設備取得
+        /// 對應設備編號取得 By 設備ID
         /// </summary>
         /// <param name="log">設備紀錄資料</param>
         /// <returns></returns>
-        public Device GetDevice(APILog log)
+        public string GetDeviceByID(Log log)
         {
             //設備取得
-            return CorrespondDeviceFactory.GetDevice(log);
+            return CorrespondDeviceFactory.GetDevice(log).DEVICE_SN;
+        }
+
+        /// <summary>
+        /// 對應設備編號取得 By 紀錄SN
+        /// </summary>
+        /// <param name="log">設備紀錄資料</param>
+        /// <returns></returns>
+        public string GetDeviceByLog(string sn)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<DeviceLog>();
+            return dao.Get(new QueryOption(), new DeviceLog { LOG_SN = sn }).DEVICE_SN;
         }
 
         /// <summary>
@@ -30,9 +39,9 @@ namespace BusinessLogic.Event
         /// </summary>
         /// <param name="log">設備紀錄資料</param>
         /// <returns></returns>
-        public APILog LogModify(APILog log)
+        public Log LogModify(Log log)
         {
-            var dao = GenericDataAccessFactory.CreateInstance<APILog>();
+            var dao = GenericDataAccessFactory.CreateInstance<Log>();
             return dao.Modify(log.ACTION_TYPE, log);
         }
 
@@ -81,10 +90,15 @@ namespace BusinessLogic.Event
         {
             EventType enumType = (EventType)Enum.Parse(typeof(EventType), type);
 
-            var im = new PushIM(enumType, log);
-            var slack = new PushSlack(enumType, log);
+            //Slack設置取得
+            var dao = GenericDataAccessFactory.CreateInstance<SlackConfig>();
+            var config = dao.Get(new QueryOption());
 
-            return await Task.WhenAll(im.PushMessage(), slack.PushMessage());
+            var im = new PushIM(enumType, log);
+            var slack = new PushSlack(enumType, config.OAUTH_TOKEN, log);
+
+            return await Task.WhenAll(slack.PushMessage());
+            //return await Task.WhenAll(im.PushMessage(), slack.PushMessage());
         }
     }
 }

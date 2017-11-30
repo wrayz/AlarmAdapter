@@ -4,7 +4,6 @@ using ModelLibrary.Generic;
 using Newtonsoft.Json;
 using System;
 using System.Net;
-using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
@@ -38,7 +37,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, ex.Message);
+                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
 
@@ -66,7 +65,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, ex.Message);
+                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
 
@@ -95,7 +94,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, ex.Message);
+                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
 

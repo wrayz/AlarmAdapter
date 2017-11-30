@@ -10,7 +10,6 @@ namespace APIService
         public static void Register(HttpConfiguration config)
         {
             // Web API 設定和服務
-
 #if DEBUG
             //Exception detail
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;

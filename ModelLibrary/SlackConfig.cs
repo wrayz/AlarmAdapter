@@ -6,18 +6,13 @@
     public class SlackConfig
     {
         /// <summary>
-        /// Slack uri
+        /// OAuth Access Token
         /// </summary>
-        public string SLACK_URI { get; set; }
+        public string OAUTH_TOKEN { get; set; }
 
         /// <summary>
-        /// Slack Token
+        /// Verification Token
         /// </summary>
-        public string SLACK_TOKEN { get; set; }
-
-        /// <summary>
-        /// OutGoing Token
-        /// </summary>
-        public string OUTGOING_TOKEN { get; set; }
+        public string VERIFICATION_TOKEN { get; set; }
     }
 }

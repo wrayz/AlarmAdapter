@@ -1,6 +1,4 @@
-﻿using DataAccess;
-using ModelLibrary;
-using ModelLibrary.Generic;
+﻿using ModelLibrary;
 using Newtonsoft.Json;
 using SlackAPIHelper;
 using SlackAPIHelper.Content;
@@ -23,19 +21,41 @@ namespace BusinessLogic.Event
         private readonly Encoding _encoding = new UTF8Encoding();
 
         /// <summary>
+        /// 動作類型
+        /// </summary>
+        private EventType _type;
+
+        /// <summary>
+        /// OAuth Access token
+        /// </summary>
+        private string _token;
+
+        /// <summary>
+        /// 設備紀錄詳細資料
+        /// </summary>
+        private LogDetail _log;
+
+        /// <summary>
         /// 推送資訊內容
         /// </summary>
-        private List<ChatPostRequest> _messages = new List<ChatPostRequest>();
+        private List<ChatPostMessageRequest> _messages = new List<ChatPostMessageRequest>();
 
         /// <summary>
         /// 建構式
         /// </summary>
         /// <param name="type">動作類型</param>
+        /// <param name="token">OAuth Access token</param>
         /// <param name="log">設備紀錄詳細資料</param>
-        public PushSlack(EventType type, LogDetail log)
+        public PushSlack(EventType type, string token, LogDetail log)
         {
+            //動作類型
+            _type = type;
+            //OAuth Access token
+            _token = token;
+            //設備紀錄詳細資料
+            _log = log;
             //推送內容清單設置
-            SetContent(type, log);
+            SetContent();
         }
 
         /// <summary>
@@ -46,16 +66,21 @@ namespace BusinessLogic.Event
         {
             var status = HttpStatusCode.OK;
 
-            if (_messages.Count() > 0)
+            //訊息標記清單
+            var list = new List<LogSlackStamp>();
+
+            foreach (var message in _messages)
             {
-                foreach (var message in _messages)
-                {
-                    var response = await SlackAPI.PostRequest("chat.postMessage", message);
-                    //Slack訊息推送
-                    if ((response as ChatPostResponse).Ok == false)
-                        status = HttpStatusCode.Unauthorized;
-                }
+                //Slack訊息推送
+                var response = (await SlackAPI.PostRequest("chat.postMessage", message)) as ChatPostMessageResponse;
+
+                if (!response.Ok)
+                    status = HttpStatusCode.Unauthorized;
+                else
+                    list.Add(new LogSlackStamp { LOG_SN = _log.LOG_SN, CHANNEL_ID = message.channel, TIME_STAMP = response.TimeStamp });
             }
+
+            await ModifyActionFactory.Modify(_type, _log, _token, list);
 
             return status;
         }
@@ -63,24 +88,13 @@ namespace BusinessLogic.Event
         /// <summary>
         /// 推送內容清單設置
         /// </summary>
-        /// <param name="type">動作類型</param>
-        /// <param name="log">設備紀錄詳細資料</param>
-        private void SetContent(EventType type, LogDetail log)
+        private void SetContent()
         {
-            //Content 清單
-            var list = new List<ChatPostRequest>();
-
-            //Slack設置取得
-            var dao = GenericDataAccessFactory.CreateInstance<SlackConfig>();
-            var option = new QueryOption();
-
-            var config = dao.Get(option);
-
             //推送資訊卡片
-            var attachment = new Attachment(type, log);
+            var attachment = new Attachment(_type, _log);
 
             //修復按鈕
-            if (type == EventType.Error)
+            if (_type == EventType.Error)
             {
                 attachment.BUTTON_LIST = new List<Action>
                 {
@@ -89,16 +103,16 @@ namespace BusinessLogic.Event
             }
 
             //欲推送頻道清單
-            var groups = log.GROUP_LIST.Where(c => c.CHANNEL_ID != "");
+            var groups = _log.GROUP_LIST.Where(c => c.CHANNEL_ID != "");
 
             foreach (var group in groups)
             {
-                var message = new ChatPostRequest
+                var message = new ChatPostMessageRequest
                 {
                     username = "EyesFree",
                     text = attachment.TEXT_CONTENT,
                     channel = group.CHANNEL_ID,
-                    token = config.SLACK_TOKEN,
+                    token = _token,
                     attachments = _encoding.GetString(_encoding.GetBytes(JsonConvert.SerializeObject(new List<object> { attachment })))
                 };
 
