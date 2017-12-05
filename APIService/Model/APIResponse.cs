@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 
-namespace ModelLibrary
+namespace APIService.Model
 {
     /// <summary>
-    /// 錯誤訊息物件
+    /// 錯誤訊息API物件
     /// </summary>
     public class APIResponse
     {

@@ -1,10 +1,9 @@
-﻿using BusinessLogic;
+﻿using APIService.Model;
+using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
-using Newtonsoft.Json;
 using System;
 using System.Net;
-using System.Web;
 using System.Web.Http;
 
 namespace APIService.Controllers
@@ -24,7 +23,7 @@ namespace APIService.Controllers
             try
             {
                 //User Info
-                var login = GetUserInfo();
+                var login = GenericAPIService.GetUserInfo();
 
                 //查詢參數
                 var opt = new QueryOption { Relation = true, User = true };
@@ -38,16 +37,6 @@ namespace APIService.Controllers
             {
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
-        }
-
-        /// <summary>
-        /// 使用者資料取得
-        /// </summary>
-        /// <returns></returns>
-        private UserLogin GetUserInfo()
-        {
-            var user = HttpContext.Current.Session["User"].ToString();
-            return JsonConvert.DeserializeObject<UserLogin>(user);
         }
     }
 }

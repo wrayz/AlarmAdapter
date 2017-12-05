@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace APIService.Model
 {
     /// <summary>
-    /// 訊息物件(Slack)
+    /// 訊息API物件(Slack interactive message 內容)
     /// </summary>
     public class SlackPayload
     {

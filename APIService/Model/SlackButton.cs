@@ -3,7 +3,7 @@
 namespace APIService.Model
 {
     /// <summary>
-    /// Slack 按鈕資訊
+    /// Slack 按鈕資訊API物件
     /// </summary>
     public class SlackButton
     {

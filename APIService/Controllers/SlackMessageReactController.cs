@@ -1,8 +1,6 @@
 ﻿using APIService.Model;
-using BusinessLogic;
 using BusinessLogic.Event;
 using ModelLibrary;
-using ModelLibrary.Generic;
 using Newtonsoft.Json;
 using System;
 using System.Net;
@@ -26,9 +24,16 @@ namespace APIService.Controllers
         {
             var payload = JsonConvert.DeserializeObject<SlackPayload>(message.payload);
 
-            //token 驗證
-            if (Validate(payload.SLACK_TOKEN))
-                return Content(HttpStatusCode.Unauthorized, new APIResponse("來源token未認證"));
+            //Slack Verification Token 驗證
+            if (!GenericAPIService.TokenValidate(payload.SLACK_TOKEN))
+                return Content(HttpStatusCode.Unauthorized, new APIResponse("來源token未認證，請檢查 Slack Verification Token 設置"));
+
+            //使用者資料取得 (By slack id)
+            var user = GenericAPIService.GetUserInfo(payload.USER_INFO.SLACK_ID);
+
+            //系統帳號對應Slack id 驗證
+            if(string.IsNullOrEmpty(user.USERID))
+                return Content(HttpStatusCode.Forbidden, new APIResponse("尚未在 EyesFree 系統建立對應帳號"));
 
             //紀錄動作處理物件
             var bll = new EventBusinessLogic();
@@ -39,7 +44,7 @@ namespace APIService.Controllers
             if (!string.IsNullOrEmpty(device))
             {
                 //log紀錄
-                var log = new Log { LOG_SN = payload.CALLBACK_ID, ACTION_TYPE = "Repair" };
+                var log = new Log { LOG_SN = payload.CALLBACK_ID, ACTION_TYPE = "Repair", USERID = user.USERID };
                 //紀錄處理
                 var deviceLog = bll.LogModify(log);
                 //詳細記錄資訊取得
@@ -56,21 +61,6 @@ namespace APIService.Controllers
             {
                 return Content(HttpStatusCode.Forbidden, new APIResponse("無對應設備，或對應設備狀態不符"));
             }
-        }
-
-        /// <summary>
-        /// token驗證
-        /// </summary>
-        /// <param name="token">slack token</param>
-        /// <returns></returns>
-        private bool Validate(string token)
-        {
-            //邏輯物件
-            var bll = GenericBusinessFactory.CreateInstance<SlackConfig>();
-            //Slack設置物件
-            var config = bll.Get(new QueryOption(), new UserLogin());
-
-            return config.OAUTH_TOKEN == token;
         }
     }
 }

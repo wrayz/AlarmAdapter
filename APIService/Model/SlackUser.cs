@@ -3,7 +3,7 @@
 namespace APIService.Model
 {
     /// <summary>
-    /// Slack 使用者資訊
+    /// Slack 使用者資訊API物件
     /// </summary>
     public class SlackUser
     {

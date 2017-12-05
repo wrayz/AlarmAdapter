@@ -1,4 +1,5 @@
-﻿using BusinessLogic;
+﻿using APIService.Model;
+using BusinessLogic;
 using BusinessLogic.Event;
 using ModelLibrary;
 using System;

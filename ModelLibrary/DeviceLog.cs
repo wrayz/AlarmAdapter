@@ -14,5 +14,10 @@
         /// 紀錄編號
         /// </summary>
         public string LOG_SN { get; set; }
+
+        /// <summary>
+        /// 設備紀錄詳細資料
+        /// </summary>
+        public LogDetail LOG_INFO { get; set; }
     }
 }

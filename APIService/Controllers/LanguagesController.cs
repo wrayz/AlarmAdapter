@@ -1,4 +1,5 @@
-﻿using Microsoft.Speech.Synthesis;
+﻿using APIService.Model;
+using Microsoft.Speech.Synthesis;
 using ModelLibrary;
 using System;
 using System.Collections.Generic;

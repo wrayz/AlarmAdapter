@@ -3,7 +3,7 @@
 namespace APIService.Model
 {
     /// <summary>
-    /// Slack 頻道資訊
+    /// Slack 頻道資訊API物件
     /// </summary>
     public class SlackChannel
     {
