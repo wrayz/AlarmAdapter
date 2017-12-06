@@ -68,18 +68,28 @@ namespace BusinessLogic.Event
 
             //訊息標記清單
             var list = new List<LogSlackStamp>();
+            //推送事件清單
+            var taskList = new List<Task<ChatPostMessageResponse>>();
 
+            //推送事件加入
             foreach (var message in _messages)
             {
-                //Slack訊息推送
-                var response = (await SlackAPI.PostRequest("chat.postMessage", message)) as ChatPostMessageResponse;
-
-                if (!response.Ok)
-                    status = HttpStatusCode.Unauthorized;
-                else
-                    list.Add(new LogSlackStamp { LOG_SN = _log.LOG_SN, CHANNEL_ID = message.channel, TIME_STAMP = response.TimeStamp });
+                taskList.Add(PostSlackMessage(message));
             }
 
+            //推送事件結果
+            var results = await Task.WhenAll(taskList);
+
+            foreach (var result in results)
+            {
+                if (result.Ok)
+                    //Log Timestamp對應
+                    list.Add(new LogSlackStamp { LOG_SN = _log.LOG_SN, CHANNEL_ID = result.Channel, TIME_STAMP = result.TimeStamp });
+                else
+                    status = HttpStatusCode.Unauthorized;
+            }
+
+            //Log TimesStamp 更新
             await ModifyActionFactory.Modify(_type, _log, _token, list);
 
             return status;
@@ -118,6 +128,16 @@ namespace BusinessLogic.Event
 
                 _messages.Add(message);
             }
+        }
+
+        /// <summary>
+        /// Slack訊息推送
+        /// </summary>
+        /// <param name="message">推送資訊內容</param>
+        /// <returns></returns>
+        private async Task<ChatPostMessageResponse> PostSlackMessage(ChatPostMessageRequest message)
+        {
+            return (await SlackAPI.PostRequest("chat.postMessage", message)) as ChatPostMessageResponse;
         }
     }
 }

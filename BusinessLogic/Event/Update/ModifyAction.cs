@@ -52,6 +52,7 @@ namespace BusinessLogic.Event
                 var message = new ChatUpdateRequest
                 {
                     channel = stamp.CHANNEL_ID,
+                    text = attachment.TEXT_CONTENT,
                     token = token,
                     ts = stamp.TIME_STAMP,
                     attachments = _encoding.GetString(_encoding.GetBytes(JsonConvert.SerializeObject(new List<object> { attachment })))

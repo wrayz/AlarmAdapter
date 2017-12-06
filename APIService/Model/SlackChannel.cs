@@ -10,7 +10,7 @@ namespace APIService.Model
         /// <summary>
         /// 頻道ID
         /// </summary>
-        [JsonProperty("channel")]
+        [JsonProperty("id")]
         public string CHANNEL_ID { get; set; }
 
         /// <summary>

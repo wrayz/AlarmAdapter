@@ -28,13 +28,13 @@ namespace APIService.Controllers
 
                 if (LicenseLogic.Token == null)
                 {
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 無效，請檢察License Key"));
+                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 無效，請檢查License Key"));
                 }
 
                 var token = LicenseLogic.Token;
 
                 if (!(log.LOG_TIME >= token.StartDate && log.LOG_TIME <= token.EndDate))
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 已過期，請檢察License Key"));
+                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 已過期，請檢查License Key"));
 
                 //紀錄動作處理物件
                 var bll = new EventBusinessLogic();
@@ -54,11 +54,17 @@ namespace APIService.Controllers
                     var deviceLog = bll.LogModify(log);
                     //詳細記錄資訊取得
                     var detail = bll.GetLogDetail(deviceLog.LOG_SN);
-                    //訊息推送結果
-                    var responses = await bll.PushEvent(log.ACTION_TYPE, detail);
 
-                    if (Array.IndexOf(responses, HttpStatusCode.Unauthorized) != -1)
-                        return Content(HttpStatusCode.Unauthorized, new APIResponse("Log紀錄成功，但推送至IM或Slack未獲得授權"));
+                    //Slack訊息推送結果
+                    var slackResponse = await bll.PushSlack(log.ACTION_TYPE, detail);
+                    //IM訊息推送結果
+                    //var imResponse = await bll.PushIM(log.ACTION_TYPE, detail);
+
+                    if (slackResponse != HttpStatusCode.OK)
+                        return Content(slackResponse, new APIResponse("Log紀錄成功，但推送至Slack未獲得授權"));
+
+                    //if(imResponse != HttpStatusCode.OK)
+                    //    return Content(slackResponse, new APIResponse("Log紀錄成功，但推送至IM時失敗"));
 
                     return Ok();
                 }

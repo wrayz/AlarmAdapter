@@ -1,6 +1,4 @@
-﻿using DataExpansion;
-using ModelLibrary;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ModelLibrary
 {
@@ -37,7 +35,6 @@ namespace ModelLibrary
         /// <summary>
         /// 使用者帳號
         /// </summary>
-        [User]
         public string USERID { get; set; }
 
         /// <summary>

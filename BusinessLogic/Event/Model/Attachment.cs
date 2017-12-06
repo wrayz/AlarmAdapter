@@ -35,37 +35,37 @@ namespace BusinessLogic.Event
         /// <summary>
         /// 主要標題
         /// </summary>
-        //[JsonProperty("pretext")]
+        //[JsonProperty("pretext", NullValueHandling=NullValueHandling.Ignore)]
         public string TEXT_CONTENT { get; set; }
 
         /// <summary>
         /// 訊息辨識ID
         /// </summary>
-        [JsonProperty("callback_id")]
+        [JsonProperty("callback_id", NullValueHandling = NullValueHandling.Ignore)]
         public string CALLBACK_ID { get; set; }
 
         /// <summary>
         /// 狀態顏色
         /// </summary>
-        [JsonProperty("color")]
+        [JsonProperty("color", NullValueHandling = NullValueHandling.Ignore)]
         public string COLOR_TYPE { get; set; }
 
         /// <summary>
         /// 圖片路徑
         /// </summary>
-        [JsonProperty("image_url")]
+        [JsonProperty("image_url", NullValueHandling = NullValueHandling.Ignore)]
         public string IMAGE_URL { get; set; }
 
         /// <summary>
         /// 附加內容清單
         /// </summary>
-        [JsonProperty("fields")]
+        [JsonProperty("fields", NullValueHandling = NullValueHandling.Ignore)]
         public List<Field> FIELD_LIST { get; set; }
 
         /// <summary>
         /// 動作按鈕清單
         /// </summary>
-        [JsonProperty("actions")]
+        [JsonProperty("actions", NullValueHandling = NullValueHandling.Ignore)]
         public List<Action> BUTTON_LIST { get; set; }
 
         /// <summary>

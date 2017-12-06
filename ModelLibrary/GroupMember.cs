@@ -1,6 +1,4 @@
-﻿using DataExpansion;
-
-namespace ModelLibrary
+﻿namespace ModelLibrary
 {
     /// <summary>
     /// 群組成員資料
@@ -15,7 +13,6 @@ namespace ModelLibrary
         /// <summary>
         /// 群組成員帳號
         /// </summary>
-        [User]
         public string USERID { get; set; }
 
         /// <summary>

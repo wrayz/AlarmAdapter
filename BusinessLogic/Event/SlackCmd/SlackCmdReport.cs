@@ -25,7 +25,7 @@ namespace BusinessLogic.Event
         /// <param name="channel">頻道ID</param>
         /// <param name="text">輸入參數字串</param>
         /// <returns></returns>
-        public string Process(string id, string channel, string text)
+        public CmdResponse Process(string id, string channel, string text)
         {
             var dao = GenericDataAccessFactory.CreateInstance<DeviceReport>();
             var option = new QueryOption { Plan = new QueryPlan { Join = "Report" } };
@@ -54,20 +54,17 @@ namespace BusinessLogic.Event
 
                 //Cmd response內容
                 //var attachment = new Attachment { COLOR_TYPE = "#764FA5", IMAGE_URL = imagePath };
-                var attachment = new Attachment { COLOR_TYPE = "#764FA5", TEXT_CONTENT = reportPath };
-                response.TEXT_CONTENT = "異常設備即時報表";
                 response.RESPONSE_TYPE = "ephemeral";
-                response.ATTACHMENT_LIST = new List<Attachment> { attachment };
+                response.TEXT_CONTENT = string.Format("異常設備即時報表: {0}", reportPath);
             }
             else
             {
                 //Cmd response內容
-                var attachment = new Attachment { TEXT_CONTENT = "目前無異常設備" };
-                response.TEXT_CONTENT = "異常設備即時報表";
-                response.ATTACHMENT_LIST = new List<Attachment> { attachment };
+                response.RESPONSE_TYPE = "ephemeral";
+                response.TEXT_CONTENT = "目前無異常設備";
             }
 
-            return JsonConvert.SerializeObject(response);
+            return response;
         }
 
         /// <summary>

@@ -12,6 +12,6 @@
         /// <param name="channel">頻道 ID</param>
         /// <param name="text">參數字串</param>
         /// <returns></returns>
-        string Process(string id, string channel, string text);
+        CmdResponse Process(string id, string channel, string text);
     }
 }
