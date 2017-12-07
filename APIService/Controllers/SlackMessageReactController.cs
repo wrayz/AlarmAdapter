@@ -50,17 +50,12 @@ namespace APIService.Controllers
                     var deviceLog = bll.LogModify(log);
                     //詳細記錄資訊取得
                     var detail = bll.GetLogDetail(deviceLog.LOG_SN);
+                    
+                    //訊息推送
+                    var result = await bll.PushEvent(log.ACTION_TYPE, detail);
 
-                    //Slack訊息推送結果
-                    var slackResponse = await bll.PushSlack(log.ACTION_TYPE, detail);
-                    //IM訊息推送結果
-                    var imResponse = await bll.PushIM(log.ACTION_TYPE, detail);
-
-                    if (slackResponse != HttpStatusCode.OK)
-                        return Ok(new CmdResponse { TEXT_CONTENT = "修復紀錄成功，但推送至Slack未獲得授權" });
-
-                    if (imResponse != HttpStatusCode.OK)
-                        return Ok(new CmdResponse { TEXT_CONTENT = "修復紀錄成功，但推送至IM時失敗" });
+                    if (!result)
+                        return Content(HttpStatusCode.Forbidden, new APIResponse("Log 紀錄成功，但推送至 Slack 或是 IM 時失敗"));
 
                     return Ok();
                 }
