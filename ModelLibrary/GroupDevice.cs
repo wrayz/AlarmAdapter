@@ -48,6 +48,11 @@ namespace ModelLibrary
         public string CHANNEL_ID { get; set; }
 
         /// <summary>
+        /// 紀錄編號
+        /// </summary>
+        public string LOG_SN { get; set; }
+
+        /// <summary>
         /// 修復人員帳號
         /// </summary>
         public string REPAIRMAN_ID { get; set; }

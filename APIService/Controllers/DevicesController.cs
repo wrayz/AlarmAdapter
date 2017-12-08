@@ -1,8 +1,6 @@
 ﻿using APIService.Model;
-using BusinessLogic;
 using BusinessLogic.Event;
 using ModelLibrary;
-using ModelLibrary.Generic;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -15,32 +13,6 @@ namespace APIService.Controllers
     /// </summary>
     public class DevicesController : ApiController
     {
-        /// <summary>
-        /// 設備清單取得
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public IHttpActionResult GetDevices()
-        {
-            try
-            {
-                //User Info
-                var login = GenericAPIService.GetUserInfo();
-
-                //查詢參數
-                var opt = new QueryOption { User = true, Plan = new QueryPlan { Join = "Detail" } };
-
-                var bll = GenericBusinessFactory.CreateInstance<MemberDevice>();
-                var output = bll.GetList(opt, login, null);
-
-                return Ok(output);
-            }
-            catch (Exception ex)
-            {
-                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
-            }
-        }
-
         /// <summary>
         /// 設備維修
         /// </summary>
@@ -65,8 +37,6 @@ namespace APIService.Controllers
                 {
                     //對應設備編號擴充
                     log.DEVICE_SN = device;
-                    //對應紀錄
-                    log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
                     //紀錄處理
                     var deviceLog = bll.LogModify(log);
                     //詳細記錄資訊取得
