@@ -49,17 +49,17 @@
     <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="LicenseHelper.Decrypt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LicenseHelper.1.0.0\lib\LicenseHelper.Decrypt.dll</HintPath>
+    </Reference>
+    <Reference Include="LicenseHelper.Token, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LicenseHelper.1.0.0\lib\LicenseHelper.Token.dll</HintPath>
+    </Reference>
     <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.0.0.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
       <HintPath>..\packages\Magick.NET-Q16-AnyCPU.7.0.6.101\lib\net40\Magick.NET-Q16-AnyCPU.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="LicenseHelper.Token">
-      <HintPath>..\packages\LicenseHelper\LicenseHelper.Token.dll</HintPath>
-    </Reference>
-    <Reference Include="LicenseHelper.Decrypt">
-      <HintPath>..\packages\LicenseHelper\LicenseHelper.Decrypt.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PDFHelper.Core">
       <HintPath>..\packages\PDFHelper\PDFHelper.Core.dll</HintPath>
@@ -67,8 +67,8 @@
     <Reference Include="PDFHelper.Configuration">
       <HintPath>..\packages\PDFHelper\PDFHelper.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="SlackAPIHelper">
-      <HintPath>..\packages\SlackAPIHelper\SlackAPIHelper.dll</HintPath>
+    <Reference Include="SlackAPIHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SlackAPIHelper.1.0.0\lib\SlackAPIHelper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
