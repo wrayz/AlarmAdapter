@@ -113,7 +113,11 @@ namespace BusinessLogic.Event
             }
 
             //欲推送頻道清單
-            var groups = _log.GROUP_LIST.Where(c => c.CHANNEL_ID != "");
+            var groups = _log.GROUP_LIST.Where(c => c.CHANNEL_ID != "")
+                                        .GroupBy(g => g.CHANNEL_ID)
+                                        .Select(s => new DeviceGroup {
+                                            CHANNEL_ID = s.Key
+                                        });
 
             foreach (var group in groups)
             {
