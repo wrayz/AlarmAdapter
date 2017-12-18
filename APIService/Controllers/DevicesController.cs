@@ -1,6 +1,8 @@
 ﻿using APIService.Model;
+using BusinessLogic;
 using BusinessLogic.Event;
 using ModelLibrary;
+using ModelLibrary.Generic;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -29,14 +31,12 @@ namespace APIService.Controllers
 
                 //紀錄動作處理物件
                 var bll = new EventBusinessLogic();
+                //確認該設備狀態為異常
+                var condition = new Device { DEVICE_SN = log.DEVICE_SN, IS_MONITOR = "Y", DEVICE_STATUS = "E" };
+                var isError = GenericBusinessFactory.CreateInstance<Device>().IsExists(new QueryOption(), login, condition);
 
-                //對應設備編號
-                string device = bll.GetDeviceByID(log);
-
-                if (!string.IsNullOrEmpty(device))
+                if (isError)
                 {
-                    //對應設備編號擴充
-                    log.DEVICE_SN = device;
                     //紀錄處理
                     var deviceLog = bll.LogModify(log);
                     //詳細記錄資訊取得
