@@ -32,7 +32,7 @@ namespace APIService.Controllers
                 //紀錄動作處理物件
                 var bll = new EventBusinessLogic();
                 //確認該設備狀態為異常
-                var condition = new Device { DEVICE_SN = log.DEVICE_SN, DEVICE_STATUS = "E" };
+                var condition = new Device { DEVICE_SN = log.DEVICE_SN, IS_MONITOR = "Y", DEVICE_STATUS = "E" };
                 var isError = GenericBusinessFactory.CreateInstance<Device>().IsExists(new QueryOption(), login, condition);
 
                 if (isError)
