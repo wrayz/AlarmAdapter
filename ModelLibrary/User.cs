@@ -24,11 +24,6 @@ namespace ModelLibrary
         public string EMAIL { get; set; }
 
         /// <summary>
-        /// Slack id
-        /// </summary>
-        public string SLACK_ID { get; set; }
-
-        /// <summary>
         /// 帳號類型
         /// </summary>
         public string USER_TYPE { get; set; }

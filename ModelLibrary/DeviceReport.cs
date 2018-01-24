@@ -38,11 +38,6 @@ namespace ModelLibrary
         public string REPAIRMAN_ID { get; set; }
 
         /// <summary>
-        /// 頻道ID
-        /// </summary>
-        public string CHANNEL_ID { get; set; }
-
-        /// <summary>
         /// 設備狀態資訊
         /// </summary>
         public Config STATUS_INFO { get; set; }

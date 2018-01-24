@@ -21,10 +21,5 @@ namespace ModelLibrary
         /// 群組名稱
         /// </summary>
         public string GROUP_NAME { get; set; }
-
-        /// <summary>
-        /// 頻道ID
-        /// </summary>
-        public string CHANNEL_ID { get; set; }
     }
 }

@@ -19,10 +19,5 @@
         /// 設備管理人名稱
         /// </summary>
         public string USER_NAME { get; set; }
-
-        /// <summary>
-        /// Slack id
-        /// </summary>
-        public string SLACK_ID { get; set; }
     }
 }

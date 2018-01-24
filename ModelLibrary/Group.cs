@@ -18,11 +18,6 @@ namespace ModelLibrary
         public string GROUP_NAME { get; set; }
 
         /// <summary>
-        /// Slack頻道
-        /// </summary>
-        public string CHANNEL_ID { get; set; }
-
-        /// <summary>
         /// 群組設備清單
         /// </summary>
         public List<GroupDevice> DEVICE_LIST { get; set; }

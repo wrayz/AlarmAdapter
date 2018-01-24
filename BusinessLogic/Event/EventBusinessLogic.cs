@@ -91,27 +91,7 @@ namespace BusinessLogic.Event
         {
             EventType enumType = (EventType)Enum.Parse(typeof(EventType), type);
 
-            var responses = await Task.WhenAll(PushSlack(enumType, log), PushIM(enumType, log));
-
-            return responses.Count(s => s == HttpStatusCode.OK) == 2;
-        }
-
-        /// <summary>
-        /// Slack訊息推送事件
-        /// </summary>
-        /// <param name="type">動作類型</param>
-        /// <param name="log">設備紀錄詳細資料</param>
-        /// <returns></returns>
-        private async Task<HttpStatusCode> PushSlack(EventType type, LogDetail log)
-        {
-            //Slack設置取得
-            var dao = GenericDataAccessFactory.CreateInstance<SlackConfig>();
-            var config = dao.Get(new QueryOption());
-
-            var slack = new PushSlack(type, config.OAUTH_TOKEN, log);
-
-            //訊息推送
-            return await slack.PushMessage();
+            return await PushIM(enumType, log) == HttpStatusCode.OK;
         }
 
         /// <summary>

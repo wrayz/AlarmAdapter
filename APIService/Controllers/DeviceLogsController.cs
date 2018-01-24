@@ -23,8 +23,8 @@ namespace APIService.Controllers
             try
             {
                 //來源IP驗證
-                if (!Validate())
-                    return Content(HttpStatusCode.Unauthorized, new APIResponse("來源IP未認證"));
+                //if (!Validate())
+                //    return Content(HttpStatusCode.Unauthorized, new APIResponse("來源IP未認證"));
 
                 if (LicenseLogic.Token == null)
                 {
@@ -52,14 +52,14 @@ namespace APIService.Controllers
 
                     //紀錄處理
                     var deviceLog = bll.LogModify(log);
-                    //詳細記錄資訊取得
-                    var detail = bll.GetLogDetail(deviceLog.LOG_SN);
+                    ////詳細記錄資訊取得
+                    //var detail = bll.GetLogDetail(deviceLog.LOG_SN);
 
-                    //訊息推送
-                    var result = await bll.PushEvent(log.ACTION_TYPE, detail);
+                    ////訊息推送
+                    //var result = await bll.PushEvent(log.ACTION_TYPE, detail);
 
-                    if (!result)
-                        return Content(HttpStatusCode.Forbidden, new APIResponse("Log 紀錄成功，但推送至 Slack 或是 IM 時失敗"));
+                    //if (!result)
+                    //    return Content(HttpStatusCode.Forbidden, new APIResponse("Log 紀錄成功，但推送至 Slack 或是 IM 時失敗"));
 
                     return Ok();
                 }

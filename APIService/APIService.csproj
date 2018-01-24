@@ -113,20 +113,12 @@
     <Compile Include="Controllers\DevicesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\LanguagesController.cs" />
-    <Compile Include="Controllers\SlackCmdController.cs" />
-    <Compile Include="Controllers\SlackMessageReactController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="GenericAPIService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\APIResponse.cs" />
-    <Compile Include="Model\SlackButton.cs" />
-    <Compile Include="Model\SlackChannel.cs" />
-    <Compile Include="Model\SlackCmdMessage.cs" />
-    <Compile Include="Model\SlackInteractMessage.cs" />
-    <Compile Include="Model\SlackPayload.cs" />
-    <Compile Include="Model\SlackUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -145,7 +137,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Entity\Group.config" />
-    <Content Include="Entity\SlackConfig.config" />
     <Content Include="Entity\Common.config" />
     <Content Include="Entity\GroupDevice.config">
       <SubType>Designer</SubType>
@@ -170,7 +161,6 @@
     </None>
     <Content Include="Entity\MemberDevice.config" />
     <Content Include="Entity\LicenseConfig.config" />
-    <Content Include="Entity\LogSlackStamp.config" />
     <Content Include="Entity\DeviceReport.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
