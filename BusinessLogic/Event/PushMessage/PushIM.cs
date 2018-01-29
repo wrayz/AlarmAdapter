@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace BusinessLogic.Event
         /// <summary>
         /// IM 伺服器位址
         /// </summary>
-        private readonly string _url = @"http://125.227.105.193";
+        private readonly string _url = ConfigurationManager.AppSettings["host"];
 
         /// <summary>
         /// 系統名稱
@@ -57,7 +58,7 @@ namespace BusinessLogic.Event
                 });
 
                 //post
-                var result = await client.PostAsync("/eyesFreeLog", content);
+                var result = await client.PostAsync("im/eyesFreeLog", content);
 
                 return result.StatusCode;
             }
