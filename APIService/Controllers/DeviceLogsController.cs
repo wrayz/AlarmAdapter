@@ -10,6 +10,9 @@ using System.Web.Http;
 
 namespace APIService.Controllers
 {
+    /// <summary>
+    /// 設備訊息 API
+    /// </summary>
     public class DeviceLogsController : ApiController
     {
         /// <summary>

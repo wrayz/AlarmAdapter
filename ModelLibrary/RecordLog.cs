@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataExpansion;
+using System;
 
 namespace ModelLibrary
 {
@@ -32,6 +33,7 @@ namespace ModelLibrary
         /// <summary>
         /// 修復人員帳號
         /// </summary>
+        [User]
         public string USERID { get; set; }
 
         /// <summary>
