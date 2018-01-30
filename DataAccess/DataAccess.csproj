@@ -73,10 +73,10 @@
   <ItemGroup>
     <Compile Include="ConnectionSetting.cs" />
     <Compile Include="ConnectionType.cs" />
+    <Compile Include="DeviceDataAccess.cs" />
     <Compile Include="Generic\GenericDataAccessT.cs" />
     <Compile Include="Generic\GenericFactory.cs" />
     <Compile Include="Generic\IDataAccessT.cs" />
-    <Compile Include="Log\LogDataAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

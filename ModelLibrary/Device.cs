@@ -23,13 +23,23 @@ namespace ModelLibrary
         public string DEVICE_NAME { get; set; }
 
         /// <summary>
+        /// 設備類型
+        /// </summary>
+        public string DEVICE_TYPE { get; set; }
+
+        /// <summary>
         /// 是否監控
         /// </summary>
         public string IS_MONITOR { get; set; }
 
         /// <summary>
-        /// 設備狀態 N - 正常, E - 異常, R-修復中
+        /// 設備狀態 N - 正常, E - 異常, R - 修復中
         /// </summary>
         public string DEVICE_STATUS { get; set; }
+
+        /// <summary>
+        /// 數值記錄狀態 N - 正常, E - 異常, R - 修復中
+        /// </summary>
+        public string RECORD_STATUS { get; set; }
     }
 }

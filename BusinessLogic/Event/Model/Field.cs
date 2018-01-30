@@ -1,14 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Event
 {
     /// <summary>
-    /// 推送訊息物件詳細內容 (共用)
+    /// 推送訊息物件詳細內容
     /// </summary>
     public class Field
     {

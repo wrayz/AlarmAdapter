@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace APIService.Controllers
 {
     /// <summary>
-    /// 設備API(IM)
+    /// 設備API
     /// </summary>
     public class DevicesController : ApiController
     {

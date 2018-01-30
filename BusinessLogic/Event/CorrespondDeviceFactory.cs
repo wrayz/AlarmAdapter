@@ -1,4 +1,4 @@
-﻿using DataAccess.Log;
+﻿using DataAccess;
 using ModelLibrary;
 using System;
 
@@ -21,20 +21,22 @@ namespace BusinessLogic.Event
             //動作類型
             EventType type = (EventType)Enum.Parse(typeof(EventType), log.ACTION_TYPE);
 
+            var dao = new DeviceDataAccess("DEVICE_STATUS");
+
             switch (type)
             {
                 //異常
                 case EventType.Error:
                     //正常設備取得
-                    return LogDataAccess.GetNormalDevice(id);
+                    return dao.GetNormalDevice(id);
                 //修復
                 case EventType.Repair:
                     //異常設備取得(不包含正在修復)
-                    return LogDataAccess.GetErrorDevice(id);
+                    return dao.GetErrorDevice(id);
                 //恢復
                 case EventType.Recover:
                     //異常設備取得
-                    return LogDataAccess.GetAbnormalDevice(id);
+                    return dao.GetAbnormalDevice(id);
                 //default
                 default:
                     throw new Exception("錯誤的動作類別");

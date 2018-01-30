@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Record_BLL.cs" />
     <Compile Include="Event\EventBusinessLogic.cs" />
     <Compile Include="Event\Model\Field.cs" />
     <Compile Include="Event\Model\IMPayload.cs" />
@@ -100,5 +101,6 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace BusinessLogic.Event
 {
     /// <summary>
-    /// 推送訊息物件(IM)
+    /// 推送訊息物件
     /// </summary>
     public class IMPayload
     {

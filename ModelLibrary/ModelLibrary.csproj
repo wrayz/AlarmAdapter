@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Contact.cs" />
+    <Compile Include="DeviceRecord.cs" />
+    <Compile Include="Record.cs" />
     <Compile Include="DeviceReport.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Device.cs" />
@@ -80,6 +82,8 @@
     <Compile Include="Generic\UserLogin.cs" />
     <Compile Include="MemberDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecordLimit.cs" />
+    <Compile Include="RecordLog.cs" />
     <Compile Include="Supplier.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Voice.cs" />

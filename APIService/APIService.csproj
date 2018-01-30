@@ -110,6 +110,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DeviceLogsController.cs" />
+    <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\DevicesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\LanguagesController.cs" />
@@ -162,6 +163,10 @@
     <Content Include="Entity\MemberDevice.config" />
     <Content Include="Entity\LicenseConfig.config" />
     <Content Include="Entity\DeviceReport.config" />
+    <Content Include="Entity\Record.config" />
+    <Content Include="Entity\DeviceRecord.config" />
+    <Content Include="Entity\RecordLog.config" />
+    <Content Include="Entity\RecordLimit.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
