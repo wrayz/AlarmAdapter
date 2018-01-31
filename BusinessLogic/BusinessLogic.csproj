@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Event\Model\Payload.cs" />
     <Compile Include="Record_BLL.cs" />
     <Compile Include="Event\EventBusinessLogic.cs" />
     <Compile Include="Event\Model\Field.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="License\LicenseConfig.cs" />
     <Compile Include="License\LicenseLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleLog_BLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

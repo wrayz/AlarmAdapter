@@ -115,6 +115,7 @@
     <Compile Include="Controllers\DevicesController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\LanguagesController.cs" />
+    <Compile Include="Controllers\SimpleLogsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="GenericAPIService.cs" />
     <Compile Include="Global.asax.cs">
@@ -168,6 +169,7 @@
     <Content Include="Entity\DeviceRecord.config" />
     <Content Include="Entity\RecordLog.config" />
     <Content Include="Entity\RecordLimit.config" />
+    <Content Include="Entity\SimpleLog.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
