@@ -51,18 +51,28 @@ namespace APIService.Controllers
 
                     //log編號取得
                     if (log.ACTION_TYPE == "Recover")
+                    {
+                        //log編號取得
                         log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
-
-                    //紀錄處理
-                    var deviceLog = bll.LogModify(log);
+                        //紀錄處理
+                        bll.LogModify(log);
+                    }
+                    else
+                    {
+                        //紀錄處理
+                        bll.LogModify(log);
+                        //紀錄編號取得
+                        log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
+                    }
+                    
                     //詳細記錄資訊取得
-                    var detail = bll.GetLogDetail(deviceLog.LOG_SN);
+                    var detail = bll.GetLogDetail(log.LOG_SN.Value);
 
                     //訊息推送
                     var result = await bll.PushEvent(log.ACTION_TYPE, detail);
 
                     if (!result)
-                        return Content(HttpStatusCode.Forbidden, new APIResponse("Log 紀錄成功，但推送至 Slack 或是 IM 時失敗"));
+                        return Content(HttpStatusCode.Forbidden, new APIResponse("Log 紀錄成功，但推送至 IM 時失敗"));
 
                     return Ok();
                 }

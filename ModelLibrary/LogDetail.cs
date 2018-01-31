@@ -11,7 +11,7 @@ namespace ModelLibrary
         /// <summary>
         /// 紀錄編號
         /// </summary>
-        public string LOG_SN { get; set; }
+        public int? LOG_SN { get; set; }
 
         /// <summary>
         /// 設備編號

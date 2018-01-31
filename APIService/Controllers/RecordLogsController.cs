@@ -1,13 +1,9 @@
 ﻿using APIService.Model;
 using BusinessLogic;
-using BusinessLogic.Event;
 using ModelLibrary;
 using ModelLibrary.Generic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace APIService.Controllers
@@ -55,7 +51,7 @@ namespace APIService.Controllers
                 {
                     var recordBll = GenericBusinessFactory.CreateInstance<RecordLog>();
                     //設備修復
-                    recordBll.Modify("Repair", user, new RecordLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN }, null, false, true, new GenericExtand());
+                    recordBll.Modify("Repair", user, new RecordLog { LOG_SN = log.LOG_SN.ToString(), DEVICE_SN = log.DEVICE_SN }, null, false, true, new GenericExtand());
 
                     return Ok();
                 }

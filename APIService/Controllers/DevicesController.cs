@@ -40,7 +40,7 @@ namespace APIService.Controllers
                     //紀錄處理
                     var deviceLog = bll.LogModify(log);
                     //詳細記錄資訊取得
-                    var detail = bll.GetLogDetail(log.LOG_SN);
+                    var detail = bll.GetLogDetail(log.LOG_SN.Value);
 
                     //訊息推送
                     var result = await bll.PushEvent(log.ACTION_TYPE, detail);

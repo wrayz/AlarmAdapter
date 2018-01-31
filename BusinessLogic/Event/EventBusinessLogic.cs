@@ -27,9 +27,9 @@ namespace BusinessLogic.Event
         /// <summary>
         /// 對應設備編號取得 By 紀錄SN
         /// </summary>
-        /// <param name="log">設備紀錄資料</param>
+        /// <param name="sn">設備紀錄編號</param>
         /// <returns></returns>
-        public string GetDeviceByLog(string sn)
+        public string GetDeviceByLog(int sn)
         {
             var dao = GenericDataAccessFactory.CreateInstance<DeviceLog>();
             return dao.Get(new QueryOption(), new DeviceLog { LOG_SN = sn }).DEVICE_SN;
@@ -51,7 +51,7 @@ namespace BusinessLogic.Event
         /// </summary>
         /// <param name="log">紀錄編號</param>
         /// <returns></returns>
-        public LogDetail GetLogDetail(string log)
+        public LogDetail GetLogDetail(int log)
         {
             //紀錄詳細資料處理物件
             var dao = GenericDataAccessFactory.CreateInstance<LogDetail>();
