@@ -10,7 +10,7 @@ namespace ModelLibrary
         /// <summary>
         /// 數據紀錄編號
         /// </summary>
-        public string RECORD_SN { get; set; }
+        public int? RECORD_SN { get; set; }
 
         /// <summary>
         /// 設備編號

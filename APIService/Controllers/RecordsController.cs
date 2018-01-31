@@ -24,13 +24,13 @@ namespace APIService.Controllers
         {
             try
             {
-                var content = Request.Content.ReadAsStringAsync().Result;
-                var body = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
-                
                 if (LicenseLogic.Token == null)
                 {
                     return Content(HttpStatusCode.Forbidden, new APIResponse("License key 無效，請檢查License Key"));
                 }
+
+                var content = Request.Content.ReadAsStringAsync().Result;
+                var body = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
 
                 //紀錄資料
                 _bll.ModifyRecords(body);

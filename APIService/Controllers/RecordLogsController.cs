@@ -51,7 +51,7 @@ namespace APIService.Controllers
                 {
                     var recordBll = GenericBusinessFactory.CreateInstance<RecordLog>();
                     //設備修復
-                    recordBll.Modify("Repair", user, new RecordLog { LOG_SN = log.LOG_SN.ToString(), DEVICE_SN = log.DEVICE_SN }, null, false, true, new GenericExtand());
+                    recordBll.Modify("Repair", user, new RecordLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN }, null, false, true, new GenericExtand());
 
                     return Ok();
                 }
