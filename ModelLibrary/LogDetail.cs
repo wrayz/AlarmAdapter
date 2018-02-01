@@ -72,10 +72,5 @@ namespace ModelLibrary
         /// 設備對應群組清單
         /// </summary>
         public List<DeviceGroup> GROUP_LIST { get; set; }
-
-        /// <summary>
-        /// 設備保管人清單
-        /// </summary>
-        public List<DeviceMaintainer> MAINTAINER_LIST { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ModelLibrary
+﻿namespace ModelLibrary
 {
     /// <summary>
     /// 設備群組資料

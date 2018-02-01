@@ -20,6 +20,8 @@ namespace BusinessLogic.Event
             LOG_SN = log.LOG_SN;
             //紀錄類型
             LOG_TYPE = "N";
+            //設備編號
+            DEVICE_SN = log.DEVICE_SN;
             //設備狀態
             BUTTON_STATUS = log.DEVICE_STATUS;
             //通送名稱
@@ -41,6 +43,11 @@ namespace BusinessLogic.Event
         /// 紀錄類型
         /// </summary>
         public string LOG_TYPE { get; set; }
+
+        /// <summary>
+        /// 設備編號
+        /// </summary>
+        public string DEVICE_SN { get; set; }
 
         /// <summary>
         /// 推送名稱

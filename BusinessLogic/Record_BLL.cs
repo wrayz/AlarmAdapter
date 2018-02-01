@@ -22,7 +22,7 @@ namespace BusinessLogic
         /// <summary>
         /// IM 伺服器位址
         /// </summary>
-        private readonly string _url = ConfigurationManager.AppSettings["host"];
+        private readonly string _url = ConfigurationManager.AppSettings["im"];
 
         /// <summary>
         /// 系統名稱
@@ -116,9 +116,13 @@ namespace BusinessLogic
                     record.DEVICE_SN = device.DEVICE_SN;
                     _dao.Modify("Insert", record);
 
-                    if ((record.RECORD_TEMPERATURE >= limit.TEMPERATURE || record.RECORD_HUMIDITY >= limit.HUMIDITY) && device.RECORD_STATUS == "N")
+                    if (((record.RECORD_TEMPERATURE > limit.MAX_TEMPERATURE_VAL || record.RECORD_TEMPERATURE < limit.MIN_TEMPERATURE_VAL) ||
+                        (record.RECORD_HUMIDITY > limit.MAX_HUMIDITY_VAL || record.RECORD_HUMIDITY < limit.MIN_HUMIDITY_VAL)) &&
+                         device.RECORD_STATUS == "N")
                         AbnormalRecord(record);
-                    else if ((record.RECORD_TEMPERATURE < limit.TEMPERATURE && record.RECORD_HUMIDITY < limit.HUMIDITY) && (device.RECORD_STATUS == "E" || device.RECORD_STATUS == "R"))
+                    else if ((record.RECORD_TEMPERATURE <= limit.MAX_TEMPERATURE_VAL && record.RECORD_TEMPERATURE >= limit.MIN_TEMPERATURE_VAL) &&
+                             (record.RECORD_HUMIDITY <= limit.MAX_HUMIDITY_VAL && record.RECORD_HUMIDITY >= limit.MIN_HUMIDITY_VAL) &&
+                             (device.RECORD_STATUS == "E" || device.RECORD_STATUS == "R"))
                         RecoverRecord(record);
                 }
             }

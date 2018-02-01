@@ -17,7 +17,7 @@ namespace BusinessLogic.Event
         /// <summary>
         /// IM 伺服器位址
         /// </summary>
-        private readonly string _url = ConfigurationManager.AppSettings["host"];
+        private readonly string _url = ConfigurationManager.AppSettings["im"];
 
         /// <summary>
         /// 系統名稱

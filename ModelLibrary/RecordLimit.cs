@@ -8,32 +8,64 @@ namespace ModelLibrary
     public class RecordLimit
     {
         /// <summary>
-        /// 監控溫度
+        /// 最高限制溫度
         /// </summary>
-        public string LIMIT_TEMPERATURE { get; set; }
+        public string MAX_TEMPERATURE { get; set; }
 
         /// <summary>
-        /// 監控濕度
+        /// 最高限制濕度
         /// </summary>
-        public string LIMIT_HUMIDITY { get; set; }
+        public string MAX_HUMIDITY { get; set; }
 
         /// <summary>
-        /// 溫度
+        /// 最低限制溫度
         /// </summary>
-        public decimal? TEMPERATURE {
+        public string MIN_TEMPERATURE { get; set; }
+
+        /// <summary>
+        /// 最低限制濕度
+        /// </summary>
+        public string MIN_HUMIDITY { get; set; }
+
+        /// <summary>
+        /// 最高溫度
+        /// </summary>
+        public decimal? MAX_TEMPERATURE_VAL {
             get
             {
-                return Convert.ToDecimal(LIMIT_TEMPERATURE);
+                return Convert.ToDecimal(MAX_TEMPERATURE);
             }
         }
 
         /// <summary>
-        /// 濕度
+        /// 最高濕度
         /// </summary>
-        public decimal? HUMIDITY {
+        public decimal? MAX_HUMIDITY_VAL {
             get
             {
-                return Convert.ToDecimal(LIMIT_HUMIDITY);
+                return Convert.ToDecimal(MAX_HUMIDITY);
+            }
+        }
+
+        /// <summary>
+        /// 最低溫度
+        /// </summary>
+        public decimal? MIN_TEMPERATURE_VAL
+        {
+            get
+            {
+                return Convert.ToDecimal(MIN_TEMPERATURE);
+            }
+        }
+
+        /// <summary>
+        /// 最低濕度
+        /// </summary>
+        public decimal? MIN_HUMIDITY_VAL
+        {
+            get
+            {
+                return Convert.ToDecimal(MIN_HUMIDITY);
             }
         }
     }
