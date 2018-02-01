@@ -1,5 +1,6 @@
 ﻿using DataExpansion;
 using System;
+using System.Collections.Generic;
 
 namespace ModelLibrary
 {
@@ -50,5 +51,20 @@ namespace ModelLibrary
         /// 恢復時間
         /// </summary>
         public DateTime? RECOVER_TIME { get; set; }
+
+        /// <summary>
+        /// 設備資訊
+        /// </summary>
+        public Device DEVICE_INFO { get; set; }
+
+        /// <summary>
+        /// 處理人員資訊
+        /// </summary>
+        public User USER_INFO { get; set; }
+
+        /// <summary>
+        /// 設備群組清單
+        /// </summary>
+        public List<DeviceGroup> GROUP_LIST { get; set; }
     }
 }

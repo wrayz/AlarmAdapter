@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Event\Model\Payload.cs" />
+    <Compile Include="RecordLog_BLL.cs" />
     <Compile Include="Record_BLL.cs" />
     <Compile Include="Event\EventBusinessLogic.cs" />
     <Compile Include="Event\Model\Field.cs" />

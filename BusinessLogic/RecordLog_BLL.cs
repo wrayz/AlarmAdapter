@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 namespace BusinessLogic
 {
     /// <summary>
-    /// 簡易設備記錄商業邏輯
+    /// 數據設備異常資訊商業邏輯
     /// </summary>
-    public class SimpleLog_BLL
+    public class RecordLog_BLL
     {
-        private IDataAccess<SimpleLog> _dao = GenericDataAccessFactory.CreateInstance<SimpleLog>();
+        private IDataAccess<RecordLog> _dao = GenericDataAccessFactory.CreateInstance<RecordLog>();
 
         /// <summary>
         /// IM 伺服器位址
@@ -30,43 +30,34 @@ namespace BusinessLogic
         private readonly string _system = "EyesFree";
 
         /// <summary>
-        /// 記錄新增
+        /// 紀錄資料
         /// </summary>
         /// <param name="log"></param>
-        public void ModifyLog(SimpleLog log)
+        public void ModifyLogs(RecordLog log, UserLogin user)
         {
-            _dao.Modify("Insert", log);
-        }
+            //修復紀錄
+            _dao.Modify("Repair", new RecordLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN, USERID = user.USERID });
 
-        /// <summary>
-        /// 推送至IM
-        /// </summary>
-        /// <param name="origin">原始log資料</param>
-        public void PushIM(SimpleLog origin)
-        {
-            var option = new QueryOption { Plan = new QueryPlan { Join = "Payload" } };
-            var condition = new SimpleLog { DEVICE_SN = origin.DEVICE_SN, ERROR_TIME = origin.ERROR_TIME };
-            var log = _dao.Get(option, condition);
+            var recordLog = _dao.Get(new QueryOption { Plan = new QueryPlan { Join = "Payload" } }, new RecordLog { LOG_SN = log.LOG_SN });
 
             var fields = new List<Field>
             {
-                new Field("主機名稱", log.DEVICE_INFO.DEVICE_NAME, true),
-                new Field("設備位址", log.DEVICE_INFO.DEVICE_ID, true),
-                new Field("異常資訊", log.ERROR_INFO, false),
-                new Field("異常時間", log.ERROR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true)
+                new Field("主機名稱", recordLog.DEVICE_INFO.DEVICE_NAME, true),
+                new Field("設備位址", recordLog.DEVICE_INFO.DEVICE_ID, true),
+                new Field("處理時間", recordLog.REPAIR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
+                new Field("處理人員", recordLog.USER_INFO.USER_NAME, true)
             };
 
-            //訊息內容
             var payload = new Payload
             {
-                LOG_SN = log.LOG_SN,
-                LOG_TYPE = "S",
-                DEVICE_SN = log.DEVICE_SN,
+                LOG_SN = recordLog.LOG_SN,
+                LOG_TYPE = "D",
+                DEVICE_SN = recordLog.DEVICE_SN,
                 SYSTEM_NAME = _system,
-                BUTTON_STATUS = "N",
-                COLOR = "danger",
-                TITLE = "攝像機異常資訊",
-                GROUP_LIST = log.GROUP_LIST,
+                BUTTON_STATUS = "R",
+                COLOR = "warning",
+                TITLE = "溫溼度設備處理資訊",
+                GROUP_LIST = recordLog.GROUP_LIST,
                 FIELD_LIST = fields
             };
 

@@ -13,12 +13,15 @@ namespace APIService.Controllers
     /// </summary>
     public class RecordLogsController : ApiController
     {
+        private RecordLog_BLL _bll = new RecordLog_BLL();
+
         /// <summary>
         /// 數據設備記錄更新
         /// </summary>
         /// <param name="log"></param>
         /// <returns></returns>
-        public IHttpActionResult PostData(Log log)
+        [HttpPost]
+        public IHttpActionResult PostData(RecordLog log)
         {
             try
             {
@@ -28,10 +31,7 @@ namespace APIService.Controllers
                 }
 
                 var token = LicenseLogic.Token;
-
-                if (!(log.LOG_TIME >= token.StartDate && log.LOG_TIME <= token.EndDate))
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 已過期，請檢查License Key"));
-
+                
                 //登入資訊
                 var user = GenericAPIService.GetUserInfo();
 
@@ -49,9 +49,7 @@ namespace APIService.Controllers
 
                 if (!string.IsNullOrEmpty(device.DEVICE_SN))
                 {
-                    var recordBll = GenericBusinessFactory.CreateInstance<RecordLog>();
-                    //設備修復
-                    recordBll.Modify("Repair", user, new RecordLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN }, null, false, true, new GenericExtand());
+                    _bll.ModifyLogs(log, user);
 
                     return Ok();
                 }
