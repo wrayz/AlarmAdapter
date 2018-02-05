@@ -37,8 +37,8 @@ namespace APIService.Controllers
                 var log = GetLog(content);
 
                 if (log == null)
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("無對應設備"));
-                
+                    return Ok();
+
                 //紀錄新增
                 _bll.ModifyLog(log);
                 //推送至IM
@@ -61,7 +61,7 @@ namespace APIService.Controllers
         {
             var pattern = @"\n(.+?)\r\n";
             //最後一筆 Log
-            var lastLog = Regex.Match(plain, pattern, RegexOptions.RightToLeft).ToString();
+            var lastLog = Regex.Match(plain, pattern, RegexOptions.RightToLeft).NextMatch().ToString();
 
             //來源IP
             var source = GetSourceIP();
@@ -70,15 +70,12 @@ namespace APIService.Controllers
             if (string.IsNullOrEmpty(device.DEVICE_SN))
                 return null;
 
-            //異常時間
-            var time = Convert.ToDateTime(Regex.Match(lastLog, @"\((.*?)\)").Groups[1].ToString());
-
             if (lastLog.Contains("tampering dark detected!"))
             {
                 return new SimpleLog
                 {
                     DEVICE_SN = device.DEVICE_SN,
-                    ERROR_TIME = time,
+                    ERROR_TIME = Convert.ToDateTime(Regex.Match(lastLog, @"\((.*?)\)").Groups[1].ToString()),
                     ERROR_INFO = "tampering dark detected"
                 };
             }
@@ -87,7 +84,7 @@ namespace APIService.Controllers
                 return new SimpleLog
                 {
                     DEVICE_SN = device.DEVICE_SN,
-                    ERROR_TIME = time,
+                    ERROR_TIME = Convert.ToDateTime(Regex.Match(lastLog, @"\((.*?)\)").Groups[1].ToString()),
                     ERROR_INFO = "tampering detected"
                 };
             }
@@ -114,7 +111,6 @@ namespace APIService.Controllers
         {
             if (string.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_VIA"]))
                 return HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
-
             return HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
         }
     }

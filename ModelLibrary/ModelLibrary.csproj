@@ -62,6 +62,8 @@
     <Compile Include="Config.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="DeviceRecord.cs" />
+    <Compile Include="GroupDevice.cs" />
+    <Compile Include="GroupService.cs" />
     <Compile Include="Record.cs" />
     <Compile Include="DeviceReport.cs" />
     <Compile Include="Log.cs" />
@@ -69,7 +71,6 @@
     <Compile Include="DeviceGroup.cs" />
     <Compile Include="DeviceLog.cs" />
     <Compile Include="Group.cs" />
-    <Compile Include="GroupDevice.cs" />
     <Compile Include="GroupMember.cs" />
     <Compile Include="LogDetail.cs" />
     <Compile Include="DeviceMaintainer.cs" />

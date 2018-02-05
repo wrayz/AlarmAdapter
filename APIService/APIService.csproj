@@ -143,9 +143,6 @@
     </Content>
     <Content Include="Entity\Group.config" />
     <Content Include="Entity\Common.config" />
-    <Content Include="Entity\GroupDevice.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Entity\DeviceMaintainer.config">
       <SubType>Designer</SubType>
     </Content>
@@ -172,6 +169,8 @@
     <Content Include="Entity\RecordLog.config" />
     <Content Include="Entity\RecordLimit.config" />
     <Content Include="Entity\SimpleLog.config" />
+    <Content Include="Entity\GroupService.config" />
+    <Content Include="Entity\GroupDevice.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>

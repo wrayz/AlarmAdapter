@@ -84,9 +84,9 @@ namespace APIService.Controllers
                 //查詢參數
                 var opt = new QueryOption { Relation = true, Plan = new QueryPlan() { Join = "Detail" } };
 
-                var condition = new GroupDevice { GROUP_SN = gorupId, IS_MONITOR = "Y" };
+                var condition = new GroupService { GROUP_SN = gorupId };
 
-                var bll = GenericBusinessFactory.CreateInstance<GroupDevice>();
+                var bll = GenericBusinessFactory.CreateInstance<GroupService>();
                 var output = bll.GetList(opt, login, condition);
 
                 return Ok(output);
