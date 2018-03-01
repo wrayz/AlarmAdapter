@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -63,7 +64,7 @@ namespace BusinessLogic
 
             if (dict.TryGetValue("Date", out string date) && dict.TryGetValue("Time", out string time))
             {
-                recordTime = DateTime.Parse(string.Format("{0} {1}", date, time));
+                recordTime = DateTime.ParseExact(string.Format("{0} {1}", date, time), "MM/dd/yy HH:mm:ss", CultureInfo.InvariantCulture);
             }
             else
             {
