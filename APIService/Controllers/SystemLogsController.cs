@@ -3,8 +3,8 @@ using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
 using System;
+using System.IO;
 using System.Net;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 
@@ -59,37 +59,27 @@ namespace APIService.Controllers
         /// <returns></returns>
         private SimpleLog GetLog(string plain)
         {
-            var pattern = @"\n(.+?)\r\n";
-            //最後一筆 Log
-            var lastLog = Regex.Match(plain, pattern, RegexOptions.RightToLeft).NextMatch().ToString();
+            //log訊息
+            var info = plain.Substring(plain.IndexOf("=") + 1);
 
             //來源IP
             var source = GetSourceIP();
+            //log時間
+            var time = DateTime.Now;
+            //記錄檔
+            File.AppendAllText("C:/EyesFree/CameraLog.txt", string.Format("{0}, Source: {1}, Log: {2}\n", time.ToString(), source, plain));
+
             var device = GetDevice(source);
 
             if (string.IsNullOrEmpty(device.DEVICE_SN))
                 return null;
 
-            if (lastLog.Contains("tampering dark detected!"))
+            return new SimpleLog
             {
-                return new SimpleLog
-                {
-                    DEVICE_SN = device.DEVICE_SN,
-                    ERROR_TIME = Convert.ToDateTime(Regex.Match(lastLog, @"\((.*?)\)").Groups[1].ToString()),
-                    ERROR_INFO = "tampering dark detected"
-                };
-            }
-            else if (lastLog.Contains("tampering detected!"))
-            {
-                return new SimpleLog
-                {
-                    DEVICE_SN = device.DEVICE_SN,
-                    ERROR_TIME = Convert.ToDateTime(Regex.Match(lastLog, @"\((.*?)\)").Groups[1].ToString()),
-                    ERROR_INFO = "tampering detected"
-                };
-            }
-
-            return null;
+                DEVICE_SN = device.DEVICE_SN,
+                ERROR_TIME = time,
+                ERROR_INFO = info
+            };
         }
 
         /// <summary>

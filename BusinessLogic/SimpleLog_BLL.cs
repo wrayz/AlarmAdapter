@@ -65,7 +65,7 @@ namespace BusinessLogic
                 SYSTEM_NAME = _system,
                 BUTTON_STATUS = "N",
                 COLOR = "danger",
-                TITLE = "攝像機異常資訊",
+                TITLE = "設備異常資訊",
                 GROUP_LIST = log.GROUP_LIST,
                 FIELD_LIST = fields
             };
