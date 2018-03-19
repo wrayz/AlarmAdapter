@@ -50,7 +50,7 @@ namespace BusinessLogic
 
             var fields = new List<Field>
             {
-                new Field("主機名稱", log.DEVICE_INFO.DEVICE_NAME, true),
+                new Field("設備名稱", log.DEVICE_INFO.DEVICE_NAME, true),
                 new Field("設備位址", log.DEVICE_INFO.DEVICE_ID, true),
                 new Field("異常資訊", log.ERROR_INFO, false),
                 new Field("異常時間", log.ERROR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true)

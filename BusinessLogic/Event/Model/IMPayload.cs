@@ -87,9 +87,8 @@ namespace BusinessLogic.Event
         {
             FIELD_LIST = new List<Field>
             {
-                new Field("主機名稱", log.DEVICE_NAME, true),
-                new Field("設備位址", log.DEVICE_ID, true),
-                new Field("異常資訊", log.ERROR_INFO, true)
+                new Field("設備名稱", log.DEVICE_NAME, true),
+                new Field("設備位址", log.DEVICE_ID, true)
             };
         }
 
@@ -114,6 +113,7 @@ namespace BusinessLogic.Event
                     TITLE = "設備異常資訊";
                     COLOR = "danger";
                     FIELD_LIST.Add(new Field("異常時間", log.ERROR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true));
+                    FIELD_LIST.Add(new Field("異常資訊", log.ERROR_INFO, true));
                     break;
                 //修復
                 case EventType.Repair:

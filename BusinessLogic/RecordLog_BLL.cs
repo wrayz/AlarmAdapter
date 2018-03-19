@@ -42,7 +42,7 @@ namespace BusinessLogic
 
             var fields = new List<Field>
             {
-                new Field("主機名稱", recordLog.DEVICE_INFO.DEVICE_NAME, true),
+                new Field("設備名稱", recordLog.DEVICE_INFO.DEVICE_NAME, true),
                 new Field("設備位址", recordLog.DEVICE_INFO.DEVICE_ID, true),
                 new Field("處理時間", recordLog.REPAIR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
                 new Field("處理人員", recordLog.USER_INFO.USER_NAME, true)
@@ -56,7 +56,7 @@ namespace BusinessLogic
                 SYSTEM_NAME = _system,
                 BUTTON_STATUS = "R",
                 COLOR = "warning",
-                TITLE = "溫溼度設備處理資訊",
+                TITLE = "異常設備處理資訊",
                 GROUP_LIST = recordLog.GROUP_LIST,
                 FIELD_LIST = fields
             };

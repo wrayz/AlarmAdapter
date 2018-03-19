@@ -164,9 +164,9 @@ namespace BusinessLogic
 
             var fields = new List<Field>
             {
-                new Field("主機名稱", recordLog.DEVICE_INFO.DEVICE_NAME, true),
+                new Field("設備名稱", recordLog.DEVICE_INFO.DEVICE_NAME, true),
                 new Field("設備位址", recordLog.DEVICE_INFO.DEVICE_ID, true),
-                new Field("異常資訊", string.Format("溫度: {0}, 濕度: {1} ", recordLog.RECORD_TEMPERATURE, record.RECORD_HUMIDITY), false),
+                new Field("異常數據", string.Format("溫度：{0} 度\n濕度：{1} %", recordLog.RECORD_TEMPERATURE, record.RECORD_HUMIDITY), false),
                 new Field("異常時間", recordLog.RECORD_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true)
             };
 
@@ -178,7 +178,7 @@ namespace BusinessLogic
                 SYSTEM_NAME = _system,
                 BUTTON_STATUS = "E",
                 COLOR = "danger",
-                TITLE = "溫溼度數據異常資訊",
+                TITLE = "設備異常資訊",
                 GROUP_LIST = recordLog.GROUP_LIST,
                 FIELD_LIST = fields
             };
@@ -211,8 +211,9 @@ namespace BusinessLogic
 
             var fields = new List<Field>
             {
-                new Field("主機名稱", recordLog.DEVICE_INFO.DEVICE_NAME, true),
+                new Field("設備名稱", recordLog.DEVICE_INFO.DEVICE_NAME, true),
                 new Field("設備位址", recordLog.DEVICE_INFO.DEVICE_ID, true),
+                new Field("現在數據", string.Format("溫度：{0} 度\n濕度：{1} %", record.RECORD_TEMPERATURE, record.RECORD_HUMIDITY), false),
                 new Field("恢復時間", recordLog.RECOVER_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
                 new Field("處理人員", recordLog.USER_INFO.USER_NAME, true)
             };
@@ -225,7 +226,7 @@ namespace BusinessLogic
                 SYSTEM_NAME = _system,
                 BUTTON_STATUS = "N",
                 COLOR = "good",
-                TITLE = "溫溼度數據恢復資訊",
+                TITLE = "異常設備恢復資訊",
                 GROUP_LIST = recordLog.GROUP_LIST,
                 FIELD_LIST = fields
             };
