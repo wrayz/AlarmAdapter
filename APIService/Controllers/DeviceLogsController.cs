@@ -2,7 +2,9 @@
 using BusinessLogic;
 using BusinessLogic.Event;
 using ModelLibrary;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
@@ -38,6 +40,15 @@ namespace APIService.Controllers
 
                 if (!(log.LOG_TIME >= token.StartDate && log.LOG_TIME <= token.EndDate))
                     return Content(HttpStatusCode.Forbidden, new APIResponse("License key 已過期，請檢查License Key"));
+
+                //設備ID檢查
+                if (string.IsNullOrEmpty(log.DEVICE_ID))
+                    return Content(HttpStatusCode.Forbidden, new APIResponse("資料未包含設備ID，請檢查資料內容"));
+
+                //log時間
+                var time = DateTime.Now;
+                //記錄檔
+                File.AppendAllText("C:/EyesFree/DeviceLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
 
                 //紀錄動作處理物件
                 var bll = new EventBusinessLogic();

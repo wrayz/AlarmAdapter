@@ -109,9 +109,12 @@ namespace BusinessLogic
 
             foreach (var record in list)
             {
+                if (string.IsNullOrEmpty(record.DEVICE_ID))
+                    return;
+
                 //設備取得
                 var device = dao.Get(option, new Device { DEVICE_ID = record.DEVICE_ID, DEVICE_TYPE = "D", IS_MONITOR = "Y" });
-
+                
                 if (!string.IsNullOrEmpty(device.DEVICE_SN))
                 {
                     record.DEVICE_SN = device.DEVICE_SN;

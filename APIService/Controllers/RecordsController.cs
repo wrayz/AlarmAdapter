@@ -3,6 +3,7 @@ using BusinessLogic;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Web.Http;
 
@@ -31,6 +32,11 @@ namespace APIService.Controllers
 
                 var content = Request.Content.ReadAsStringAsync().Result;
                 var body = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
+
+                //log時間
+                var time = DateTime.Now;
+                //記錄檔
+                File.AppendAllText("C:/EyesFree/DataLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), content));
 
                 //紀錄資料
                 _bll.ModifyRecords(body);

@@ -2,6 +2,7 @@
 using LicenseHelper.Decrypt;
 using LicenseHelper.Token;
 using ModelLibrary.Generic;
+using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 
@@ -13,9 +14,9 @@ namespace BusinessLogic
     public static class LicenseLogic
     {
         /// <summary>
-        /// MAC Address
+        /// MAC Address list
         /// </summary>
-        private static string _macAddress;
+        private static List<string> _macAddresss;
 
         /// <summary>
         /// Token
@@ -23,14 +24,19 @@ namespace BusinessLogic
         public static EyesFreeToken Token;
 
         /// <summary>
+        /// Valid MAC address
+        /// </summary>
+        public static string ValidMAC;
+
+        /// <summary>
         /// 建構式
         /// </summary>
         static LicenseLogic()
         {
-            //MAC Address
-            _macAddress = GetMacAddress();
+            // MAC Address list
+            _macAddresss = GetMacAddress();
 
-            //Token
+            // Update token
             UpdateToken(GetLicense());
         }
 
@@ -40,29 +46,45 @@ namespace BusinessLogic
         /// <param name="serial">License key</param>
         public static void UpdateToken(string serial)
         {
-            //Token
-            Token = DecryptHelper.Decrypt<EyesFreeToken>(serial, _macAddress);
+            var result = new EyesFreeToken();
+
+            foreach (var address in _macAddresss)
+            {
+                result = DecryptHelper.Decrypt<EyesFreeToken>(serial, address);
+
+                if (result != null)
+                {
+                    // Token
+                    Token = result;
+                    // Valid MAC
+                    ValidMAC = address;
+
+                    return;
+                }
+            }
         }
 
         /// <summary>
-        /// MAC Address取得
+        /// MAC Address 取得
         /// </summary>
         /// <returns></returns>
-        private static string GetMacAddress()
+        private static List<string> GetMacAddress()
         {
-            NetworkInterface[] netWorkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+            var netWorkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+
+            var macList = new List<string>();
 
             foreach (var adapter in netWorkInterfaces)
             {
                 if (adapter.OperationalStatus == OperationalStatus.Up)
                 {
                     // Get first adapter mac address
-                    string mac = adapter.GetPhysicalAddress().ToString();
-                    return Regex.Replace(mac, @"[\W_]+", "").ToUpper();
+                    var mac = adapter.GetPhysicalAddress().ToString();
+                    macList.Add(Regex.Replace(mac, @"[\W_]+", "").ToUpper());
                 }
             }
 
-            return "";
+            return macList;
         }
 
         /// <summary>

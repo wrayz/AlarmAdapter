@@ -2,7 +2,9 @@
 using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net;
 using System.Web.Http;
 
@@ -26,6 +28,15 @@ namespace APIService.Controllers
                 {
                     return Content(HttpStatusCode.Forbidden, new APIResponse("License key 無效，請檢查License Key"));
                 }
+
+                //log時間
+                var time = DateTime.Now;
+                //記錄檔
+                File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
+
+                //設備ID檢查
+                if (string.IsNullOrEmpty(log.DEVICE_ID))
+                    return Content(HttpStatusCode.Forbidden, new APIResponse("資料未包含設備ID，請檢查資料內容"));
 
                 //對應設備取得
                 var device = GetDevice(log.DEVICE_ID);
