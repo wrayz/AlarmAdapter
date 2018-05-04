@@ -33,9 +33,9 @@ namespace BusinessLogic
         /// 記錄新增
         /// </summary>
         /// <param name="log"></param>
-        public void ModifyLog(SimpleLog log)
+        public SimpleLog ModifyLog(SimpleLog log)
         {
-            _dao.Modify("Insert", log);
+            return (_dao as SimpleLog_DAO).ModifyLog(log);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace BusinessLogic
         public void PushIM(SimpleLog origin)
         {
             var option = new QueryOption { Plan = new QueryPlan { Join = "Payload" } };
-            var condition = new SimpleLog { DEVICE_SN = origin.DEVICE_SN, ERROR_TIME = origin.ERROR_TIME };
+            var condition = new SimpleLog { LOG_SN = origin.LOG_SN, DEVICE_SN = origin.DEVICE_SN };
             var log = _dao.Get(option, condition);
 
             var fields = new List<Field>

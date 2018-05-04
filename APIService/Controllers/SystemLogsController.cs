@@ -40,9 +40,9 @@ namespace APIService.Controllers
                     return Ok();
 
                 //紀錄新增
-                _bll.ModifyLog(log);
+                var insertedLog = _bll.ModifyLog(log);
                 //推送至IM
-                _bll.PushIM(log);
+                _bll.PushIM(insertedLog);
 
                 return Ok();
             }

@@ -59,6 +59,7 @@
       <HintPath>..\packages\SourceHelper.MSSQL.3.1.0.1\lib\SourceHelper.Provider.SQLServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -78,6 +79,7 @@
     <Compile Include="Generic\GenericFactory.cs" />
     <Compile Include="Generic\IDataAccessT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleLog_DAO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

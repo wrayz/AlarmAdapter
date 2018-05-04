@@ -52,9 +52,9 @@ namespace APIService.Controllers
                 };
 
                 //紀錄新增
-                _bll.ModifyLog(simpleLog);
+                var insertedLog = _bll.ModifyLog(simpleLog);
                 //推送至IM
-                _bll.PushIM(simpleLog);
+                _bll.PushIM(insertedLog);
 
                 return Ok();
             }
