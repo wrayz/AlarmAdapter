@@ -45,11 +45,6 @@ namespace APIService.Controllers
                 if (string.IsNullOrEmpty(log.DEVICE_ID))
                     return Content(HttpStatusCode.Forbidden, new APIResponse("資料未包含設備ID，請檢查資料內容"));
 
-                //log時間
-                var time = DateTime.Now;
-                //記錄檔
-                File.AppendAllText("C:/EyesFree/DeviceLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
-
                 //紀錄動作處理物件
                 var bll = new EventBusinessLogic();
                 //對應設備編號
