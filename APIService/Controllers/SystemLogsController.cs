@@ -3,7 +3,6 @@ using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
 using System;
-using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Http;
@@ -40,7 +39,7 @@ namespace APIService.Controllers
                     return Ok();
 
                 //紀錄新增
-                var insertedLog = _bll.ModifyLog(log);
+                var insertedLog = _bll.ModifyLog(log, "C");
                 //推送至IM
                 _bll.PushIM(insertedLog);
 
@@ -67,7 +66,7 @@ namespace APIService.Controllers
             //log時間
             var time = DateTime.Now;
             //記錄檔
-            File.AppendAllText("C:/EyesFree/CameraLog.txt", string.Format("{0}, Source: {1}, Log: {2}\n", time.ToString(), source, plain));
+            //File.AppendAllText("C:/EyesFree/CameraLog.txt", string.Format("{0}, Source: {1}, Log: {2}\n", time.ToString(), source, plain));
 
             var device = GetDevice(source);
 

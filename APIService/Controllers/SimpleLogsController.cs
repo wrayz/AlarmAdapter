@@ -2,9 +2,7 @@
 using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
-using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Net;
 using System.Web.Http;
 
@@ -32,7 +30,7 @@ namespace APIService.Controllers
                 //log時間
                 var time = DateTime.Now;
                 //記錄檔
-                File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
+                //File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
 
                 //設備ID檢查
                 if (string.IsNullOrEmpty(log.DEVICE_ID))
@@ -52,9 +50,11 @@ namespace APIService.Controllers
                 };
 
                 //紀錄新增
-                var insertedLog = _bll.ModifyLog(simpleLog);
-                //推送至IM
-                _bll.PushIM(insertedLog);
+                var insertedLog = _bll.ModifyLog(simpleLog, "L");
+
+                if (insertedLog.LOG_SN != null)
+                    //推送至IM
+                    _bll.PushIM(insertedLog);
 
                 return Ok();
             }

@@ -11,7 +11,7 @@ namespace DataAccess
     /// </summary>
     public class SimpleLog_DAO : GenericDataAccess<SimpleLog>
     {
-        public SimpleLog ModifyLog(SimpleLog log)
+        public SimpleLog ModifyLog(SimpleLog log, string type)
         {
             var connectionString = GetConnectionString();
 
@@ -24,7 +24,7 @@ namespace DataAccess
                 // Open connection
                 connection.Open();
                 // Execute transaction
-                var result = ExecuteModify(log, connection);
+                var result = ExecuteModify(log, type, connection);
                 // Close connection
                 connection.Close();
 
@@ -57,15 +57,16 @@ namespace DataAccess
         /// <param name="log"></param>
         /// <param name="connection"></param>
         /// <returns></returns>
-        private SimpleLog ExecuteModify(SimpleLog log, SqlConnection connection)
+        private SimpleLog ExecuteModify(SimpleLog log, string type, SqlConnection connection)
         {
             // Begin transaction
             var transaction = connection.BeginTransaction();
+            var procedure = type == "C" ? "dms.SPC_SIMPLE_LOG_INSERT" : "dms.SPC_LOGMASTER_INSERT";
 
             try
             {
                 //SQL執行語法
-                var cmd = new SqlCommand("dms.SPC_SIMPLE_LOG_INSERT", connection, transaction) { CommandType = CommandType.StoredProcedure };
+                var cmd = new SqlCommand(procedure, connection, transaction) { CommandType = CommandType.StoredProcedure };
 
                 //執行參數
                 cmd.Parameters.Add("@DEVICE_SN", SqlDbType.VarChar).Value = log.DEVICE_SN;

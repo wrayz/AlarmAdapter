@@ -33,9 +33,10 @@ namespace BusinessLogic
         /// 記錄新增
         /// </summary>
         /// <param name="log"></param>
-        public SimpleLog ModifyLog(SimpleLog log)
+        /// <param name="type"></param>
+        public SimpleLog ModifyLog(SimpleLog log, string type)
         {
-            return (_dao as SimpleLog_DAO).ModifyLog(log);
+            return (_dao as SimpleLog_DAO).ModifyLog(log, type);
         }
 
         /// <summary>
