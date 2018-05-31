@@ -72,15 +72,12 @@ namespace DataAccess
                 cmd.Parameters.Add("@DEVICE_SN", SqlDbType.VarChar).Value = log.DEVICE_SN;
                 cmd.Parameters.Add("@ERROR_TIME", SqlDbType.DateTime).Value = log.ERROR_TIME;
                 cmd.Parameters.Add("@ERROR_INFO", SqlDbType.NVarChar).Value = log.ERROR_INFO;
+                cmd.Parameters.Add("@LOG_SN", SqlDbType.Int).Direction = ParameterDirection.Output;
 
                 // Execute
-                var reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    log.LOG_SN = Convert.ToInt32(reader["LOG_SN"]);
-                }
-                reader.Close();
+                cmd.ExecuteNonQuery();
+                
+                log.LOG_SN = (int?)(cmd.Parameters["@LOG_SN"].Value == DBNull.Value ? null : cmd.Parameters["@LOG_SN"].Value);
 
                 // Commit
                 transaction.Commit();
