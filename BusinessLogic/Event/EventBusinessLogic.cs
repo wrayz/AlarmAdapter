@@ -79,33 +79,5 @@ namespace BusinessLogic.Event
 
             return dao.Get(new QueryOption(), condition);
         }
-
-        /// <summary>
-        /// 訊息推送事件
-        /// </summary>
-        /// <param name="type">動作類型</param>
-        /// <param name="log">設備紀錄詳細資料</param>
-        /// <returns></returns>
-        public async Task<bool> PushEvent(string type, LogDetail log)
-        {
-            EventType enumType = (EventType)Enum.Parse(typeof(EventType), type);
-
-            return await PushIM(enumType, log) == HttpStatusCode.OK;
-        }
-
-        /// <summary>
-        /// IM訊息推送事件
-        /// </summary>
-        /// <param name="type">動作類型</param>
-        /// <param name="log">設備紀錄詳細資料</param>
-        /// <returns></returns>
-
-        private async Task<HttpStatusCode> PushIM(EventType type, LogDetail log)
-        {
-            var im = new PushIM(type, log);
-
-            //訊息推送
-            return await im.PushMessage();
-        }
     }
 }

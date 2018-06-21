@@ -76,12 +76,10 @@
     <Compile Include="Event\EventBusinessLogic.cs" />
     <Compile Include="Event\Model\Field.cs" />
     <Compile Include="Event\Model\IMPayload.cs" />
-    <Compile Include="Event\PushMessage\PushIM.cs" />
     <Compile Include="Generic\GenericBusinessFactory.cs" />
     <Compile Include="Generic\GenericBusinessLogicT.cs" />
     <Compile Include="Generic\IBusinessLogicT.cs" />
     <Compile Include="Event\CorrespondDeviceFactory.cs" />
-    <Compile Include="Event\PushMessage\IPushAction.cs" />
     <Compile Include="Event\Enum\EventType.cs" />
     <Compile Include="License\LicenseConfig.cs" />
     <Compile Include="License\LicenseLogic.cs" />

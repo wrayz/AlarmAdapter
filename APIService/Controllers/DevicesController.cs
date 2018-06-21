@@ -43,10 +43,9 @@ namespace APIService.Controllers
                     var detail = bll.GetLogDetail(log.LOG_SN.Value);
 
                     //訊息推送
-                    var result = await bll.PushEvent(log.ACTION_TYPE, detail);
-
-                    if (!result)
-                        return Content(HttpStatusCode.Forbidden, new APIResponse("Log 紀錄成功，但推送至 Slack 或是 IM 時失敗"));
+                    var pushService = new PushService(log.ACTION_TYPE, detail);
+                    pushService.PushIM();
+                    pushService.PushDesktop();
 
                     return Ok();
                 }
