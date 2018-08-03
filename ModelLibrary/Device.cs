@@ -41,5 +41,15 @@ namespace ModelLibrary
         /// 數值記錄狀態 N - 正常, E - 異常, R - 修復中
         /// </summary>
         public string RECORD_STATUS { get; set; }
+
+        /// <summary>
+        /// 設備通知設定資訊
+        /// </summary>
+        public DeviceNotifySetting NOTIFY_SETTING { get; set; }
+
+        /// <summary>
+        /// 設備通知記錄
+        /// </summary>
+        public DeviceNotifyRecord NOTIFY_RECORD { get; set; }
     }
 }

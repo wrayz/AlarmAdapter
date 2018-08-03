@@ -46,36 +46,36 @@ namespace APIService.Controllers
                 //紀錄動作處理物件
                 var bll = new EventBusinessLogic();
                 //對應設備編號
-                string device = bll.GetDeviceByID(log);
+                string deviceSn = bll.GetDeviceByID(log);
 
-                if (!string.IsNullOrEmpty(device))
+                if (!string.IsNullOrEmpty(deviceSn))
                 {
-                    //對應設備編號擴充
-                    log.DEVICE_SN = device;
+                    log.DEVICE_SN = deviceSn;
 
-                    //log編號取得
-                    if (log.ACTION_TYPE == "Recover")
+                    switch (Enum.Parse(typeof(EventType), log.ACTION_TYPE))
                     {
-                        //log編號取得
-                        log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
-                        //紀錄處理
-                        bll.LogModify(log);
+                        case EventType.Error:
+                            //紀錄處理
+                            bll.LogModify(log);
+                            //log編號取得
+                            log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
+                            break;
+                        case EventType.Recover:
+                            //log編號取得
+                            log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
+                            //紀錄處理
+                            bll.LogModify(log);
+                            break;
                     }
-                    else
-                    {
-                        //紀錄處理
-                        bll.LogModify(log);
-                        //紀錄編號取得
-                        log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
-                    }
-                    
-                    //詳細記錄資訊取得
-                    var detail = bll.GetLogDetail(log.LOG_SN.Value);
 
-                    //訊息推送
-                    var pushService = new PushService(log.ACTION_TYPE, detail);
-                    pushService.PushIM();
-                    pushService.PushDesktop();
+                    //推送通知
+                    if (bll.hasNotify(log))
+                    {
+                        //詳細記錄資訊取得
+                        var detail = bll.GetLogDetail(log.LOG_SN.Value);
+
+                        PushNotification(log, detail);
+                    }
 
                     return Ok();
                 }
@@ -88,6 +88,19 @@ namespace APIService.Controllers
             {
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
+        }
+
+        /// <summary>
+        /// 推送通知
+        /// </summary>
+        /// <param name="log">設備記錄</param>
+        /// <param name="detail">記錄詳細資訊</param>
+        private void PushNotification(Log log, LogDetail detail)
+        {
+            //訊息推送
+            var pushService = new PushService(log.ACTION_TYPE, detail);
+            pushService.PushIM();
+            pushService.PushDesktop();
         }
 
         /// <summary>

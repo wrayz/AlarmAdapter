@@ -2,8 +2,6 @@
 using ModelLibrary;
 using ModelLibrary.Generic;
 using System;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace BusinessLogic.Event
 {
@@ -68,16 +66,45 @@ namespace BusinessLogic.Event
         /// <summary>
         /// 紀錄對應設備資料取得
         /// </summary>
-        /// <param name="device">設備編號</param>
+        /// <param name="sn">設備編號</param>
         /// <returns></returns>
-        public DeviceLog GetDeviceLog(string device)
+        public DeviceLog GetDeviceLog(string sn)
         {
             //設備紀錄資料處理物件
             var dao = GenericDataAccessFactory.CreateInstance<DeviceLog>();
             //查詢條件
-            var condition = new DeviceLog { DEVICE_SN = device };
+            var condition = new DeviceLog { DEVICE_SN = sn };
 
             return dao.Get(new QueryOption(), condition);
+        }
+
+        /// <summary>
+        /// 是否需要通知
+        /// </summary>
+        /// <param name="record">設備記錄</param>
+        /// <returns></returns>
+        public bool hasNotify(Log record)
+        {
+            var device = GetDevice(record.DEVICE_SN);
+
+            var notifyTime = device.NOTIFY_RECORD.NOTIFY_TIME == null ? DateTime.Now : (DateTime)device.NOTIFY_RECORD.NOTIFY_TIME;
+            var nextTime = notifyTime.AddMinutes((double)device.NOTIFY_SETTING.MUTE_INTERVAL);
+
+            return record.LOG_TIME <= nextTime;
+        }
+
+        /// <summary>
+        /// 設備資料取得
+        /// </summary>
+        /// <param name="sn">設備編號</param>
+        /// <returns></returns>
+        public Device GetDevice(string sn)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<Device>();
+            //查詢條件
+            var condition = new Device { DEVICE_SN = sn };
+            //設備資料
+            return dao.Get(new QueryOption { Relation = true }, condition);
         }
     }
 }

@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Contact.cs" />
+    <Compile Include="DeviceNotifyRecord.cs" />
+    <Compile Include="DeviceNotifySetting.cs" />
     <Compile Include="DeviceRecord.cs" />
     <Compile Include="GroupDevice.cs" />
     <Compile Include="GroupService.cs" />
