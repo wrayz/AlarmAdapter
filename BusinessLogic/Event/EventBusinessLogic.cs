@@ -81,16 +81,16 @@ namespace BusinessLogic.Event
         /// <summary>
         /// 是否需要通知
         /// </summary>
-        /// <param name="record">設備記錄</param>
+        /// <param name="deviceRecord">設備記錄</param>
         /// <returns></returns>
-        public bool hasNotify(Log record)
+        public bool hasNotify(Log deviceRecord)
         {
-            var device = GetDevice(record.DEVICE_SN);
+            var device = GetDevice(deviceRecord.DEVICE_SN);
 
             var notifyTime = device.NOTIFY_RECORD.NOTIFY_TIME == null ? DateTime.Now : (DateTime)device.NOTIFY_RECORD.NOTIFY_TIME;
             var nextTime = notifyTime.AddMinutes((double)device.NOTIFY_SETTING.MUTE_INTERVAL);
 
-            return record.LOG_TIME <= nextTime;
+            return deviceRecord.LOG_TIME <= nextTime;
         }
 
         /// <summary>

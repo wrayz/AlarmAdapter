@@ -18,7 +18,7 @@ namespace APIService.Controllers
         /// <summary>
         /// 設備維修
         /// </summary>
-        /// <param name="log"></param>
+        /// <param name="log">設備記錄</param>
         /// <returns></returns>
         [HttpPost]
         public async Task<IHttpActionResult> Repair(Log log)
@@ -38,14 +38,14 @@ namespace APIService.Controllers
                 if (isError)
                 {
                     //紀錄處理
-                    var deviceLog = bll.LogModify(log);
+                    bll.LogModify(log);
                     //詳細記錄資訊取得
                     var detail = bll.GetLogDetail(log.LOG_SN.Value);
+                    log.LOG_TIME = detail.REPAIR_TIME;
 
-                    //訊息推送
-                    var pushService = new PushService(log.ACTION_TYPE, detail);
-                    pushService.PushIM();
-                    pushService.PushDesktop();
+                    //推送通知
+                    if (bll.hasNotify(log))
+                        PushNotification(log, detail);
 
                     return Ok();
                 }
@@ -58,6 +58,18 @@ namespace APIService.Controllers
             {
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
+        }
+
+        /// <summary>
+        /// 推送通知
+        /// </summary>
+        /// <param name="log">設備記錄</param>
+        /// <param name="detail">記錄詳細資訊</param>
+        private void PushNotification(Log log, LogDetail detail)
+        {//訊息推送
+            var pushService = new PushService(log.ACTION_TYPE, detail);
+            pushService.PushIM();
+            pushService.PushDesktop();
         }
     }
 }
