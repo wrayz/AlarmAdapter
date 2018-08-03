@@ -74,7 +74,9 @@ namespace APIService.Controllers
                         //詳細記錄資訊取得
                         var detail = bll.GetLogDetail(log.LOG_SN.Value);
 
-                        PushNotification(log, detail);
+                        var response = PushNotification(log, detail);
+
+                        return Content(HttpStatusCode.OK, new APIResponse(response));
                     }
 
                     return Ok();
@@ -95,12 +97,15 @@ namespace APIService.Controllers
         /// </summary>
         /// <param name="log">設備記錄</param>
         /// <param name="detail">記錄詳細資訊</param>
-        private void PushNotification(Log log, LogDetail detail)
+        private string PushNotification(Log log, LogDetail detail)
         {
+            var response = "";
             //訊息推送
             var pushService = new PushService(log.ACTION_TYPE, detail);
-            pushService.PushIM();
-            pushService.PushDesktop();
+            response += pushService.PushIM();
+            response += "\n" + pushService.PushDesktop();
+
+            return response;
         }
 
         /// <summary>

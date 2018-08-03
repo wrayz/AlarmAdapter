@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceNotifyRecord_BLL.cs" />
     <Compile Include="Event\Model\Payload.cs" />
     <Compile Include="RecordLog_BLL.cs" />
     <Compile Include="Record_BLL.cs" />

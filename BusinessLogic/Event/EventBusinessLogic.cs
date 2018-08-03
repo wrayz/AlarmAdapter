@@ -90,7 +90,7 @@ namespace BusinessLogic.Event
             var notifyTime = device.NOTIFY_RECORD.NOTIFY_TIME == null ? DateTime.Now : (DateTime)device.NOTIFY_RECORD.NOTIFY_TIME;
             var nextTime = notifyTime.AddMinutes((double)device.NOTIFY_SETTING.MUTE_INTERVAL);
 
-            return deviceRecord.LOG_TIME <= nextTime;
+            return deviceRecord.LOG_TIME > nextTime;
         }
 
         /// <summary>
