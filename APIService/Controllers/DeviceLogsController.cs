@@ -21,7 +21,7 @@ namespace APIService.Controllers
         /// <param name="log"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IHttpActionResult> ModifyLog(Log log)
+        public IHttpActionResult ModifyLog(Log log)
         {
             try
             {

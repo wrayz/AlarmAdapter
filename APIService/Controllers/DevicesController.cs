@@ -21,7 +21,7 @@ namespace APIService.Controllers
         /// <param name="log">設備記錄</param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IHttpActionResult> Repair(Log log)
+        public IHttpActionResult Repair(Log log)
         {
             try
             {
