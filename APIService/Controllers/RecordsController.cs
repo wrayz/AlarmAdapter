@@ -45,6 +45,8 @@ namespace APIService.Controllers
 
                 //回應
                 var response = "";
+                //事件
+                var type = EventType.Error;
 
                 //資料儲存
                 foreach (var record in list)
@@ -52,7 +54,7 @@ namespace APIService.Controllers
                     if (string.IsNullOrEmpty(record.DEVICE_ID)) break;
 
                     //設備資料取得
-                    var device = _bll.GetDevice(record);
+                    var device = _bll.GetDeviceById(record);
                     //沒有設備編號
                     if (string.IsNullOrEmpty(device.DEVICE_SN)) break;
 
@@ -77,10 +79,8 @@ namespace APIService.Controllers
 
                         _bll.ModifyRecordLog("Abnormal", data);
 
-                        //設備數據記錄取得
-                        var recordLog = _bll.GetRecordLog(device.DEVICE_SN);
-                        //推送通知
-                        response += PushNotification(EventType.Error, recordLog);
+                        //事件
+                        type = EventType.Error;
                     }
                     //恢復
                     else if ((record.RECORD_TEMPERATURE <= limit.MAX_TEMPERATURE_VAL && record.RECORD_TEMPERATURE >= limit.MIN_TEMPERATURE_VAL) &&
@@ -96,11 +96,15 @@ namespace APIService.Controllers
 
                         _bll.ModifyRecordLog("Recover", data);
 
-                        //設備數據記錄取得
-                        var recordLog = _bll.GetRecordLog(device.DEVICE_SN);
-                        //推送通知
-                        response += PushNotification(EventType.Recover, recordLog);
+                        //事件
+                        type = EventType.Recover;
                     }
+
+                    //設備數據記錄取得
+                    var deviceRecord = _bll.GetDeviceRecord(device.DEVICE_SN);
+                    var recordLog = _bll.GetRecordLog(deviceRecord.LOG_SN);
+                    //推送通知
+                    response += PushNotification(type, recordLog);
                 }
 
                 return Content(HttpStatusCode.OK, new APIResponse(response));

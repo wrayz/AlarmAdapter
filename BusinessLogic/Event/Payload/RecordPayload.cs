@@ -58,6 +58,12 @@ namespace BusinessLogic
                     break;
 
                 case EventType.Repair:
+                    TITLE = "異常設備處理資訊";
+                    BUTTON_STATUS = "R";
+                    COLOR = "warning";
+
+                    FIELD_LIST.Add(new Field("處理時間", _recordLog.REPAIR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true));
+                    FIELD_LIST.Add(new Field("處理人員", _recordLog.USER_INFO.USER_NAME, true));
                     break;
 
                 case EventType.Recover:

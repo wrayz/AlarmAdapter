@@ -78,9 +78,27 @@ namespace BusinessLogic
         /// <summary>
         /// 設備資料取得
         /// </summary>
+        /// <param name="sn">設備編號</param>
+        /// <returns></returns>
+        public Device GetDeviceBySn(string sn)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<Device>();
+            var data = new Device
+            {
+                DEVICE_SN = sn,
+                DEVICE_TYPE = "D",
+                IS_MONITOR = "Y",
+                RECORD_STATUS = "E"
+            };
+            return dao.Get(new QueryOption(), data);
+        }
+
+        /// <summary>
+        /// 設備資料取得
+        /// </summary>
         /// <param name="record">數據記錄資料</param>
         /// <returns></returns>
-        public Device GetDevice(Record record)
+        public Device GetDeviceById(Record record)
         {
             var dao = GenericDataAccessFactory.CreateInstance<Device>();
             var data = new Device
@@ -95,12 +113,10 @@ namespace BusinessLogic
         /// <summary>
         /// 數據記錄資料取得
         /// </summary>
-        /// <param name="sn">設備編號</param>
+        /// <param name="sn">記錄編號</param>
         /// <returns></returns>
-        public RecordLog GetRecordLog(string sn)
+        public RecordLog GetRecordLog(int? sn)
         {
-            var deviceRecord = GetDeviceRecord(sn);
-
             //查詢條件
             var option = new QueryOption
             {
@@ -108,7 +124,7 @@ namespace BusinessLogic
             };
 
             //資料
-            var recordLog = new RecordLog { LOG_SN = deviceRecord.LOG_SN.Value };
+            var recordLog = new RecordLog { LOG_SN = sn };
 
             return _dao.Get(option, recordLog);
         }
@@ -118,7 +134,7 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="sn">設備編號</param>
         /// <returns></returns>
-        private DeviceRecord GetDeviceRecord(string sn)
+        public DeviceRecord GetDeviceRecord(string sn)
         {
             var dao = GenericDataAccessFactory.CreateInstance<DeviceRecord>();
             return dao.Get(new QueryOption(), new DeviceRecord { DEVICE_SN = sn });
