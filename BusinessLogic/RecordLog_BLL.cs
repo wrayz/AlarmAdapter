@@ -1,92 +1,148 @@
-﻿using BusinessLogic.Event;
-using DataAccess;
+﻿using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Generic;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace BusinessLogic
 {
     /// <summary>
-    /// 數據設備異常資訊商業邏輯
+    /// 數據設備記錄商業邏輯
     /// </summary>
-    public class RecordLog_BLL
+    public class RecordLog_BLL : GenericBusinessLogic<RecordLog>
     {
-        private IDataAccess<RecordLog> _dao = GenericDataAccessFactory.CreateInstance<RecordLog>();
-
         /// <summary>
-        /// IM 伺服器位址
+        /// 資料轉換
         /// </summary>
-        private readonly string _url = ConfigurationManager.AppSettings["im"];
-
-        /// <summary>
-        /// 系統名稱
-        /// </summary>
-        private readonly string _system = "EyesFree";
-
-        /// <summary>
-        /// 紀錄資料
-        /// </summary>
-        /// <param name="log"></param>
-        public void ModifyLogs(RecordLog log, UserLogin user)
+        /// <param name="dict">原始資料</param>
+        /// <returns></returns>
+        public IEnumerable<Record> DataConvert(Dictionary<string, string> dict)
         {
-            //修復紀錄
-            _dao.Modify("Repair", new RecordLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN, USERID = user.USERID });
+            //監控欄位數
+            const int COLUMN_NUM = 2;
+            //日期、時間所占欄位數
+            const int DATETIME_NUM = 2;
+            //資料數
+            var dataCount = (dict.Count - DATETIME_NUM) / (COLUMN_NUM + 1);
 
-            var recordLog = _dao.Get(new QueryOption { Plan = new QueryPlan { Join = "Payload" } }, new RecordLog { LOG_SN = log.LOG_SN });
+            var data = new List<Record>();
 
-            var fields = new List<Field>
+            //紀錄時間
+            DateTime recordTime = new DateTime();
+
+            if (dict.TryGetValue("Date", out string date) && dict.TryGetValue("Time", out string time))
             {
-                new Field("設備名稱", recordLog.DEVICE_INFO.DEVICE_NAME, true),
-                new Field("設備位址", recordLog.DEVICE_INFO.DEVICE_ID, true),
-                new Field("處理時間", recordLog.REPAIR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
-                new Field("處理人員", recordLog.USER_INFO.USER_NAME, true)
-            };
-
-            var payload = new Payload
+                recordTime = DateTime.ParseExact(string.Format("{0} {1}", date, time), "MM/dd/yy HH:mm:ss", CultureInfo.InvariantCulture);
+            }
+            else
             {
-                LOG_SN = recordLog.LOG_SN,
-                LOG_TYPE = "D",
-                DEVICE_SN = recordLog.DEVICE_SN,
-                SYSTEM_NAME = _system,
-                BUTTON_STATUS = "R",
-                COLOR = "warning",
-                TITLE = "異常設備處理資訊",
-                GROUP_LIST = recordLog.GROUP_LIST,
-                FIELD_LIST = fields
-            };
+                throw new Exception("時間格式錯誤");
+            }
 
-            //推送訊息
-            PushMessage(payload);
+            //紀錄資訊
+            for (var i = 1; i <= dataCount; i++)
+            {
+                var item = new Record();
+
+                var value = "";
+
+                // ID
+                if (dict.TryGetValue(string.Format("Name_{0}", i.ToString()), out value))
+                    item.DEVICE_ID = value;
+                // 溫度
+                if (dict.TryGetValue(string.Format("Temperature_{0}", i.ToString()), out value))
+                    item.RECORD_TEMPERATURE = decimal.Parse(value) / 100;
+                // 濕度
+                if (dict.TryGetValue(string.Format("Humidity_{0}", i.ToString()), out value))
+                    item.RECORD_HUMIDITY = decimal.Parse(value) / 100;
+                //時間
+                item.RECORD_TIME = recordTime;
+
+                data.Add(item);
+            }
+
+            return data;
         }
 
         /// <summary>
-        /// 訊息推送
+        /// 監控參數取得
         /// </summary>
         /// <returns></returns>
-        private async Task<HttpStatusCode> PushMessage(Payload payload)
+        public RecordLimit GetLimit()
         {
-            //http POST推送設定
-            using (var client = new HttpClient())
+            var dao = GenericDataAccessFactory.CreateInstance<RecordLimit>();
+            return dao.Get(new QueryOption());
+        }
+
+        /// <summary>
+        /// 設備資料取得
+        /// </summary>
+        /// <param name="record">數據記錄資料</param>
+        /// <returns></returns>
+        public Device GetDevice(Record record)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<Device>();
+            var data = new Device
             {
-                //伺服器位址
-                client.BaseAddress = new Uri(_url);
+                DEVICE_ID = record.DEVICE_ID,
+                DEVICE_TYPE = "D",
+                IS_MONITOR = "Y"
+            };
+            return dao.Get(new QueryOption(), data);
+        }
 
-                //內容
-                var content = new FormUrlEncodedContent(new[]{
-                    new KeyValuePair<string, string>("info", JsonConvert.SerializeObject(payload))
-                });
+        /// <summary>
+        /// 數據記錄資料取得
+        /// </summary>
+        /// <param name="sn">設備編號</param>
+        /// <returns></returns>
+        public RecordLog GetRecordLog(string sn)
+        {
+            var deviceRecord = GetDeviceRecord(sn);
 
-                //post
-                var result = await client.PostAsync("im/eyesFreeLog", content);
+            //查詢條件
+            var option = new QueryOption
+            {
+                Plan = new QueryPlan { Join = "Payload" }
+            };
 
-                return result.StatusCode;
-            }
+            //資料
+            var recordLog = new RecordLog { LOG_SN = deviceRecord.LOG_SN.Value };
+
+            return _dao.Get(option, recordLog);
+        }
+
+        /// <summary>
+        /// 數據設備記錄資料取得
+        /// </summary>
+        /// <param name="sn">設備編號</param>
+        /// <returns></returns>
+        private DeviceRecord GetDeviceRecord(string sn)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<DeviceRecord>();
+            return dao.Get(new QueryOption(), new DeviceRecord { DEVICE_SN = sn });
+        }
+
+        /// <summary>
+        /// 數據記錄資料新增
+        /// </summary>
+        /// <param name="record">數據記錄</param>
+        public void AddRecord(Record record)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<Record>();
+            dao.Modify("Insert", record);
+        }
+
+        /// <summary>
+        /// 數據異常紀錄物件處理
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="recordLog"></param>
+        public void ModifyRecordLog(string type, RecordLog recordLog)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<RecordLog>();
+            dao.Modify(type, recordLog);
         }
     }
 }

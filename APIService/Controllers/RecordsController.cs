@@ -11,12 +11,12 @@ using System.Web.Http;
 namespace APIService.Controllers
 {
     /// <summary>
-    /// 定時紀錄資料API
+    /// 數據設備紀錄資料API
     /// </summary>
     public class RecordsController : ApiController
     {
         //商業邏輯
-        private Record_BLL _bll = new Record_BLL();
+        private RecordLog_BLL _bll = new RecordLog_BLL();
 
         /// <summary>
         /// 資料紀錄
