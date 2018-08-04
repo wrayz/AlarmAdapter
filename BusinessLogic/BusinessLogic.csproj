@@ -71,12 +71,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeviceNotifyRecord_BLL.cs" />
-    <Compile Include="Event\Model\Payload.cs" />
+    <Compile Include="Event\Payload\IPayload.cs" />
+    <Compile Include="Event\Payload\Payload.cs" />
+    <Compile Include="Event\Payload\RecordPayload.cs" />
+    <Compile Include="RecordLog1_BLL.cs" />
     <Compile Include="RecordLog_BLL.cs" />
-    <Compile Include="Record_BLL.cs" />
     <Compile Include="Event\EventBusinessLogic.cs" />
-    <Compile Include="Event\Model\Field.cs" />
-    <Compile Include="Event\Model\IMPayload.cs" />
+    <Compile Include="Event\Payload\Field.cs" />
+    <Compile Include="Event\Payload\IMPayload.cs" />
     <Compile Include="Generic\GenericBusinessFactory.cs" />
     <Compile Include="Generic\GenericBusinessLogicT.cs" />
     <Compile Include="Generic\IBusinessLogicT.cs" />
