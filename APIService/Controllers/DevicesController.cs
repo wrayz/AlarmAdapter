@@ -71,8 +71,11 @@ namespace APIService.Controllers
         private string PushNotification(Log log, LogDetail detail)
         {
             var response = "";
-            //訊息推送
-            var pushService = new PushService(log.ACTION_TYPE, detail);
+            //推送服務
+            var type = (EventType)Enum.Parse(typeof(EventType), log.ACTION_TYPE);
+            var payload = new IMPayload("EyesFree", type, detail);
+            var pushService = new PushService(payload);
+
             response += pushService.PushIM() + "\n";
             response += pushService.PushDesktop();
 

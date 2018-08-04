@@ -1,44 +1,34 @@
 ﻿using BusinessLogic;
-using BusinessLogic.Event;
 using ModelLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace APIService
 {
     public class PushService
     {
         /// <summary>
-        /// IM 伺服器位址
+        /// 手機通知服務位址
         /// </summary>
         private readonly string _imUrl = ConfigurationManager.AppSettings["im"];
 
+        /// <summary>
+        /// 桌機通知服務位址
+        /// </summary>
         private readonly string _socketUrl = ConfigurationManager.AppSettings["socket"];
 
-        /// <summary>
-        /// 系統名稱
-        /// </summary>
-        private readonly string _system = "EyesFree";
-
-        private IMPayload _payload;
+        private IPayload _payload;
 
         /// <summary>
         /// 建構式
         /// </summary>
-        /// <param name="type">動作類型</param>
-        /// <param name="log">設備紀錄詳細資料</param>
-        public PushService(string type, LogDetail log)
+        public PushService(IPayload payload)
         {
-            var enumType = (EventType)Enum.Parse(typeof(EventType), type);
-
-            //推送訊息物件
-            _payload = new IMPayload(_system, enumType, log);
+            _payload = payload;
         }
 
         /// <summary>

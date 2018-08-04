@@ -1,11 +1,10 @@
-﻿using BusinessLogic.Event;
-using ModelLibrary;
+﻿using ModelLibrary;
 using System.Collections.Generic;
 
 namespace BusinessLogic
 {
     /// <summary>
-    /// IM 訊息內容
+    /// 通知推送內容
     /// </summary>
     public class Payload : IPayload
     {
