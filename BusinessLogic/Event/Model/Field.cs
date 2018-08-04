@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace BusinessLogic.Event
+namespace BusinessLogic
 {
     /// <summary>
     /// 推送訊息物件詳細內容

@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Event
+﻿namespace BusinessLogic
 {
     /// <summary>
     /// 事件類別

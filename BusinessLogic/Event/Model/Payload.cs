@@ -2,12 +2,12 @@
 using ModelLibrary;
 using System.Collections.Generic;
 
-namespace BusinessLogic.Event
+namespace BusinessLogic
 {
     /// <summary>
     /// IM 訊息內容
     /// </summary>
-    public class Payload
+    public class Payload : IPayload
     {
         /// <summary>
         /// 紀錄編號
@@ -53,5 +53,13 @@ namespace BusinessLogic.Event
         /// 附加欄位清單
         /// </summary>
         public List<Field> FIELD_LIST { get; set; }
+
+        /// <summary>
+        /// 資料設置
+        /// </summary>
+        /// <param name="type"></param>
+        public virtual void SetData(EventType type)
+        {
+        }
     }
 }
