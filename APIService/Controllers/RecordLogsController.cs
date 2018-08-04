@@ -38,6 +38,8 @@ namespace APIService.Controllers
 
                 //對應設備取得
                 var device = _bll.GetDeviceBySn(log.DEVICE_SN);
+                //請求回應
+                var response = "";
 
                 if (!string.IsNullOrEmpty(device.DEVICE_SN))
                 {
@@ -52,8 +54,12 @@ namespace APIService.Controllers
 
                     //數據記錄取得
                     var recordLog = _bll.GetRecordLog(log.LOG_SN);
-                    //推送通知
-                    var response = PushNotification(EventType.Repair, recordLog);
+
+                    if (_bll.hasNotify(log.DEVICE_SN, recordLog.REPAIR_TIME))
+                    {
+                        //推送通知
+                        response = PushNotification(EventType.Repair, recordLog);
+                    }
 
                     return Content(HttpStatusCode.OK, new APIResponse(response));
                 }

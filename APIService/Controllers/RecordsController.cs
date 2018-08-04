@@ -100,11 +100,14 @@ namespace APIService.Controllers
                         type = EventType.Recover;
                     }
 
-                    //設備數據記錄取得
-                    var deviceRecord = _bll.GetDeviceRecord(device.DEVICE_SN);
-                    var recordLog = _bll.GetRecordLog(deviceRecord.LOG_SN);
-                    //推送通知
-                    response += PushNotification(type, recordLog);
+                    if (_bll.hasNotify(record.DEVICE_SN, record.RECORD_TIME))
+                    {
+                        //設備數據記錄取得
+                        var deviceRecord = _bll.GetDeviceRecord(device.DEVICE_SN);
+                        var recordLog = _bll.GetRecordLog(deviceRecord.LOG_SN);
+                        //推送通知
+                        response += PushNotification(type, recordLog);
+                    }
                 }
 
                 return Content(HttpStatusCode.OK, new APIResponse(response));

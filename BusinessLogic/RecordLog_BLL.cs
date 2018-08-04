@@ -80,6 +80,20 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="sn">設備編號</param>
         /// <returns></returns>
+        public Device GetDevice(string sn)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<Device>();
+            //查詢條件
+            var condition = new Device { DEVICE_SN = sn };
+            //設備資料
+            return dao.Get(new QueryOption { Relation = true }, condition);
+        }
+
+        /// <summary>
+        /// 設備資料取得
+        /// </summary>
+        /// <param name="sn">設備編號</param>
+        /// <returns></returns>
         public Device GetDeviceBySn(string sn)
         {
             var dao = GenericDataAccessFactory.CreateInstance<Device>();
@@ -159,6 +173,22 @@ namespace BusinessLogic
         {
             var dao = GenericDataAccessFactory.CreateInstance<RecordLog>();
             dao.Modify(type, recordLog);
+        }
+
+        /// <summary>
+        /// 是否需要通知
+        /// </summary>
+        /// <param name="sn">設備編號</param>
+        /// <param name="recordTime">記錄時間</param>
+        /// <returns></returns>
+        public bool hasNotify(string sn, DateTime? recordTime)
+        {
+            var device = GetDevice(sn);
+
+            var notifyTime = device.NOTIFY_RECORD.NOTIFY_TIME == null ? DateTime.Now : (DateTime)device.NOTIFY_RECORD.NOTIFY_TIME;
+            var nextTime = notifyTime.AddMinutes((double)device.NOTIFY_SETTING.MUTE_INTERVAL);
+
+            return recordTime > nextTime;
         }
     }
 }
