@@ -13,6 +13,11 @@ namespace ModelLibrary
         public string DEVICE_SN { get; set; }
 
         /// <summary>
+        /// 異常訊息
+        /// </summary>
+        public string ERROR_INFO { get; set; }
+
+        /// <summary>
         /// 通知時間
         /// </summary>
         public DateTime? NOTIFY_TIME { get; set; }

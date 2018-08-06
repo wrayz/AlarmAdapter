@@ -46,10 +46,5 @@ namespace ModelLibrary
         /// 設備通知設定資訊
         /// </summary>
         public DeviceNotifySetting NOTIFY_SETTING { get; set; }
-
-        /// <summary>
-        /// 設備通知記錄
-        /// </summary>
-        public DeviceNotifyRecord NOTIFY_RECORD { get; set; }
     }
 }
