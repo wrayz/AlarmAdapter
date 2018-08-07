@@ -82,7 +82,8 @@ namespace APIService.Controllers
         /// <summary>
         /// 間隔通知
         /// </summary>
-        /// <param name="sn">記錄編號</param>
+        /// <param name="log">異常記錄</param>
+        /// <param name="device">設備資訊</param>
         private void PushInterval(APILog log, Device device)
         {
             //設定間隔訊息類型

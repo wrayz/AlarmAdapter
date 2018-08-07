@@ -40,8 +40,12 @@ namespace APIService.Controllers
 
                 //紀錄新增
                 var insertedLog = _bll.ModifyLog(log, "C");
-                //推送至IM
-                _bll.PushIM(insertedLog);
+                log.LOG_SN = insertedLog.LOG_SN;
+                //對應設備取得
+                var device = GetDevice(new Device { DEVICE_SN = log.DEVICE_SN, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
+               
+                //間隔通知
+                PushInterval(log, device);
 
                 return Ok();
             }
@@ -49,6 +53,95 @@ namespace APIService.Controllers
             {
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
+        }
+
+        /// <summary>
+        /// 間隔通知
+        /// </summary>
+        /// <param name="simpleLog">異常記錄</param>
+        /// <param name="device">設備資訊</param>
+        private void PushInterval(SimpleLog simpleLog, Device device)
+        {
+            //異常記錄
+            var log = new APILog
+            {
+                DEVICE_SN = simpleLog.DEVICE_SN,
+                LOG_INFO = simpleLog.ERROR_INFO,
+                LOG_TIME = simpleLog.ERROR_TIME
+            };
+
+            //設定間隔訊息類型
+            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
+
+            //所有訊息
+            if (MessageType.A.Equals(messageType) &&
+                _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING))
+            {
+                //通知推送
+                PushNotification(simpleLog);
+                //通知記錄儲存
+                SaveRecord(simpleLog);
+            }
+            //相同訊息
+            else if (MessageType.S.Equals(messageType) &&
+                     _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING))
+            {
+                //通知記錄儲存
+                SaveRecord(simpleLog);
+                //通知推送
+                PushNotification(simpleLog);
+            }
+            else
+            {
+                // TODO:
+            }
+        }
+
+        /// <summary>
+        /// 儲存通知記錄
+        /// </summary>
+        /// <param name="log">設備記錄</param>
+        private void SaveRecord(SimpleLog simpleLog)
+        {
+            var bll = new DeviceNotifyRecord_BLL();
+            //通知記錄物件
+            var record = new DeviceNotifyRecord
+            {
+                DEVICE_SN = simpleLog.DEVICE_SN,
+                ERROR_INFO = simpleLog.ERROR_INFO,
+                NOTIFY_TIME = simpleLog.ERROR_TIME
+            };
+            //通知記錄更新
+            bll.SaveNotifyRecord(record);
+        }
+
+        /// <summary>
+        /// 通知推送
+        /// </summary>
+        /// <param name="log">簡易設備異常記錄</param>
+        private void PushNotification(SimpleLog log)
+        {
+            //詳細記錄資訊取得
+            var detail = _bll.GetSimpleLog(new SimpleLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN });
+
+            //通知服務
+            var payload = new SimplePayload(detail);
+            var pushService = new PushService(payload);
+
+            //通知
+            pushService.PushIM().EnsureSuccessStatusCode();
+            pushService.PushDesktop().EnsureSuccessStatusCode();
+        }
+
+        /// <summary>
+        /// 設備資訊取得
+        /// </summary>
+        /// <param name="device">實體資料</param>
+        /// <returns></returns>
+        private Device GetDevice(Device device)
+        {
+            var bll = GenericBusinessFactory.CreateInstance<Device>();
+            return bll.Get(new QueryOption { Relation = true }, new UserLogin(), device);
         }
 
         /// <summary>
