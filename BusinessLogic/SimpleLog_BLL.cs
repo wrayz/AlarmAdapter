@@ -1,14 +1,9 @@
-﻿using BusinessLogic.Event;
-using DataAccess;
+﻿using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Generic;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace BusinessLogic
 {
@@ -25,77 +20,87 @@ namespace BusinessLogic
         private readonly string _url = ConfigurationManager.AppSettings["im"];
 
         /// <summary>
-        /// 系統名稱
-        /// </summary>
-        private readonly string _system = "EyesFree";
-
-        /// <summary>
         /// 記錄新增
         /// </summary>
-        /// <param name="log"></param>
+        /// <param name="log">簡易設備異常記錄</param>
         /// <param name="type"></param>
         public SimpleLog ModifyLog(SimpleLog log, string type)
         {
             return (_dao as SimpleLog_DAO).ModifyLog(log, type);
         }
-
+        
         /// <summary>
-        /// 推送至IM
+        /// 確認全部訊息通知間隔時間
         /// </summary>
-        /// <param name="origin">原始log資料</param>
-        public void PushIM(SimpleLog origin)
+        /// <param name="log">簡易設備異常記錄</param>
+        /// <param name="setting">通知設定</param>
+        /// <returns></returns>
+        public bool CheckAllMessageInterval(APILog log, DeviceNotifySetting setting)
         {
-            var option = new QueryOption { Plan = new QueryPlan { Join = "Payload" } };
-            var condition = new SimpleLog { LOG_SN = origin.LOG_SN, DEVICE_SN = origin.DEVICE_SN };
-            var log = _dao.Get(option, condition);
+            //通知記錄清單取得
+            var records = GetRecords(new DeviceNotifyRecord { DEVICE_SN = log.DEVICE_SN });
 
-            var fields = new List<Field>
-            {
-                new Field("設備名稱", log.DEVICE_INFO.DEVICE_NAME, true),
-                new Field("設備位址", log.DEVICE_INFO.DEVICE_ID, true),
-                new Field("異常資訊", log.ERROR_INFO, false),
-                new Field("異常時間", log.ERROR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true)
-            };
+            //沒有設備通知記錄
+            if ((records as List<DeviceNotifyRecord>).Count == 0) return true;
 
-            //訊息內容
-            var payload = new Payload
-            {
-                LOG_SN = log.LOG_SN,
-                LOG_TYPE = "S",
-                DEVICE_SN = log.DEVICE_SN,
-                BUTTON_STATUS = "N",
-                COLOR = "danger",
-                TITLE = "設備異常資訊",
-                GROUP_LIST = log.GROUP_LIST,
-                FIELD_LIST = fields
-            };
+            //最後通知時間
+            var lastTime = records.OrderByDescending(x => x.NOTIFY_TIME).First().NOTIFY_TIME.Value;
+            var nextTime = lastTime.AddMinutes((double)setting.MUTE_INTERVAL);
 
-            //推送訊息
-            PushMessage(payload);
+            return log.LOG_TIME > nextTime;
         }
 
         /// <summary>
-        /// 訊息推送
+        /// 確認相同異常訊息通知間隔時間
         /// </summary>
+        /// <param name="log">簡易設備異常記錄</param>
+        /// <param name="setting">通知設定</param>
         /// <returns></returns>
-        private async Task<HttpStatusCode> PushMessage(Payload payload)
+        public bool CheckSameMessageInterval(APILog log, DeviceNotifySetting setting)
         {
-            //http POST推送設定
-            using (var client = new HttpClient())
-            {
-                //伺服器位址
-                client.BaseAddress = new Uri(_url);
+            //相同訊息通知記錄取得
+            var record = GetRecord(new DeviceNotifyRecord { DEVICE_SN = log.DEVICE_SN, ERROR_INFO = log.LOG_INFO });
 
-                //內容
-                var content = new FormUrlEncodedContent(new[]{
-                    new KeyValuePair<string, string>("info", JsonConvert.SerializeObject(payload))
-                });
+            if (record.NOTIFY_TIME == null) return true;
 
-                //post
-                var result = await client.PostAsync("im/eyesFreeLog", content);
+            //最後通知時間
+            var lastTime = record.NOTIFY_TIME.Value;
+            var nextTime = lastTime.AddMinutes((double)setting.MUTE_INTERVAL);
 
-                return result.StatusCode;
-            }
+            return log.LOG_TIME > nextTime;
+        }
+
+        /// <summary>
+        /// 簡易設備記錄取得
+        /// </summary>
+        /// <param name="simpleLog">實體資料</param>
+        /// <returns></returns>
+        public SimpleLog GetSimpleLog(SimpleLog simpleLog)
+        {
+            var option = new QueryOption { Plan = new QueryPlan { Join = "Payload" } };
+            return _dao.Get(option, simpleLog);
+        }
+
+        /// <summary>
+        /// 通知記錄取得
+        /// </summary>
+        /// <param name="record">實體資料</param>
+        /// <returns></returns>
+        private DeviceNotifyRecord GetRecord(DeviceNotifyRecord record)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<DeviceNotifyRecord>();
+            return dao.Get(new QueryOption(), record);
+        }
+
+        /// <summary>
+        /// 通知記錄清單取得
+        /// </summary>
+        /// <param name="record">實體資料</param>
+        /// <returns></returns>
+        private IEnumerable<DeviceNotifyRecord> GetRecords(DeviceNotifyRecord record)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<DeviceNotifyRecord>();
+            return dao.GetList(new QueryOption(), record);
         }
     }
 }

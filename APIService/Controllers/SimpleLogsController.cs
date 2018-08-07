@@ -2,7 +2,9 @@
 using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net;
 using System.Web.Http;
 
@@ -30,7 +32,7 @@ namespace APIService.Controllers
                 //log時間
                 var time = DateTime.Now;
                 //記錄檔
-                //File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
+                File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
 
                 //設備ID檢查
                 if (string.IsNullOrEmpty(log.DEVICE_ID))
@@ -38,6 +40,7 @@ namespace APIService.Controllers
 
                 //對應設備取得
                 var device = GetDevice(log.DEVICE_ID);
+                log.DEVICE_SN = device.DEVICE_SN;
 
                 if (string.IsNullOrEmpty(device.DEVICE_SN))
                     return Content(HttpStatusCode.Forbidden, new APIResponse("無對應設備，請確認設備為對應的類型[簡易數據設備]"));
@@ -51,10 +54,11 @@ namespace APIService.Controllers
 
                 //紀錄新增
                 var insertedLog = _bll.ModifyLog(simpleLog, "L");
+                //記錄編號
+                log.LOG_SN = insertedLog.LOG_SN;
 
-                if (insertedLog.LOG_SN != null)
-                    //推送至IM
-                    _bll.PushIM(insertedLog);
+                //間隔通知
+                PushInterval(log, device);
 
                 return Ok();
             }
@@ -72,7 +76,76 @@ namespace APIService.Controllers
         private Device GetDevice(string id)
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
-            return bll.Get(new QueryOption(), new UserLogin(), new Device { DEVICE_ID = id, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
+            return bll.Get(new QueryOption { Relation = true }, new UserLogin(), new Device { DEVICE_ID = id, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
+        }
+
+        /// <summary>
+        /// 間隔通知
+        /// </summary>
+        /// <param name="sn">記錄編號</param>
+        private void PushInterval(APILog log, Device device)
+        {
+            //設定間隔訊息類型
+            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
+
+            //所有訊息
+            if (MessageType.A.Equals(messageType) &&
+                _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING))
+            {
+                //通知推送
+                PushNotification(log);
+                //通知記錄儲存
+                SaveRecord(log);
+            }
+            //相同訊息
+            else if (MessageType.S.Equals(messageType) &&
+                     _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING))
+            {
+                //通知記錄儲存
+                SaveRecord(log);
+                //通知推送
+                PushNotification(log);
+            }
+            else
+            {
+                // TODO:
+            }
+        }
+
+        /// <summary>
+        /// 通知推送
+        /// </summary>
+        /// <param name="log">簡易設備異常記錄</param>
+        private void PushNotification(APILog log)
+        {
+            //詳細記錄資訊取得
+            var detail = _bll.GetSimpleLog(new SimpleLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN });
+
+            //通知服務
+            var payload = new SimplePayload(detail);
+            var pushService = new PushService(payload);
+
+            //通知
+            pushService.PushIM().EnsureSuccessStatusCode();
+            pushService.PushDesktop().EnsureSuccessStatusCode();
+        }
+
+        /// <summary>
+        /// 儲存通知記錄
+        /// </summary>
+        /// <param name="log">設備記錄</param>
+        private void SaveRecord(APILog log)
+        {
+            var bll = new DeviceNotifyRecord_BLL();
+            //通知記錄物件
+            var record = new DeviceNotifyRecord
+            {
+                DEVICE_SN = log.DEVICE_SN,
+                ERROR_INFO = log.LOG_INFO,
+                NOTIFY_TIME = log.LOG_TIME
+            };
+            //通知記錄更新
+            bll.SaveNotifyRecord(record);
         }
     }
 }

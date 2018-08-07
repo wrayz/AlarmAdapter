@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace APIService.Model
+namespace ModelLibrary
 {
     /// <summary>
     /// API Log 紀錄接口物件
