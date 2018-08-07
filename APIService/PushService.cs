@@ -23,12 +23,12 @@ namespace APIService
         /// </summary>
         private readonly string _socketUrl = ConfigurationManager.AppSettings["socket"];
 
-        private IPayload _payload;
+        private Payload _payload;
 
         /// <summary>
         /// 建構式
         /// </summary>
-        public PushService(IPayload payload)
+        public PushService(Payload payload)
         {
             _payload = payload;
         }

@@ -14,13 +14,14 @@ namespace BusinessLogic
         {
             _simpleLog = simpleLog;
             //資料設置            
-            SetData();
+            SetData(EventType.Error);
         }
 
         /// <summary>
         /// 資料設置
+        /// <paramref name="type"/>
         /// </summary>
-        public void SetData()
+        public override void SetData(EventType type)
         {
             LOG_SN = _simpleLog.LOG_SN;
             LOG_TYPE = "S";

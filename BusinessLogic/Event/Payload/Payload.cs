@@ -7,8 +7,14 @@ namespace BusinessLogic
     /// <summary>
     /// 通知推送內容
     /// </summary>
-    public class Payload : IPayload
+    public abstract class Payload
     {
+        /// <summary>
+        /// 資料設置
+        /// </summary>
+        /// <param name="type"></param>
+        public abstract void SetData(EventType type);
+
         /// <summary>
         /// 紀錄編號
         /// </summary>
@@ -59,23 +65,5 @@ namespace BusinessLogic
         /// 附加欄位清單
         /// </summary>
         public List<Field> FIELD_LIST { get; set; }
-
-        /// <summary>
-        /// 異常訊息
-        /// </summary>
-        public string ERROR_INFO { get; set; }
-
-        /// <summary>
-        /// 記錄時間
-        /// </summary>
-        public DateTime? RECORD_TIME { get; set; }
-
-        /// <summary>
-        /// 資料設置
-        /// </summary>
-        /// <param name="type"></param>
-        public virtual void SetData(EventType type)
-        {
-        }
     }
 }

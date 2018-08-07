@@ -51,7 +51,7 @@ namespace BusinessLogic
                     BUTTON_STATUS = "E";
                     COLOR = "danger";
 
-                    FIELD_LIST.Add(new Field("異常數據", ERROR_INFO, false));
+                    FIELD_LIST.Add(new Field("異常數據", string.Format("溫度：{0} 度\n濕度：{1} %", _recordLog.RECORD_TEMPERATURE, _recordLog.RECORD_HUMIDITY), false));
                     FIELD_LIST.Add(new Field("異常時間", _recordLog.RECORD_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true));
                     break;
 

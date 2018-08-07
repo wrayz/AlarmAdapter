@@ -26,8 +26,6 @@ namespace BusinessLogic
             DEVICE_SN = logDetail.DEVICE_SN;
             //設備狀態
             BUTTON_STATUS = logDetail.DEVICE_STATUS;
-            //異常訊息
-            ERROR_INFO = logDetail.ERROR_INFO;
             //群組清單內容
             GROUP_LIST = logDetail.GROUP_LIST;
 
