@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeviceNotifyRecord_BLL.cs" />
+    <Compile Include="Event\Enum\MessageType.cs" />
     <Compile Include="Event\Payload\IPayload.cs" />
     <Compile Include="Event\Payload\Payload.cs" />
     <Compile Include="Event\Payload\RecordPayload.cs" />

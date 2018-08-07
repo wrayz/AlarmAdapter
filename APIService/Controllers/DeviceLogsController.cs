@@ -4,7 +4,6 @@ using BusinessLogic.Event;
 using ModelLibrary;
 using System;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
@@ -43,8 +42,9 @@ namespace APIService.Controllers
                 if (string.IsNullOrEmpty(log.DEVICE_ID))
                     return Content(HttpStatusCode.Forbidden, new APIResponse("資料未包含設備ID，請檢查資料內容"));
 
-                //紀錄動作處理物件
+                //商業邏輯
                 var bll = new EventBusinessLogic();
+
                 //對應設備編號
                 string deviceSn = bll.GetDeviceByID(log);
 
@@ -60,6 +60,7 @@ namespace APIService.Controllers
                             //log編號取得
                             log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
                             break;
+
                         case EventType.Recover:
                             //log編號取得
                             log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
@@ -68,16 +69,8 @@ namespace APIService.Controllers
                             break;
                     }
 
-                    //推送通知
-                    if (bll.hasNotify(log))
-                    {
-                        //詳細記錄資訊取得
-                        var detail = bll.GetLogDetail(log.LOG_SN.Value);
-
-                        var response = PushNotification(log, detail);
-
-                        return Content(HttpStatusCode.OK, new APIResponse(response));
-                    }
+                    //間隔通知
+                    PushInterval(log, bll);
 
                     return Ok();
                 }
@@ -93,22 +86,78 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 推送通知
+        /// 間隔通知
         /// </summary>
         /// <param name="log">設備記錄</param>
-        /// <param name="detail">記錄詳細資訊</param>
-        private string PushNotification(Log log, LogDetail detail)
+        /// <param name="bll">商業邏輯</param>
+        private void PushInterval(Log log, EventBusinessLogic bll)
         {
-            var response = "";
-            //推送服務
+            //設備資訊取得
+            var device = bll.GetDevice(log.DEVICE_SN);
+            //設定間隔訊息類型
+            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
+
+            //所有訊息
+            if (MessageType.A.Equals(messageType) &&
+                bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING))
+            {
+                //通知推送
+                PushNotification(log, bll);
+                //通知記錄儲存
+                SaveRecord(log);
+            }
+            //相同訊息
+            else if (MessageType.S.Equals(messageType) &&
+                     bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING))
+            {
+                //通知推送
+                PushNotification(log, bll);
+                //通知記錄儲存
+                SaveRecord(log);
+            }
+            else
+            {
+                // TODO:
+            }
+        }
+
+        /// <summary>
+        /// 通知推送
+        /// </summary>
+        /// <param name="log">設備記錄</param>
+        /// <param name="bll">商業邏輯</param>
+        private void PushNotification(Log log, EventBusinessLogic bll)
+        {
+            //事件類型
             var type = (EventType)Enum.Parse(typeof(EventType), log.ACTION_TYPE);
-            var payload = new IMPayload("EyesFree", type, detail);
+            //詳細記錄資訊取得
+            var detail = bll.GetLogDetail(new LogDetail { LOG_SN = log.LOG_SN });
+
+            //通知服務
+            var payload = new IMPayload(type, detail);
             var pushService = new PushService(payload);
 
-            response += pushService.PushIM();
-            response += "\n" + pushService.PushDesktop();
+            //通知
+            pushService.PushIM().EnsureSuccessStatusCode();
+            pushService.PushDesktop().EnsureSuccessStatusCode();
+        }
 
-            return response;
+        /// <summary>
+        /// 儲存通知記錄
+        /// </summary>
+        /// <param name="log">設備記錄</param>
+        private void SaveRecord(Log log)
+        {
+            var bll = new DeviceNotifyRecord_BLL();
+            //通知記錄物件
+            var record = new DeviceNotifyRecord
+            {
+                DEVICE_SN = log.DEVICE_SN,
+                ERROR_INFO = log.LOG_INFO,
+                NOTIFY_TIME = log.LOG_TIME
+            };
+            //通知記錄更新
+            bll.SaveNotifyRecord(record);
         }
 
         /// <summary>

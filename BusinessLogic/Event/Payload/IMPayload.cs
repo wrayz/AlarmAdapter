@@ -16,7 +16,7 @@ namespace BusinessLogic
         /// <param name="name">系統名稱</param>
         /// <param name="type">推送動作類型</param>
         /// <param name="logDetail">設備紀錄詳細資料</param>
-        public IMPayload(string name, EventType type, LogDetail logDetail)
+        public IMPayload(EventType type, LogDetail logDetail)
         {
             //紀錄編號
             LOG_SN = logDetail.LOG_SN;
@@ -26,8 +26,8 @@ namespace BusinessLogic
             DEVICE_SN = logDetail.DEVICE_SN;
             //設備狀態
             BUTTON_STATUS = logDetail.DEVICE_STATUS;
-            //通送名稱
-            SYSTEM_NAME = name;
+            //異常訊息
+            ERROR_INFO = logDetail.ERROR_INFO;
             //群組清單內容
             GROUP_LIST = logDetail.GROUP_LIST;
 

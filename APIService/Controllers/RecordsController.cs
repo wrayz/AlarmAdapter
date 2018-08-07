@@ -43,11 +43,6 @@ namespace APIService.Controllers
                 //監控參數取得
                 var limit = _bll.GetLimit();
 
-                //回應
-                var response = "";
-                //事件
-                var type = EventType.Error;
-
                 //資料儲存
                 foreach (var record in list)
                 {
@@ -79,14 +74,38 @@ namespace APIService.Controllers
 
                         _bll.ModifyRecordLog("Abnormal", data);
 
-                        //事件
-                        type = EventType.Error;
+                        //通知
+                        if (_bll.CheckNotifyInterval(record.DEVICE_SN, record.RECORD_TIME))
+                        {
+                            //設備數據記錄取得
+                            var deviceRecord = _bll.GetDeviceRecord(device.DEVICE_SN);
+                            var recordLog = _bll.GetRecordLog(deviceRecord.LOG_SN);
+                            
+                            //通知記錄物件
+                            var notifyRecord = new DeviceNotifyRecord
+                            {
+                                DEVICE_SN = recordLog.DEVICE_SN,
+                                ERROR_INFO = "數據設備",
+                                NOTIFY_TIME = recordLog.RECORD_TIME
+                            };
+                            //通知記錄儲存
+                            SaveRecord(notifyRecord);
+                            //推送通知
+                            PushNotification(EventType.Error, recordLog);
+                        }
+                        else
+                        {
+                            //儲存記錄
+                        }
                     }
                     //恢復
                     else if ((record.RECORD_TEMPERATURE <= limit.MAX_TEMPERATURE_VAL && record.RECORD_TEMPERATURE >= limit.MIN_TEMPERATURE_VAL) &&
                              (record.RECORD_HUMIDITY <= limit.MAX_HUMIDITY_VAL && record.RECORD_HUMIDITY >= limit.MIN_HUMIDITY_VAL) &&
                              (device.RECORD_STATUS == "E" || device.RECORD_STATUS == "R"))
                     {
+                        //數據記錄編號取得
+                        var deviceRecord = _bll.GetDeviceRecord(device.DEVICE_SN);
+
                         //紀錄資料
                         var data = new RecordLog
                         {
@@ -96,21 +115,32 @@ namespace APIService.Controllers
 
                         _bll.ModifyRecordLog("Recover", data);
 
-                        //事件
-                        type = EventType.Recover;
-                    }
+                        //間隔通知全部訊息
+                        if (_bll.CheckNotifyInterval(record.DEVICE_SN, record.RECORD_TIME))
+                        {
+                            //數據設備記錄取得
+                            var recordLog = _bll.GetRecordLog(deviceRecord.LOG_SN);
 
-                    if (_bll.hasNotify(record.DEVICE_SN, record.RECORD_TIME))
-                    {
-                        //設備數據記錄取得
-                        var deviceRecord = _bll.GetDeviceRecord(device.DEVICE_SN);
-                        var recordLog = _bll.GetRecordLog(deviceRecord.LOG_SN);
-                        //推送通知
-                        response += PushNotification(type, recordLog);
+                            //通知記錄物件
+                            var notifyRecord = new DeviceNotifyRecord
+                            {
+                                DEVICE_SN = recordLog.DEVICE_SN,
+                                ERROR_INFO = "數據設備",
+                                NOTIFY_TIME = recordLog.RECOVER_TIME
+                            };
+                            //通知記錄儲存
+                            SaveRecord(notifyRecord);
+                            //推送通知
+                            PushNotification(EventType.Recover, recordLog);
+                        }
+                        else
+                        {
+                            //儲存記錄
+                        }
                     }
                 }
 
-                return Content(HttpStatusCode.OK, new APIResponse(response));
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -122,18 +152,26 @@ namespace APIService.Controllers
         /// 推送通知
         /// </summary>
         /// <param name="type">資料動作</param>
-        /// <param name="data">數據記錄資料</param>
+        /// <param name="recordLog">數據記錄資料</param>
         /// <returns></returns>
-        private string PushNotification(EventType type, RecordLog data)
+        private void PushNotification(EventType type, RecordLog recordLog)
         {
-            var result = "";
-            var payload = new RecordPayload("EyesFree", type, data);
+            var payload = new RecordPayload(type, recordLog);
             var pushService = new PushService(payload);
 
-            result += pushService.PushIM() + "\n";
-            result += pushService.PushDesktop();
+            pushService.PushIM().EnsureSuccessStatusCode();
+            pushService.PushDesktop().EnsureSuccessStatusCode();
+        }
 
-            return result;
+        /// <summary>
+        /// 儲存通知記錄
+        /// </summary>
+        /// <param name="recordLog">數據記錄</param>
+        private void SaveRecord(DeviceNotifyRecord record)
+        {
+            var bll = new DeviceNotifyRecord_BLL();
+            //通知記錄更新
+            bll.SaveNotifyRecord(record);
         }
 
         /// <summary>

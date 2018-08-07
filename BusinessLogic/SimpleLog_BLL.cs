@@ -63,7 +63,6 @@ namespace BusinessLogic
                 LOG_SN = log.LOG_SN,
                 LOG_TYPE = "S",
                 DEVICE_SN = log.DEVICE_SN,
-                SYSTEM_NAME = _system,
                 BUTTON_STATUS = "N",
                 COLOR = "danger",
                 TITLE = "設備異常資訊",

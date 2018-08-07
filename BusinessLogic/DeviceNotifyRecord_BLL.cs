@@ -12,7 +12,7 @@ namespace BusinessLogic
         /// <returns></returns>
         public DeviceNotifyRecord SaveNotifyRecord(DeviceNotifyRecord data)
         {
-            if (_dao.GetCount(new QueryOption(), new DeviceNotifyRecord { DEVICE_SN = data.DEVICE_SN }) > 0)
+            if (_dao.GetCount(new QueryOption(), new DeviceNotifyRecord { DEVICE_SN = data.DEVICE_SN, ERROR_INFO = data.ERROR_INFO }) > 0)
             {
                 return _dao.Modify("Update", data);
             }

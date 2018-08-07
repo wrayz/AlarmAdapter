@@ -2,6 +2,7 @@
 using ModelLibrary;
 using ModelLibrary.Generic;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -181,14 +182,29 @@ namespace BusinessLogic
         /// <param name="sn">設備編號</param>
         /// <param name="recordTime">記錄時間</param>
         /// <returns></returns>
-        public bool hasNotify(string sn, DateTime? recordTime)
+        public bool CheckNotifyInterval(string sn, DateTime? recordTime)
         {
             var device = GetDevice(sn);
+            var records = GetRecords(new DeviceNotifyRecord { DEVICE_SN = sn });
 
-            var notifyTime = device.NOTIFY_RECORD.NOTIFY_TIME == null ? DateTime.Now : (DateTime)device.NOTIFY_RECORD.NOTIFY_TIME;
-            var nextTime = notifyTime.AddMinutes((double)device.NOTIFY_SETTING.MUTE_INTERVAL);
+            if ((records as List<DeviceNotifyRecord>).Count == 0) return true;
+
+            //最後通知時間
+            var lastTime = records.OrderByDescending(x => x.NOTIFY_TIME).First().NOTIFY_TIME.Value;
+            var nextTime = lastTime.AddMinutes((double)device.NOTIFY_SETTING.MUTE_INTERVAL);
 
             return recordTime > nextTime;
+        }
+
+        /// <summary>
+        /// 通知記錄清單取得
+        /// </summary>
+        /// <param name="deviceNotifyRecord"></param>
+        /// <returns></returns>
+        private IEnumerable<DeviceNotifyRecord> GetRecords(DeviceNotifyRecord deviceNotifyRecord)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<DeviceNotifyRecord>();
+            return dao.GetList(new QueryOption(), deviceNotifyRecord);
         }
     }
 }

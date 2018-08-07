@@ -1,5 +1,4 @@
 ﻿using BusinessLogic;
-using ModelLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,9 @@ using System.Text;
 
 namespace APIService
 {
+    /// <summary>
+    /// 推播服務
+    /// </summary>
     public class PushService
     {
         /// <summary>
@@ -35,7 +37,7 @@ namespace APIService
         /// 訊息推送IM
         /// </summary>
         /// <returns></returns>
-        public string PushIM()
+        public HttpResponseMessage PushIM()
         {
             //http POST推送設定
             using (var client = new HttpClient())
@@ -49,39 +51,15 @@ namespace APIService
                 });
 
                 //post
-                var response = client.PostAsync("im/eyesFreeLog", content).Result;
-
-                try
-                {
-                    response.EnsureSuccessStatusCode();
-                    //通知記錄儲存
-                    SaveNotifyRecord();
-                }
-                catch (HttpRequestException)
-                {
-                    return "手機通知失敗";
-                }
-
-                return "手機通知成功";
+                return client.PostAsync("im/eyesFreeLog", content).Result;
             }
-
-        }
-
-        /// <summary>
-        /// 通知儲存
-        /// </summary>
-        private void SaveNotifyRecord()
-        {
-            var bll = new DeviceNotifyRecord_BLL();
-            var data = new DeviceNotifyRecord { DEVICE_SN = _payload.DEVICE_SN, NOTIFY_TIME = DateTime.Now };
-            bll.SaveNotifyRecord(data);
         }
 
         /// <summary>
         /// 訊息推送桌機
         /// </summary>
         /// <returns></returns>
-        public string PushDesktop()
+        public HttpResponseMessage PushDesktop()
         {
             //http POST推送設定
             using (var client = new HttpClient())
@@ -89,16 +67,7 @@ namespace APIService
                 //內容
                 var content = new StringContent(JsonConvert.SerializeObject(_payload), Encoding.UTF8, "application/json");
 
-                try
-                {
-                    var response = client.PostAsync(_socketUrl, content).Result;
-                }
-                catch (Exception)
-                {
-                    return "桌機通知失敗";
-                }
-
-                return "桌機通知成功";
+                return client.PostAsync(_socketUrl, content).Result;
             }
         }
     }

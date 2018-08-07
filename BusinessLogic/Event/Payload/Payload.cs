@@ -1,4 +1,5 @@
 ﻿using ModelLibrary;
+using System;
 using System.Collections.Generic;
 
 namespace BusinessLogic
@@ -26,7 +27,13 @@ namespace BusinessLogic
         /// <summary>
         /// 推送名稱
         /// </summary>
-        public string SYSTEM_NAME { get; set; }
+        public string SYSTEM_NAME
+        {
+            get
+            {
+                return "EyesFree";
+            }
+        }
 
         /// <summary>
         /// 按鈕狀態 N - 正常, E - 異常, R-修復中
@@ -52,6 +59,16 @@ namespace BusinessLogic
         /// 附加欄位清單
         /// </summary>
         public List<Field> FIELD_LIST { get; set; }
+
+        /// <summary>
+        /// 異常訊息
+        /// </summary>
+        public string ERROR_INFO { get; set; }
+
+        /// <summary>
+        /// 記錄時間
+        /// </summary>
+        public DateTime? RECORD_TIME { get; set; }
 
         /// <summary>
         /// 資料設置
