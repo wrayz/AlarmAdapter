@@ -14,6 +14,9 @@ namespace APIService.Controllers
     /// </summary>
     public class DeviceLogsController : ApiController
     {
+        //商業邏輯
+        private EventBusinessLogic _bll = new EventBusinessLogic();
+
         /// <summary>
         /// 設備紀錄更新
         /// </summary>
@@ -42,11 +45,8 @@ namespace APIService.Controllers
                 if (string.IsNullOrEmpty(log.DEVICE_ID))
                     return Content(HttpStatusCode.Forbidden, new APIResponse("資料未包含設備ID，請檢查資料內容"));
 
-                //商業邏輯
-                var bll = new EventBusinessLogic();
-
                 //對應設備編號
-                string deviceSn = bll.GetDeviceByID(log);
+                string deviceSn = _bll.GetDeviceByID(log);
 
                 if (!string.IsNullOrEmpty(deviceSn))
                 {
@@ -56,21 +56,21 @@ namespace APIService.Controllers
                     {
                         case EventType.Error:
                             //紀錄處理
-                            bll.LogModify(log);
+                            _bll.LogModify(log);
                             //log編號取得
-                            log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
+                            log.LOG_SN = _bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
                             break;
 
                         case EventType.Recover:
                             //log編號取得
-                            log.LOG_SN = bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
+                            log.LOG_SN = _bll.GetDeviceLog(log.DEVICE_SN).LOG_SN;
                             //紀錄處理
-                            bll.LogModify(log);
+                            _bll.LogModify(log);
                             break;
                     }
 
                     //間隔通知
-                    PushInterval(log, bll);
+                    PushInterval(log);
 
                     return Ok();
                 }
@@ -89,59 +89,47 @@ namespace APIService.Controllers
         /// 間隔通知
         /// </summary>
         /// <param name="log">設備記錄</param>
-        /// <param name="bll">商業邏輯</param>
-        private void PushInterval(Log log, EventBusinessLogic bll)
+        private void PushInterval(Log log)
         {
+            //事件類型
+            var type = (EventType)Enum.Parse(typeof(EventType), log.ACTION_TYPE);
+            //詳細記錄資訊取得
+            var detail = _bll.GetLogDetail(new LogDetail { LOG_SN = log.LOG_SN });
+            //通知服務
+            var payload = new IMPayload(type, detail);
+            var pushService = new PushService(payload);
+
             //設備資訊取得
-            var device = bll.GetDevice(log.DEVICE_SN);
+            var device = _bll.GetDevice(log.DEVICE_SN);
             //設定間隔訊息類型
             var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
+            //檢查結果
+            var check = false;
 
-            //所有訊息
-            if (MessageType.A.Equals(messageType) &&
-                bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING))
+            switch (messageType)
             {
-                //通知推送
-                PushNotification(log, bll);
-                //通知記錄儲存
-                SaveRecord(log);
+                case MessageType.A:
+                    check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
+                    break;
+                case MessageType.S:
+                    check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
+                    break;
             }
-            //相同訊息
-            else if (MessageType.S.Equals(messageType) &&
-                     bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING))
+
+            if (check)
             {
-                //通知推送
-                PushNotification(log, bll);
+                //推送通知
+                pushService.PushNotification();
                 //通知記錄儲存
                 SaveRecord(log);
             }
             else
             {
-                // TODO:
+                //IM 訊息儲存
+                pushService.SaveIMMessage();
             }
         }
-
-        /// <summary>
-        /// 通知推送
-        /// </summary>
-        /// <param name="log">設備記錄</param>
-        /// <param name="bll">商業邏輯</param>
-        private void PushNotification(Log log, EventBusinessLogic bll)
-        {
-            //事件類型
-            var type = (EventType)Enum.Parse(typeof(EventType), log.ACTION_TYPE);
-            //詳細記錄資訊取得
-            var detail = bll.GetLogDetail(new LogDetail { LOG_SN = log.LOG_SN });
-
-            //通知服務
-            var payload = new IMPayload(type, detail);
-            var pushService = new PushService(payload);
-
-            //通知
-            pushService.PushIM().EnsureSuccessStatusCode();
-            pushService.PushDesktop().EnsureSuccessStatusCode();
-        }
-
+        
         /// <summary>
         /// 儲存通知記錄
         /// </summary>

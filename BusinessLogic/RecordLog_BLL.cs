@@ -179,13 +179,12 @@ namespace BusinessLogic
         /// <summary>
         /// 是否需要通知
         /// </summary>
-        /// <param name="sn">設備編號</param>
-        /// <param name="recordTime">記錄時間</param>
+        /// <param name="record">數據記錄</param>
         /// <returns></returns>
-        public bool CheckNotifyInterval(string sn, DateTime? recordTime)
+        public bool CheckNotifyInterval(Record record)
         {
-            var device = GetDevice(sn);
-            var records = GetRecords(new DeviceNotifyRecord { DEVICE_SN = sn });
+            var device = GetDevice(record.DEVICE_SN);
+            var records = GetRecords(new DeviceNotifyRecord { DEVICE_SN = record.DEVICE_SN });
 
             if ((records as List<DeviceNotifyRecord>).Count == 0) return true;
 
@@ -193,7 +192,7 @@ namespace BusinessLogic
             var lastTime = records.OrderByDescending(x => x.NOTIFY_TIME).First().NOTIFY_TIME.Value;
             var nextTime = lastTime.AddMinutes((double)device.NOTIFY_SETTING.MUTE_INTERVAL);
 
-            return recordTime > nextTime;
+            return record.RECORD_TIME > nextTime;
         }
 
         /// <summary>

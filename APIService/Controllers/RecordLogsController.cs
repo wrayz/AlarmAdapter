@@ -37,8 +37,6 @@ namespace APIService.Controllers
 
                 //對應設備取得
                 var device = _bll.GetDeviceBySn(log.DEVICE_SN);
-                //請求回應
-                var response = "";
 
                 if (!string.IsNullOrEmpty(device.DEVICE_SN))
                 {
@@ -51,25 +49,10 @@ namespace APIService.Controllers
                     };
                     _bll.ModifyRecordLog("Repair", data);
 
-                    //數據記錄取得
-                    var recordLog = _bll.GetRecordLog(log.LOG_SN);
+                    //間隔通知
+                    PushInterval(log);
 
-                    if (_bll.CheckNotifyInterval(log.DEVICE_SN, recordLog.REPAIR_TIME))
-                    {
-                        //通知記錄物件
-                        var notifyRecord = new DeviceNotifyRecord
-                        {
-                            DEVICE_SN = recordLog.DEVICE_SN,
-                            ERROR_INFO = "數據設備",
-                            NOTIFY_TIME = recordLog.REPAIR_TIME
-                        };
-                        //通知記錄儲存
-                        SaveRecord(notifyRecord);
-                        //推送通知
-                        PushNotification(EventType.Repair, recordLog);
-                    }
-
-                    return Content(HttpStatusCode.OK, new APIResponse(response));
+                    return Ok();
                 }
                 else
                 {
@@ -82,20 +65,37 @@ namespace APIService.Controllers
             }
         }
 
-
         /// <summary>
-        /// 推送通知
+        /// 間隔通知
         /// </summary>
-        /// <param name="type">資料動作</param>
-        /// <param name="recordLog">數據記錄資料</param>
-        /// <returns></returns>
-        private void PushNotification(EventType type, RecordLog recordLog)
+        /// <param name="log">數據設備記錄</param>
+        private void PushInterval(RecordLog log)
         {
-            var payload = new RecordPayload(type, recordLog);
+            //數據記錄取得
+            var recordLog = _bll.GetRecordLog(log.LOG_SN);
+            var payload = new RecordPayload(EventType.Repair, recordLog);
             var pushService = new PushService(payload);
 
-            pushService.PushIM().EnsureSuccessStatusCode();
-            pushService.PushDesktop().EnsureSuccessStatusCode();
+            if (_bll.CheckNotifyInterval(new Record { DEVICE_SN = log.DEVICE_SN, RECORD_TIME = recordLog.REPAIR_TIME }))
+            {
+                //通知
+                pushService.PushNotification();
+
+                //通知記錄物件
+                var notifyRecord = new DeviceNotifyRecord
+                {
+                    DEVICE_SN = recordLog.DEVICE_SN,
+                    ERROR_INFO = "數據設備",
+                    NOTIFY_TIME = recordLog.REPAIR_TIME
+                };
+                //通知記錄儲存
+                SaveRecord(notifyRecord);
+            }
+            else
+            {
+                //IM 訊息儲存
+                pushService.SaveIMMessage();
+            }
         }
 
         /// <summary>

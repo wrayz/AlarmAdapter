@@ -32,7 +32,7 @@ namespace APIService.Controllers
                 //log時間
                 var time = DateTime.Now;
                 //記錄檔
-                File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
+                //File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
 
                 //設備ID檢查
                 if (string.IsNullOrEmpty(log.DEVICE_ID))
@@ -86,49 +86,39 @@ namespace APIService.Controllers
         /// <param name="device">設備資訊</param>
         private void PushInterval(APILog log, Device device)
         {
-            //設定間隔訊息類型
-            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
-
-            //所有訊息
-            if (MessageType.A.Equals(messageType) &&
-                _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING))
-            {
-                //通知推送
-                PushNotification(log);
-                //通知記錄儲存
-                SaveRecord(log);
-            }
-            //相同訊息
-            else if (MessageType.S.Equals(messageType) &&
-                     _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING))
-            {
-                //通知記錄儲存
-                SaveRecord(log);
-                //通知推送
-                PushNotification(log);
-            }
-            else
-            {
-                // TODO:
-            }
-        }
-
-        /// <summary>
-        /// 通知推送
-        /// </summary>
-        /// <param name="log">簡易設備異常記錄</param>
-        private void PushNotification(APILog log)
-        {
             //詳細記錄資訊取得
             var detail = _bll.GetSimpleLog(new SimpleLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN });
-
             //通知服務
             var payload = new SimplePayload(detail);
             var pushService = new PushService(payload);
 
-            //通知
-            pushService.PushIM().EnsureSuccessStatusCode();
-            pushService.PushDesktop().EnsureSuccessStatusCode();
+            //檢查結果
+            var check = false;
+            //設定間隔訊息類型
+            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
+
+            switch (messageType)
+            {
+                case MessageType.A:
+                    check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
+                    break;
+                case MessageType.S:
+                    check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
+                    break;
+            }
+
+            if (check)
+            {
+                //通知
+                pushService.PushNotification();
+                //通知記錄儲存
+                SaveRecord(log);
+            }
+            else
+            {
+                //IM 訊息儲存
+                pushService.SaveIMMessage();
+            }
         }
 
         /// <summary>

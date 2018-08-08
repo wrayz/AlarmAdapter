@@ -3,6 +3,7 @@ using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
 using System;
+using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Http;
@@ -62,6 +63,17 @@ namespace APIService.Controllers
         /// <param name="device">設備資訊</param>
         private void PushInterval(SimpleLog simpleLog, Device device)
         {
+            //詳細記錄資訊取得
+            var detail = _bll.GetSimpleLog(new SimpleLog { LOG_SN = simpleLog.LOG_SN, DEVICE_SN = simpleLog.DEVICE_SN });
+            //通知服務
+            var payload = new SimplePayload(detail);
+            var pushService = new PushService(payload);
+
+            //設定間隔訊息類型
+            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
+            //檢查結果
+            var check = false;
+
             //異常記錄
             var log = new APILog
             {
@@ -70,30 +82,27 @@ namespace APIService.Controllers
                 LOG_TIME = simpleLog.ERROR_TIME
             };
 
-            //設定間隔訊息類型
-            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
-
-            //所有訊息
-            if (MessageType.A.Equals(messageType) &&
-                _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING))
+            switch (messageType)
             {
-                //通知推送
-                PushNotification(simpleLog);
-                //通知記錄儲存
-                SaveRecord(simpleLog);
+                case MessageType.A:
+                    check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
+                    break;
+                case MessageType.S:
+                    check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
+                    break;
             }
-            //相同訊息
-            else if (MessageType.S.Equals(messageType) &&
-                     _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING))
+
+            if (check)
             {
+                //通知推送
+                pushService.PushNotification();
                 //通知記錄儲存
                 SaveRecord(simpleLog);
-                //通知推送
-                PushNotification(simpleLog);
             }
             else
             {
-                // TODO:
+                //IM 訊息儲存
+                pushService.SaveIMMessage();
             }
         }
 
@@ -116,35 +125,6 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 通知推送
-        /// </summary>
-        /// <param name="log">簡易設備異常記錄</param>
-        private void PushNotification(SimpleLog log)
-        {
-            //詳細記錄資訊取得
-            var detail = _bll.GetSimpleLog(new SimpleLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN });
-
-            //通知服務
-            var payload = new SimplePayload(detail);
-            var pushService = new PushService(payload);
-
-            //通知
-            pushService.PushIM().EnsureSuccessStatusCode();
-            pushService.PushDesktop().EnsureSuccessStatusCode();
-        }
-
-        /// <summary>
-        /// 設備資訊取得
-        /// </summary>
-        /// <param name="device">實體資料</param>
-        /// <returns></returns>
-        private Device GetDevice(Device device)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<Device>();
-            return bll.Get(new QueryOption { Relation = true }, new UserLogin(), device);
-        }
-
-        /// <summary>
         /// Log 取得
         /// </summary>
         /// <param name="plain">原始內容</param>
@@ -161,7 +141,7 @@ namespace APIService.Controllers
             //記錄檔
             //File.AppendAllText("C:/EyesFree/CameraLog.txt", string.Format("{0}, Source: {1}, Log: {2}\n", time.ToString(), source, plain));
 
-            var device = GetDevice(source);
+            var device = GetDevice(new Device { DEVICE_ID = source, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
 
             if (string.IsNullOrEmpty(device.DEVICE_SN))
                 return null;
@@ -175,14 +155,14 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 設備資料取得
+        /// 設備資訊取得
         /// </summary>
-        /// <param name="id">設備ID</param>
+        /// <param name="device">實體資料</param>
         /// <returns></returns>
-        private Device GetDevice(string id)
+        private Device GetDevice(Device device)
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
-            return bll.Get(new QueryOption(), new UserLogin(), new Device { DEVICE_ID = id, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
+            return bll.Get(new QueryOption { Relation = true }, new UserLogin(), device);
         }
 
         /// <summary>

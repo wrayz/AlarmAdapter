@@ -71,32 +71,12 @@ namespace APIService.Controllers
                             RECORD_TEMPERATURE = record.RECORD_TEMPERATURE,
                             RECORD_HUMIDITY = record.RECORD_HUMIDITY
                         };
-
                         _bll.ModifyRecordLog("Abnormal", data);
 
-                        //通知
-                        if (_bll.CheckNotifyInterval(record.DEVICE_SN, record.RECORD_TIME))
-                        {
-                            //設備數據記錄取得
-                            var deviceRecord = _bll.GetDeviceRecord(device.DEVICE_SN);
-                            var recordLog = _bll.GetRecordLog(deviceRecord.LOG_SN);
-                            
-                            //通知記錄物件
-                            var notifyRecord = new DeviceNotifyRecord
-                            {
-                                DEVICE_SN = recordLog.DEVICE_SN,
-                                ERROR_INFO = "數據設備",
-                                NOTIFY_TIME = recordLog.RECORD_TIME
-                            };
-                            //通知記錄儲存
-                            SaveRecord(notifyRecord);
-                            //推送通知
-                            PushNotification(EventType.Error, recordLog);
-                        }
-                        else
-                        {
-                            //儲存記錄
-                        }
+                        //數據記錄編號取得
+                        var deviceRecord = _bll.GetDeviceRecord(device.DEVICE_SN);
+                        //間隔通知
+                        PushInterval(EventType.Error, record, deviceRecord);
                     }
                     //恢復
                     else if ((record.RECORD_TEMPERATURE <= limit.MAX_TEMPERATURE_VAL && record.RECORD_TEMPERATURE >= limit.MIN_TEMPERATURE_VAL) &&
@@ -112,31 +92,10 @@ namespace APIService.Controllers
                             DEVICE_SN = record.DEVICE_SN,
                             RECOVER_TIME = record.RECORD_TIME
                         };
-
                         _bll.ModifyRecordLog("Recover", data);
 
-                        //間隔通知全部訊息
-                        if (_bll.CheckNotifyInterval(record.DEVICE_SN, record.RECORD_TIME))
-                        {
-                            //數據設備記錄取得
-                            var recordLog = _bll.GetRecordLog(deviceRecord.LOG_SN);
-
-                            //通知記錄物件
-                            var notifyRecord = new DeviceNotifyRecord
-                            {
-                                DEVICE_SN = recordLog.DEVICE_SN,
-                                ERROR_INFO = "數據設備",
-                                NOTIFY_TIME = recordLog.RECOVER_TIME
-                            };
-                            //通知記錄儲存
-                            SaveRecord(notifyRecord);
-                            //推送通知
-                            PushNotification(EventType.Recover, recordLog);
-                        }
-                        else
-                        {
-                            //儲存記錄
-                        }
+                        //間隔通知
+                        PushInterval(EventType.Recover, record, deviceRecord);
                     }
                 }
 
@@ -149,18 +108,39 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 推送通知
+        /// 間隔通知
         /// </summary>
-        /// <param name="type">資料動作</param>
-        /// <param name="recordLog">數據記錄資料</param>
-        /// <returns></returns>
-        private void PushNotification(EventType type, RecordLog recordLog)
+        /// <param name="type">事件類型</param>
+        /// <param name="record"></param>
+        /// <param name="device"></param>
+        private void PushInterval(EventType type, Record record, DeviceRecord deviceRecord)
         {
+            //數據設備記錄取得
+            var recordLog = _bll.GetRecordLog(deviceRecord.LOG_SN);
+            //通知服務
             var payload = new RecordPayload(type, recordLog);
             var pushService = new PushService(payload);
 
-            pushService.PushIM().EnsureSuccessStatusCode();
-            pushService.PushDesktop().EnsureSuccessStatusCode();
+            //通知
+            if (_bll.CheckNotifyInterval(record))
+            {
+                //推送通知
+                pushService.PushNotification();
+                //通知記錄物件
+                var notifyRecord = new DeviceNotifyRecord
+                {
+                    DEVICE_SN = record.DEVICE_SN,
+                    ERROR_INFO = "數據設備",
+                    NOTIFY_TIME = record.RECORD_TIME
+                };
+                //通知記錄儲存
+                SaveRecord(notifyRecord);
+            }
+            else
+            {
+                //IM 訊息儲存
+                pushService.SaveIMMessage();
+            }
         }
 
         /// <summary>
@@ -183,7 +163,7 @@ namespace APIService.Controllers
             //log時間
             var time = DateTime.Now;
             //記錄檔
-            File.AppendAllText("C:/EyesFree/DataLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), content));
+            //File.AppendAllText("C:/EyesFree/DataLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), content));
         }
     }
 }

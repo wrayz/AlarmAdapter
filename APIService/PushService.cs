@@ -33,11 +33,17 @@ namespace APIService
             _payload = payload;
         }
 
+        public void PushNotification()
+        {
+            PushIM().EnsureSuccessStatusCode();
+            PushDesktop().EnsureSuccessStatusCode();
+        }
+
         /// <summary>
         /// 訊息推送IM
         /// </summary>
         /// <returns></returns>
-        public HttpResponseMessage PushIM()
+        private HttpResponseMessage PushIM()
         {
             //http POST推送設定
             using (var client = new HttpClient())
@@ -51,7 +57,34 @@ namespace APIService
                 });
 
                 //post
-                return client.PostAsync("im/eyesFreeLog", content).Result;
+                var response = client.PostAsync("im/eyesFreeLog", content).Result;
+
+                return response.EnsureSuccessStatusCode();
+            }
+        }
+
+
+        /// <summary>
+        /// IM 訊息儲存
+        /// </summary>
+        /// <returns></returns>
+        public HttpResponseMessage SaveIMMessage()
+        {
+            //http POST推送設定
+            using (var client = new HttpClient())
+            {
+                //伺服器位址
+                client.BaseAddress = new Uri(_imUrl);
+
+                //內容
+                var content = new FormUrlEncodedContent(new[]{
+                    new KeyValuePair<string, string>("info", JsonConvert.SerializeObject(_payload))
+                });
+
+                //post
+                var response = client.PostAsync("im/record", content).Result;
+
+                return response.EnsureSuccessStatusCode();
             }
         }
 
@@ -59,7 +92,7 @@ namespace APIService
         /// 訊息推送桌機
         /// </summary>
         /// <returns></returns>
-        public HttpResponseMessage PushDesktop()
+        private HttpResponseMessage PushDesktop()
         {
             //http POST推送設定
             using (var client = new HttpClient())
@@ -67,7 +100,9 @@ namespace APIService
                 //內容
                 var content = new StringContent(JsonConvert.SerializeObject(_payload), Encoding.UTF8, "application/json");
 
-                return client.PostAsync(_socketUrl, content).Result;
+                var response = client.PostAsync(_socketUrl, content).Result;
+
+                return response.EnsureSuccessStatusCode();
             }
         }
     }

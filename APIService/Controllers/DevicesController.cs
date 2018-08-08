@@ -14,6 +14,9 @@ namespace APIService.Controllers
     /// </summary>
     public class DevicesController : ApiController
     {
+        //商業邏輯
+        private EventBusinessLogic _bll = new EventBusinessLogic();
+
         /// <summary>
         /// 設備維修
         /// </summary>
@@ -34,14 +37,11 @@ namespace APIService.Controllers
 
                 if (isError)
                 {
-                    //商業邏輯
-                    var bll = new EventBusinessLogic();
-
                     //紀錄處理
-                    bll.LogModify(log);
+                    _bll.LogModify(log);
 
                     //間隔通知
-                    PushInterval(log, bll);
+                    PushInterval(log);
 
                     return Ok();
                 }
@@ -60,58 +60,45 @@ namespace APIService.Controllers
         /// 間隔通知
         /// </summary>
         /// <param name="log">設備記錄</param>
-        /// <param name="sn">詳細記錄</param>
-        private void PushInterval(Log log, EventBusinessLogic bll)
+        private void PushInterval(Log log)
         {
             //詳細記錄資訊取得
-            var detail = bll.GetLogDetail(new LogDetail { LOG_SN = log.LOG_SN });
-            log.LOG_INFO = detail.ERROR_INFO + "Repair";
-            log.LOG_TIME = detail.REPAIR_TIME;
-            //設備資訊取得
-            var device = bll.GetDevice(log.DEVICE_SN);
-            //訊息類型
-            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
-
-            //所有訊息
-            if (MessageType.A.Equals(messageType) &&
-                bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING))
-            {
-                //通知推送
-                PushNotification(log, detail, bll);
-                //通知記錄儲存
-                SaveRecord(log);
-            }
-            //相同訊息
-            else if (MessageType.S.Equals(messageType) &&
-                     bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING))
-            {
-                //通知推送
-                PushNotification(log, detail, bll);
-                //通知記錄儲存
-                SaveRecord(log);
-            }
-            //儲存記錄不通知
-            else
-            {
-                // TODO:
-            }
-        }
-
-        /// <summary>
-        /// 通知推送
-        /// </summary>
-        /// <param name="log">設備記錄</param>
-        /// <param name="detail">記錄詳細</param>
-        /// <param name="bll">商業邏輯</param>
-        private void PushNotification(Log log, LogDetail detail, EventBusinessLogic bll)
-        {
+            var detail = _bll.GetLogDetail(new LogDetail { LOG_SN = log.LOG_SN });
             //通知服務
             var payload = new IMPayload(EventType.Repair, detail);
             var pushService = new PushService(payload);
+            
+            //設備資訊取得
+            var device = _bll.GetDevice(log.DEVICE_SN);
+            //訊息類型
+            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
+            //檢查結果
+            var check = false;
 
-            //通知
-            pushService.PushIM().EnsureSuccessStatusCode();
-            pushService.PushDesktop().EnsureSuccessStatusCode();
+            switch (messageType)
+            {
+                case MessageType.A:
+                    check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
+                    break;
+                case MessageType.S:
+                    check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
+                    break;
+            }
+
+            if (check)
+            {
+                //推送通知
+                pushService.PushNotification();
+                //通知記錄儲存
+                log.LOG_INFO = detail.ERROR_INFO + "Repair";
+                log.LOG_TIME = detail.REPAIR_TIME;
+                SaveRecord(log);
+            }
+            else
+            {
+                //IM 訊息儲存
+                pushService.SaveIMMessage();
+            }
         }
 
         /// <summary>
