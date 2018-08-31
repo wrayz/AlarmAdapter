@@ -107,6 +107,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbuseIpDbService.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DeviceLogsController.cs" />
@@ -175,6 +176,7 @@
     <Content Include="Entity\GroupDevice.config" />
     <Content Include="Entity\DeviceNotifySetting.config" />
     <Content Include="Entity\DeviceNotifyRecord.config" />
+    <Content Include="Entity\AbuseIpDbSetting.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
@@ -188,6 +190,7 @@
       <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Debug.pubxml" />
     <None Include="Properties\PublishProfiles\SIT.pubxml" />
     <None Include="Web.Debug.config">

@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbuseIpDbSetting.cs" />
     <Compile Include="APILog.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Contact.cs" />

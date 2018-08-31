@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 
 namespace APIService.Controllers
@@ -57,8 +58,14 @@ namespace APIService.Controllers
                 //記錄編號
                 log.LOG_SN = insertedLog.LOG_SN;
 
-                //間隔通知
-                PushInterval(log, device);
+                //待查黑名單取得
+                var blockIP = GetBlockIP(log.LOG_INFO);
+                //是否回報黑名單
+                if (new AbuseIpDbService(blockIP).IsReported())
+                {
+                    //間隔通知
+                    PushInterval(log, device);
+                }
 
                 return Ok();
             }
@@ -77,6 +84,17 @@ namespace APIService.Controllers
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
             return bll.Get(new QueryOption { Relation = true }, new UserLogin(), new Device { DEVICE_ID = id, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
+        }
+
+        /// <summary>
+        /// 待查黑名單取得
+        /// </summary>
+        /// <param name="info">Logmaster 訊息</param>
+        /// <returns></returns>
+        private string GetBlockIP(string info)
+        {
+            var list = Regex.Split(info, "detect block ip ");
+            return list[1];
         }
 
         /// <summary>
