@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ModelLibrary;
+﻿using ModelLibrary;
+using System.Collections.Generic;
 
 namespace BusinessLogic
 {
@@ -13,7 +13,7 @@ namespace BusinessLogic
         public SimplePayload(SimpleLog simpleLog)
         {
             _simpleLog = simpleLog;
-            //資料設置            
+            //資料設置
             SetData(EventType.Error);
         }
 
@@ -29,6 +29,7 @@ namespace BusinessLogic
             BUTTON_STATUS = "N";
             COLOR = "danger";
             TITLE = "設備異常資訊";
+            RECORD_TIME = _simpleLog.ERROR_TIME;
             GROUP_LIST = _simpleLog.GROUP_LIST;
 
             FIELD_LIST = new List<Field>

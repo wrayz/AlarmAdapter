@@ -57,6 +57,11 @@ namespace BusinessLogic
         public string TITLE { get; set; }
 
         /// <summary>
+        /// 記錄時間
+        /// </summary>
+        public DateTime? RECORD_TIME { get; set; }
+
+        /// <summary>
         /// 設備群組清單
         /// </summary>
         public List<DeviceGroup> GROUP_LIST { get; set; }
