@@ -59,7 +59,7 @@ namespace BusinessLogic
         public bool CheckSameMessageInterval(APILog log, DeviceNotifySetting setting)
         {
             //相同訊息通知記錄取得
-            var record = GetRecord(new DeviceNotifyRecord { DEVICE_SN = log.DEVICE_SN, ERROR_INFO = log.LOG_INFO });
+            var record = GetRecord(new DeviceNotifyRecord { DEVICE_SN = log.DEVICE_SN, RECORD_ID = log.LOG_SN });
 
             if (record.NOTIFY_TIME == null) return true;
 

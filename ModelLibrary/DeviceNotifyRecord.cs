@@ -8,14 +8,19 @@ namespace ModelLibrary
     public class DeviceNotifyRecord
     {
         /// <summary>
+        /// 通知ID
+        /// </summary>
+        public int? NOTIFY_ID { get; set; }
+
+        /// <summary>
         /// 設備編號
         /// </summary>
         public string DEVICE_SN { get; set; }
 
         /// <summary>
-        /// 異常訊息
+        /// 記錄編號 
         /// </summary>
-        public string ERROR_INFO { get; set; }
+        public int? RECORD_ID { get; set; }
 
         /// <summary>
         /// 通知時間

@@ -46,7 +46,7 @@ namespace APIService.Controllers
                 var device = GetDevice(new Device { DEVICE_SN = log.DEVICE_SN, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
                
                 //間隔通知
-                PushInterval(log, device);
+                //PushInterval(log, device);
 
                 return Ok();
             }
@@ -117,7 +117,7 @@ namespace APIService.Controllers
             var record = new DeviceNotifyRecord
             {
                 DEVICE_SN = simpleLog.DEVICE_SN,
-                ERROR_INFO = simpleLog.ERROR_INFO,
+                RECORD_ID = simpleLog.LOG_SN,
                 NOTIFY_TIME = simpleLog.ERROR_TIME
             };
             //通知記錄更新

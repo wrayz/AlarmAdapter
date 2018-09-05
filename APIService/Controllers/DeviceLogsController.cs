@@ -70,7 +70,7 @@ namespace APIService.Controllers
                     }
 
                     //間隔通知
-                    PushInterval(log);
+                    //PushInterval(log);
 
                     return Ok();
                 }
@@ -106,46 +106,16 @@ namespace APIService.Controllers
             //檢查結果
             var check = false;
 
-            switch (messageType)
-            {
-                case MessageType.A:
-                    check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
-                    break;
-                case MessageType.S:
-                    check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
-                    break;
-            }
-
             if (check)
             {
                 //推送通知
                 pushService.PushNotification();
-                //通知記錄儲存
-                SaveRecord(log);
             }
             else
             {
                 //IM 訊息儲存
                 pushService.SaveIMMessage();
             }
-        }
-        
-        /// <summary>
-        /// 儲存通知記錄
-        /// </summary>
-        /// <param name="log">設備記錄</param>
-        private void SaveRecord(Log log)
-        {
-            var bll = new DeviceNotifyRecord_BLL();
-            //通知記錄物件
-            var record = new DeviceNotifyRecord
-            {
-                DEVICE_SN = log.DEVICE_SN,
-                ERROR_INFO = log.LOG_INFO,
-                NOTIFY_TIME = log.LOG_TIME
-            };
-            //通知記錄更新
-            bll.SaveNotifyRecord(record);
         }
 
         /// <summary>

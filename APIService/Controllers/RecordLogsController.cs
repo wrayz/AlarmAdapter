@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace APIService.Controllers
 {
     /// <summary>
-    /// 數據設備記錄 API
+    /// 數據設備記錄修復 API
     /// </summary>
     public class RecordLogsController : ApiController
     {
@@ -50,7 +50,6 @@ namespace APIService.Controllers
                     _bll.ModifyRecordLog("Repair", data);
 
                     //間隔通知
-                    PushInterval(log);
 
                     return Ok();
                 }
@@ -63,50 +62,6 @@ namespace APIService.Controllers
             {
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
-        }
-
-        /// <summary>
-        /// 間隔通知
-        /// </summary>
-        /// <param name="log">數據設備記錄</param>
-        private void PushInterval(RecordLog log)
-        {
-            //數據記錄取得
-            var recordLog = _bll.GetRecordLog(log.LOG_SN);
-            var payload = new RecordPayload(EventType.Repair, recordLog);
-            var pushService = new PushService(payload);
-
-            if (_bll.CheckNotifyInterval(new Record { DEVICE_SN = log.DEVICE_SN, RECORD_TIME = recordLog.REPAIR_TIME }))
-            {
-                //通知
-                pushService.PushNotification();
-
-                //通知記錄物件
-                var notifyRecord = new DeviceNotifyRecord
-                {
-                    DEVICE_SN = recordLog.DEVICE_SN,
-                    ERROR_INFO = "數據設備",
-                    NOTIFY_TIME = recordLog.REPAIR_TIME
-                };
-                //通知記錄儲存
-                SaveRecord(notifyRecord);
-            }
-            else
-            {
-                //IM 訊息儲存
-                pushService.SaveIMMessage();
-            }
-        }
-
-        /// <summary>
-        /// 儲存通知記錄
-        /// </summary>
-        /// <param name="recordLog">數據記錄</param>
-        private void SaveRecord(DeviceNotifyRecord record)
-        {
-            var bll = new DeviceNotifyRecord_BLL();
-            //通知記錄更新
-            bll.SaveNotifyRecord(record);
         }
     }
 }

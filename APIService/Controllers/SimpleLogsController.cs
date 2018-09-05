@@ -64,7 +64,7 @@ namespace APIService.Controllers
                 if (new AbuseIpDbService(blockIP).IsReported())
                 {
                     //間隔通知
-                    PushInterval(log, device);
+                    //PushInterval(log, device);
                 }
 
                 return Ok();
@@ -150,8 +150,7 @@ namespace APIService.Controllers
             var record = new DeviceNotifyRecord
             {
                 DEVICE_SN = log.DEVICE_SN,
-                ERROR_INFO = log.LOG_INFO,
-                NOTIFY_TIME = log.LOG_TIME
+                RECORD_ID = log.LOG_SN
             };
             //通知記錄更新
             bll.SaveNotifyRecord(record);

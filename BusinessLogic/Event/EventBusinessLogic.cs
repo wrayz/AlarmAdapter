@@ -93,47 +93,6 @@ namespace BusinessLogic.Event
         }
 
         /// <summary>
-        /// 確認相同異常訊息通知間隔時間
-        /// </summary>
-        /// <param name="log">設備記錄</param>
-        /// <param name="setting">通知設定</param>
-        /// <returns></returns>
-        public bool CheckSameMessageInterval(Log log, DeviceNotifySetting setting)
-        {
-            //相同訊息通知記錄取得
-            var record = GetRecord(new DeviceNotifyRecord { DEVICE_SN = log.DEVICE_SN, ERROR_INFO = log.LOG_INFO });
-
-            if (record.NOTIFY_TIME == null) return true;
-
-            //最後通知時間
-            var lastTime = record.NOTIFY_TIME.Value;
-            var nextTime = lastTime.AddMinutes((double)setting.MUTE_INTERVAL);
-
-            return log.LOG_TIME > nextTime;
-        }
-
-        /// <summary>
-        /// 確認全部訊息通知間隔時間
-        /// </summary>
-        /// <param name="log">設備記錄</param>
-        /// <param name="setting">通知設定</param>
-        /// <returns></returns>
-        public bool CheckAllMessageInterval(Log log, DeviceNotifySetting setting)
-        {
-            //通知記錄清單取得
-            var records = GetRecords(new DeviceNotifyRecord { DEVICE_SN = log.DEVICE_SN });
-
-            //沒有設備通知記錄
-            if ((records as List<DeviceNotifyRecord>).Count == 0) return true;
-
-            //最後通知時間
-            var lastTime = records.OrderByDescending(x => x.NOTIFY_TIME).First().NOTIFY_TIME.Value;
-            var nextTime = lastTime.AddMinutes((double)setting.MUTE_INTERVAL);
-
-            return log.LOG_TIME > nextTime;
-        }
-
-        /// <summary>
         /// 通知記錄取得
         /// </summary>
         /// <param name="record">實體資料</param>
