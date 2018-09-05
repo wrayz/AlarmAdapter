@@ -3,7 +3,6 @@ using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
 using System;
-using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Http;
@@ -44,7 +43,7 @@ namespace APIService.Controllers
                 log.LOG_SN = insertedLog.LOG_SN;
                 //對應設備取得
                 var device = GetDevice(new Device { DEVICE_SN = log.DEVICE_SN, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
-               
+
                 //間隔通知
                 //PushInterval(log, device);
 
@@ -87,6 +86,7 @@ namespace APIService.Controllers
                 case MessageType.A:
                     check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
                     break;
+
                 case MessageType.S:
                     check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
                     break;
@@ -98,11 +98,6 @@ namespace APIService.Controllers
                 pushService.PushNotification();
                 //通知記錄儲存
                 SaveRecord(simpleLog);
-            }
-            else
-            {
-                //IM 訊息儲存
-                pushService.SaveIMMessage();
             }
         }
 

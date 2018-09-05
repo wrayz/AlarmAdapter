@@ -70,7 +70,7 @@ namespace APIService.Controllers
                     }
 
                     //間隔通知
-                    //PushInterval(log);
+                    PushInterval(log);
 
                     return Ok();
                 }
@@ -93,11 +93,6 @@ namespace APIService.Controllers
         {
             //事件類型
             var type = (EventType)Enum.Parse(typeof(EventType), log.ACTION_TYPE);
-            //詳細記錄資訊取得
-            var detail = _bll.GetLogDetail(new LogDetail { LOG_SN = log.LOG_SN });
-            //通知服務
-            var payload = new IMPayload(type, detail);
-            var pushService = new PushService(payload);
 
             //設備資訊取得
             var device = _bll.GetDevice(log.DEVICE_SN);
@@ -108,13 +103,13 @@ namespace APIService.Controllers
 
             if (check)
             {
+                //詳細記錄資訊取得
+                var detail = _bll.GetLogDetail(new LogDetail { LOG_SN = log.LOG_SN });
+                //通知服務
+                var payload = new IMPayload(type, detail);
+                var pushService = new PushService(payload);
                 //推送通知
                 pushService.PushNotification();
-            }
-            else
-            {
-                //IM 訊息儲存
-                pushService.SaveIMMessage();
             }
         }
 

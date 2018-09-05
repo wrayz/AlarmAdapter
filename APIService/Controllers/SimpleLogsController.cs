@@ -2,9 +2,7 @@
 using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
-using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Http;
@@ -120,6 +118,7 @@ namespace APIService.Controllers
                 case MessageType.A:
                     check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
                     break;
+
                 case MessageType.S:
                     check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
                     break;
@@ -131,11 +130,6 @@ namespace APIService.Controllers
                 pushService.PushNotification();
                 //通知記錄儲存
                 SaveRecord(log);
-            }
-            else
-            {
-                //IM 訊息儲存
-                pushService.SaveIMMessage();
             }
         }
 

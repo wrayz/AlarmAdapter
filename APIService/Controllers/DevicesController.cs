@@ -67,7 +67,7 @@ namespace APIService.Controllers
             //通知服務
             var payload = new IMPayload(EventType.Repair, detail);
             var pushService = new PushService(payload);
-            
+
             //設備資訊取得
             var device = _bll.GetDevice(log.DEVICE_SN);
             //訊息類型
@@ -82,11 +82,6 @@ namespace APIService.Controllers
                 //通知記錄儲存
                 log.LOG_INFO = detail.ERROR_INFO + "Repair";
                 log.LOG_TIME = detail.REPAIR_TIME;
-            }
-            else
-            {
-                //IM 訊息儲存
-                pushService.SaveIMMessage();
             }
         }
     }
