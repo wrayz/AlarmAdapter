@@ -23,6 +23,9 @@ namespace APIService
         /// </summary>
         private readonly string _socketUrl = ConfigurationManager.AppSettings["socket"];
 
+        /// <summary>
+        /// 推播物件
+        /// </summary>
         private Payload _payload;
 
         /// <summary>

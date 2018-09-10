@@ -184,13 +184,13 @@ namespace BusinessLogic
         public bool CheckNotifyInterval(Record record)
         {
             var device = GetDevice(record.DEVICE_SN);
-            var records = GetRecords(new DeviceNotifyRecord { DEVICE_SN = record.DEVICE_SN });
+            var records = GetRecords(new NotificationRecord { DEVICE_SN = record.DEVICE_SN });
 
-            if ((records as List<DeviceNotifyRecord>).Count == 0) return true;
+            if ((records as List<NotificationRecord>).Count == 0) return true;
 
             //最後通知時間
             var lastTime = records.OrderByDescending(x => x.NOTIFY_TIME).First().NOTIFY_TIME.Value;
-            var nextTime = lastTime.AddMinutes((double)device.NOTIFY_SETTING.MUTE_INTERVAL);
+            var nextTime = lastTime.AddMinutes((double)device.NOTIFICATION_SETTING.MUTE_INTERVAL);
 
             return record.RECORD_TIME > nextTime;
         }
@@ -200,9 +200,9 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="deviceNotifyRecord"></param>
         /// <returns></returns>
-        private IEnumerable<DeviceNotifyRecord> GetRecords(DeviceNotifyRecord deviceNotifyRecord)
+        private IEnumerable<NotificationRecord> GetRecords(NotificationRecord deviceNotifyRecord)
         {
-            var dao = GenericDataAccessFactory.CreateInstance<DeviceNotifyRecord>();
+            var dao = GenericDataAccessFactory.CreateInstance<NotificationRecord>();
             return dao.GetList(new QueryOption(), deviceNotifyRecord);
         }
     }

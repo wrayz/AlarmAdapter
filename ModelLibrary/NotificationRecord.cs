@@ -3,14 +3,14 @@
 namespace ModelLibrary
 {
     /// <summary>
-    /// 設備通知記錄
+    /// 告警通知記錄
     /// </summary>
-    public class DeviceNotifyRecord
+    public class NotificationRecord
     {
         /// <summary>
-        /// 通知ID
+        /// 設備類型
         /// </summary>
-        public int? NOTIFY_ID { get; set; }
+        public string DEVICE_TYPE { get; set; }
 
         /// <summary>
         /// 設備編號
@@ -20,11 +20,16 @@ namespace ModelLibrary
         /// <summary>
         /// 記錄編號 
         /// </summary>
-        public int? RECORD_ID { get; set; }
+        public int? LOG_SN { get; set; }
 
         /// <summary>
         /// 通知時間
         /// </summary>
         public DateTime? NOTIFY_TIME { get; set; }
+
+        /// <summary>
+        /// 簡易設備異常記錄
+        /// </summary>
+        public SimpleLog SIMPLE_LOG { get; set; }
     }
 }

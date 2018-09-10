@@ -1,9 +1,9 @@
 ﻿namespace ModelLibrary
 {
     /// <summary>
-    /// 設備通知設定
+    /// 告警通知設定
     /// </summary>
-    public class DeviceNotifySetting
+    public class NotificationSetting
     {
         /// <summary>
         /// 設備編號

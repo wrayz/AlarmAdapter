@@ -35,13 +35,13 @@ namespace BusinessLogic
         /// <param name="log">簡易設備異常記錄</param>
         /// <param name="setting">通知設定</param>
         /// <returns></returns>
-        public bool CheckAllMessageInterval(APILog log, DeviceNotifySetting setting)
+        public bool CheckAllMessageInterval(APILog log, NotificationSetting setting)
         {
             //通知記錄清單取得
-            var records = GetRecords(new DeviceNotifyRecord { DEVICE_SN = log.DEVICE_SN });
+            var records = GetRecords(new NotificationRecord { DEVICE_SN = log.DEVICE_SN });
 
             //沒有設備通知記錄
-            if ((records as List<DeviceNotifyRecord>).Count == 0) return true;
+            if ((records as List<NotificationRecord>).Count == 0) return true;
 
             //最後通知時間
             var lastTime = records.OrderByDescending(x => x.NOTIFY_TIME).First().NOTIFY_TIME.Value;
@@ -56,10 +56,10 @@ namespace BusinessLogic
         /// <param name="log">簡易設備異常記錄</param>
         /// <param name="setting">通知設定</param>
         /// <returns></returns>
-        public bool CheckSameMessageInterval(APILog log, DeviceNotifySetting setting)
+        public bool CheckSameMessageInterval(APILog log, NotificationSetting setting)
         {
             //相同訊息通知記錄取得
-            var record = GetRecord(new DeviceNotifyRecord { DEVICE_SN = log.DEVICE_SN, RECORD_ID = log.LOG_SN });
+            var record = GetRecord(new NotificationRecord { DEVICE_SN = log.DEVICE_SN, LOG_SN = log.LOG_SN });
 
             if (record.NOTIFY_TIME == null) return true;
 
@@ -86,9 +86,9 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="record">實體資料</param>
         /// <returns></returns>
-        private DeviceNotifyRecord GetRecord(DeviceNotifyRecord record)
+        private NotificationRecord GetRecord(NotificationRecord record)
         {
-            var dao = GenericDataAccessFactory.CreateInstance<DeviceNotifyRecord>();
+            var dao = GenericDataAccessFactory.CreateInstance<NotificationRecord>();
             return dao.Get(new QueryOption(), record);
         }
 
@@ -97,9 +97,9 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="record">實體資料</param>
         /// <returns></returns>
-        private IEnumerable<DeviceNotifyRecord> GetRecords(DeviceNotifyRecord record)
+        private IEnumerable<NotificationRecord> GetRecords(NotificationRecord record)
         {
-            var dao = GenericDataAccessFactory.CreateInstance<DeviceNotifyRecord>();
+            var dao = GenericDataAccessFactory.CreateInstance<NotificationRecord>();
             return dao.GetList(new QueryOption(), record);
         }
     }

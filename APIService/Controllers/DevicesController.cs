@@ -1,7 +1,8 @@
 ﻿using APIService.Model;
 using BusinessLogic;
-using BusinessLogic.Event;
+using BusinessLogic.Notification;
 using ModelLibrary;
+using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System;
 using System.Net;
@@ -14,11 +15,8 @@ namespace APIService.Controllers
     /// </summary>
     public class DevicesController : ApiController
     {
-        //商業邏輯
-        private EventBusinessLogic _bll = new EventBusinessLogic();
-
         /// <summary>
-        /// 設備維修
+        /// 一般網路設備維修 API
         /// </summary>
         /// <param name="log">設備記錄</param>
         /// <returns></returns>
@@ -27,28 +25,28 @@ namespace APIService.Controllers
         {
             try
             {
-                //User Info
                 var login = GenericAPIService.GetUserInfo();
                 log.USERID = login.USERID;
 
-                //確認該設備狀態為異常
-                var condition = new Device { DEVICE_SN = log.DEVICE_SN, IS_MONITOR = "Y", DEVICE_STATUS = "E" };
-                var isError = GenericBusinessFactory.CreateInstance<Device>().IsExists(new QueryOption(), login, condition);
+                var isError = IsErrorDevice(log, login);
 
+                //設備是否異常
                 if (isError)
                 {
-                    //紀錄處理
-                    _bll.LogModify(log);
+                    var bll = new DeviceLog_BLL();
 
-                    //間隔通知
-                    //PushInterval(log);
-
-                    return Ok();
+                    bll.Modify(log.ACTION_TYPE, login, log);
                 }
                 else
                 {
                     return Content(HttpStatusCode.Forbidden, new APIResponse("無對應設備，或對應設備狀態不符"));
                 }
+
+                //是否通知
+                if (CheckNotification(log))
+                    PushNotification(log);
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -57,32 +55,47 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 間隔通知
+        /// 設備是否異常
         /// </summary>
         /// <param name="log">設備記錄</param>
-        private void PushInterval(Log log)
+        /// <param name="login">登入人員</param>
+        /// <returns></returns>
+        private bool IsErrorDevice(Log log, UserLogin login)
         {
-            //詳細記錄資訊取得
-            var detail = _bll.GetLogDetail(new LogDetail { LOG_SN = log.LOG_SN });
-            //通知服務
-            var payload = new IMPayload(EventType.Repair, detail);
-            var pushService = new PushService(payload);
+            var condition = new Device { DEVICE_SN = log.DEVICE_SN, IS_MONITOR = "Y", DEVICE_STATUS = "E" };
+            var isError = GenericBusinessFactory.CreateInstance<Device>().IsExists(new QueryOption(), login, condition);
+            return isError;
+        }
 
-            //設備資訊取得
-            var device = _bll.GetDevice(log.DEVICE_SN);
-            //訊息類型
-            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
-            //檢查結果
-            var check = false;
+        /// <summary>
+        /// 推送通知
+        /// </summary>
+        /// <param name="log">告警訊息</param>
+        private void PushNotification(Log log)
+        {
+            var notification = NotificationFactory.CreateInstance(DeviceType.Network);
+            var payload = notification.GetPayload(log.ACTION_TYPE, log.DEVICE_SN, log.LOG_SN);
+            var push = new PushService(payload);
 
-            if (check)
+            push.PushNotification();
+        }
+
+        /// <summary>
+        /// 告警通知是否存在
+        /// </summary>
+        /// <param name="log">告警訊息</param>
+        /// <returns></returns>
+        private bool CheckNotification(Log log)
+        {
+            var bll = new NotificationRecord_BLL();
+            var condition = new NotificationRecord
             {
-                //推送通知
-                pushService.PushNotification();
-                //通知記錄儲存
-                log.LOG_INFO = detail.ERROR_INFO + "Repair";
-                log.LOG_TIME = detail.REPAIR_TIME;
-            }
+                DEVICE_TYPE = "N",
+                DEVICE_SN = log.DEVICE_SN,
+                LOG_SN = log.LOG_SN
+            };
+
+            return bll.CheckNotification(condition);
         }
     }
 }

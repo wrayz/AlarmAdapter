@@ -43,8 +43,13 @@ namespace ModelLibrary
         public string RECORD_STATUS { get; set; }
 
         /// <summary>
-        /// 設備通知設定資訊
+        /// 通知設定
         /// </summary>
-        public DeviceNotifySetting NOTIFY_SETTING { get; set; }
+        public NotificationSetting NOTIFICATION_SETTING { get; set; }
+
+        /// <summary>
+        /// 通知記錄
+        /// </summary>
+        public List<NotificationRecord> NOTIFICATION_RECORDS { get; set; }
     }
 }

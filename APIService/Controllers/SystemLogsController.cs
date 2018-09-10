@@ -60,64 +60,64 @@ namespace APIService.Controllers
         /// </summary>
         /// <param name="simpleLog">異常記錄</param>
         /// <param name="device">設備資訊</param>
-        private void PushInterval(SimpleLog simpleLog, Device device)
-        {
-            //詳細記錄資訊取得
-            var detail = _bll.GetSimpleLog(new SimpleLog { LOG_SN = simpleLog.LOG_SN, DEVICE_SN = simpleLog.DEVICE_SN });
-            //通知服務
-            var payload = new SimplePayload(detail);
-            var pushService = new PushService(payload);
+        //private void PushInterval(SimpleLog simpleLog, Device device)
+        //{
+        //    //詳細記錄資訊取得
+        //    var detail = _bll.GetSimpleLog(new SimpleLog { LOG_SN = simpleLog.LOG_SN, DEVICE_SN = simpleLog.DEVICE_SN });
+        //    //通知服務
+        //    var payload = new SimplePayload(detail);
+        //    var pushService = new PushService(payload);
 
-            //設定間隔訊息類型
-            var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
-            //檢查結果
-            var check = false;
+        //    //設定間隔訊息類型
+        //    var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
+        //    //檢查結果
+        //    var check = false;
 
-            //異常記錄
-            var log = new APILog
-            {
-                DEVICE_SN = simpleLog.DEVICE_SN,
-                LOG_INFO = simpleLog.ERROR_INFO,
-                LOG_TIME = simpleLog.ERROR_TIME
-            };
+        //    //異常記錄
+        //    var log = new APILog
+        //    {
+        //        DEVICE_SN = simpleLog.DEVICE_SN,
+        //        LOG_INFO = simpleLog.ERROR_INFO,
+        //        LOG_TIME = simpleLog.ERROR_TIME
+        //    };
 
-            switch (messageType)
-            {
-                case MessageType.A:
-                    check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
-                    break;
+        //    switch (messageType)
+        //    {
+        //        case MessageType.A:
+        //            check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
+        //            break;
 
-                case MessageType.S:
-                    check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
-                    break;
-            }
+        //        case MessageType.S:
+        //            check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
+        //            break;
+        //    }
 
-            if (check)
-            {
-                //通知推送
-                pushService.PushNotification();
-                //通知記錄儲存
-                SaveRecord(simpleLog);
-            }
-        }
+        //    if (check)
+        //    {
+        //        //通知推送
+        //        pushService.PushNotification();
+        //        //通知記錄儲存
+        //        SaveRecord(simpleLog);
+        //    }
+        //}
 
         /// <summary>
         /// 儲存通知記錄
         /// </summary>
         /// <param name="log">設備記錄</param>
-        private void SaveRecord(SimpleLog simpleLog)
-        {
-            var bll = new DeviceNotifyRecord_BLL();
-            //通知記錄物件
-            var record = new DeviceNotifyRecord
-            {
-                DEVICE_SN = simpleLog.DEVICE_SN,
-                RECORD_ID = simpleLog.LOG_SN,
-                NOTIFY_TIME = simpleLog.ERROR_TIME
-            };
-            //通知記錄更新
-            bll.SaveNotifyRecord(record);
-        }
+        //private void SaveRecord(SimpleLog simpleLog)
+        //{
+        //    var bll = new DeviceNotifyRecord_BLL();
+        //    //通知記錄物件
+        //    var record = new DeviceNotifyRecord
+        //    {
+        //        DEVICE_SN = simpleLog.DEVICE_SN,
+        //        RECORD_ID = simpleLog.LOG_SN,
+        //        NOTIFY_TIME = simpleLog.ERROR_TIME
+        //    };
+        //    //通知記錄更新
+        //    bll.SaveNotifyRecord(record);
+        //}
 
         /// <summary>
         /// Log 取得

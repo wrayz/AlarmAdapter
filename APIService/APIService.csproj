@@ -138,7 +138,9 @@
     <Content Include="Entity\Device.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Entity\Log.config" />
+    <Content Include="Entity\Log.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Entity\Supplier.config" />
     <Content Include="Entity\User.config" />
     <Content Include="Entity\LogDetail.config">
@@ -174,8 +176,8 @@
     <Content Include="Entity\SimpleLog.config" />
     <Content Include="Entity\GroupService.config" />
     <Content Include="Entity\GroupDevice.config" />
-    <Content Include="Entity\DeviceNotifySetting.config" />
-    <Content Include="Entity\DeviceNotifyRecord.config" />
+    <Content Include="Entity\NotificationSetting.config" />
+    <Content Include="Entity\NotificationRecord.config" />
     <Content Include="Entity\AbuseIpDbSetting.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
