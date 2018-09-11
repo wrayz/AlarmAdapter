@@ -5,6 +5,7 @@ using ModelLibrary;
 using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -36,7 +37,9 @@ namespace APIService.Controllers
 
                 var content = Request.Content.ReadAsStringAsync().Result;
 
+#if Release
                 RecordRawData(content);
+#endif
 
                 _bll = new RecordLog_BLL();
                 _notification = NotificationFactory.CreateInstance(DeviceType.Digital);
@@ -89,7 +92,9 @@ namespace APIService.Controllers
                 {
                     var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
 
+#if Release
                     PushNotification(EventType.Error, deviceRecord);
+#endif
 
                     SaveNotifyRecord(deviceRecord);
                 }
@@ -228,7 +233,7 @@ namespace APIService.Controllers
             //log時間
             var time = DateTime.Now;
             //記錄檔
-            //File.AppendAllText("C:/EyesFree/DataLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), content));
+            File.AppendAllText("C:/EyesFree/DataLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), content));
         }
     }
 }

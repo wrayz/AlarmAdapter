@@ -87,7 +87,9 @@ namespace APIService.Controllers
 
             if (_notification.IsNotification(log.LOG_TIME, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
             {
-                //PushNotification(log);
+#if Release
+                PushNotification(log);
+#endif
                 SaveNotifyRecord(log);
             }
         }

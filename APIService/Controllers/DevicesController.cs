@@ -28,10 +28,8 @@ namespace APIService.Controllers
                 var login = GenericAPIService.GetUserInfo();
                 log.USERID = login.USERID;
 
-                var isError = IsErrorDevice(log, login);
-
                 //設備是否異常
-                if (isError)
+                if (IsErrorDevice(log.DEVICE_SN, login))
                 {
                     var bll = new DeviceLog_BLL();
 
@@ -57,14 +55,13 @@ namespace APIService.Controllers
         /// <summary>
         /// 設備是否異常
         /// </summary>
-        /// <param name="log">設備記錄</param>
+        /// <param name="deviceSn">設備編號</param>
         /// <param name="login">登入人員</param>
         /// <returns></returns>
-        private bool IsErrorDevice(Log log, UserLogin login)
+        private bool IsErrorDevice(string deviceSn, UserLogin login)
         {
-            var condition = new Device { DEVICE_SN = log.DEVICE_SN, IS_MONITOR = "Y", DEVICE_STATUS = "E" };
-            var isError = GenericBusinessFactory.CreateInstance<Device>().IsExists(new QueryOption(), login, condition);
-            return isError;
+            var condition = new Device { DEVICE_SN = deviceSn, DEVICE_TYPE = "N", IS_MONITOR = "Y", DEVICE_STATUS = "E" };
+            return GenericBusinessFactory.CreateInstance<Device>().IsExists(new QueryOption(), login, condition);
         }
 
         /// <summary>
