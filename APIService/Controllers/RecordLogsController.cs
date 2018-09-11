@@ -16,9 +16,6 @@ namespace APIService.Controllers
     /// </summary>
     public class RecordLogsController : ApiController
     {
-        //商業邏輯
-        private RecordLog_BLL _bll = new RecordLog_BLL();
-
         /// <summary>
         /// 數據設備記錄更新
         /// </summary>
@@ -29,15 +26,16 @@ namespace APIService.Controllers
         {
             try
             {
-                if (LicenseLogic.Token == null)
-                    throw new HttpRequestException("License key 無效，請檢查License Key");
+                CheckLicense();
 
                 var user = GenericAPIService.GetUserInfo();
 
                 if (IsErrorDevice(log.DEVICE_SN, user))
                 {
                     log.USERID = user.USERID;
-                    _bll.ModifyRecordLog("Repair", log);
+
+                    var bll = new RecordLog_BLL();
+                    bll.ModifyRecordLog("Repair", log);
 
                     if (CheckNotification(log))
                     {
@@ -99,6 +97,21 @@ namespace APIService.Controllers
             var push = new PushService(payload);
 
             push.PushNotification();
+        }
+
+        /// <summary>
+        /// License 檢查
+        /// </summary>
+        private void CheckLicense()
+        {
+            if (LicenseLogic.Token == null)
+                throw new HttpRequestException("License key 無效，請檢查License Key");
+
+            var token = LicenseLogic.Token;
+            var time = DateTime.Now;
+
+            if (!(time >= token.StartDate && time <= token.EndDate))
+                throw new HttpRequestException("License key 已過期，請檢查License Key");
         }
     }
 }
