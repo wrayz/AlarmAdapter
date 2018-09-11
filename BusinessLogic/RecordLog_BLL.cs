@@ -1,8 +1,8 @@
 ﻿using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Generic;
+using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -16,10 +16,12 @@ namespace BusinessLogic
         /// <summary>
         /// 資料轉換
         /// </summary>
-        /// <param name="dict">原始資料</param>
+        /// <param name="content">原始資料</param>
         /// <returns></returns>
-        public IEnumerable<Record> DataConvert(Dictionary<string, string> dict)
+        public IEnumerable<Record> ParseData(string content)
         {
+            var dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
+
             //監控欄位數
             const int COLUMN_NUM = 2;
             //日期、時間所占欄位數
@@ -67,6 +69,36 @@ namespace BusinessLogic
         }
 
         /// <summary>
+        /// 是否異常
+        /// </summary>
+        /// <param name="record">告警訊息</param>
+        /// <param name="limit">告警限制</param>
+        /// <param name="recordStatus">設備記錄狀態</param>
+        /// <returns></returns>
+        public bool IsError(Record record, RecordLimit limit, string recordStatus)
+        {
+            return
+                ( ( (record.RECORD_TEMPERATURE > limit.MAX_TEMPERATURE_VAL || record.RECORD_TEMPERATURE < limit.MIN_TEMPERATURE_VAL) ||
+                    (record.RECORD_HUMIDITY > limit.MAX_HUMIDITY_VAL || record.RECORD_HUMIDITY < limit.MIN_HUMIDITY_VAL)
+                  ) && recordStatus == "N"
+                );
+        }
+
+        /// <summary>
+        /// 是否正常 
+        /// </summary>
+        /// <param name="record">告警訊息</param>
+        /// <param name="limit">告警限制</param>
+        /// <param name="recordStatus">設備記錄狀態</param>
+        /// <returns></returns>
+        public bool IsRecover(Record record, RecordLimit limit, string recordStatus)
+        {
+            return ( (record.RECORD_TEMPERATURE <= limit.MAX_TEMPERATURE_VAL && record.RECORD_TEMPERATURE >= limit.MIN_TEMPERATURE_VAL) &&
+                     (record.RECORD_HUMIDITY <= limit.MAX_HUMIDITY_VAL && record.RECORD_HUMIDITY >= limit.MIN_HUMIDITY_VAL) &&
+                     (recordStatus == "E" || recordStatus == "R"));
+        }
+
+        /// <summary>
         /// 監控參數取得
         /// </summary>
         /// <returns></returns>
@@ -74,20 +106,6 @@ namespace BusinessLogic
         {
             var dao = GenericDataAccessFactory.CreateInstance<RecordLimit>();
             return dao.Get(new QueryOption());
-        }
-
-        /// <summary>
-        /// 設備資料取得
-        /// </summary>
-        /// <param name="sn">設備編號</param>
-        /// <returns></returns>
-        public Device GetDevice(string sn)
-        {
-            var dao = GenericDataAccessFactory.CreateInstance<Device>();
-            //查詢條件
-            var condition = new Device { DEVICE_SN = sn };
-            //設備資料
-            return dao.Get(new QueryOption { Relation = true }, condition);
         }
 
         /// <summary>
@@ -109,20 +127,23 @@ namespace BusinessLogic
         }
 
         /// <summary>
-        /// 設備資料取得
+        /// 數據記錄資料新增
         /// </summary>
-        /// <param name="record">數據記錄資料</param>
-        /// <returns></returns>
-        public Device GetDeviceById(Record record)
+        /// <param name="record">數據記錄</param>
+        public void InsertRecord(Record record)
         {
-            var dao = GenericDataAccessFactory.CreateInstance<Device>();
-            var data = new Device
-            {
-                DEVICE_ID = record.DEVICE_ID,
-                DEVICE_TYPE = "D",
-                IS_MONITOR = "Y"
-            };
-            return dao.Get(new QueryOption(), data);
+            var dao = GenericDataAccessFactory.CreateInstance<Record>();
+            dao.Modify("Insert", record);
+        }
+
+        /// <summary>
+        /// 數據異常紀錄物件處理
+        /// </summary>
+        /// <param name="type">處理類型</param>
+        /// <param name="data">實體資料</param>
+        public void ModifyRecordLog(string type, RecordLog data)
+        {
+            _dao.Modify(type, data);
         }
 
         /// <summary>
@@ -130,7 +151,7 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="sn">記錄編號</param>
         /// <returns></returns>
-        public RecordLog GetRecordLog(int? sn)
+        public RecordLog GetRecordLog(int sn)
         {
             //查詢條件
             var option = new QueryOption
@@ -142,68 +163,6 @@ namespace BusinessLogic
             var recordLog = new RecordLog { LOG_SN = sn };
 
             return _dao.Get(option, recordLog);
-        }
-
-        /// <summary>
-        /// 數據設備記錄資料取得
-        /// </summary>
-        /// <param name="sn">設備編號</param>
-        /// <returns></returns>
-        public DeviceRecord GetDeviceRecord(string sn)
-        {
-            var dao = GenericDataAccessFactory.CreateInstance<DeviceRecord>();
-            return dao.Get(new QueryOption(), new DeviceRecord { DEVICE_SN = sn });
-        }
-
-        /// <summary>
-        /// 數據記錄資料新增
-        /// </summary>
-        /// <param name="record">數據記錄</param>
-        public void AddRecord(Record record)
-        {
-            var dao = GenericDataAccessFactory.CreateInstance<Record>();
-            dao.Modify("Insert", record);
-        }
-
-        /// <summary>
-        /// 數據異常紀錄物件處理
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="recordLog"></param>
-        public void ModifyRecordLog(string type, RecordLog recordLog)
-        {
-            var dao = GenericDataAccessFactory.CreateInstance<RecordLog>();
-            dao.Modify(type, recordLog);
-        }
-
-        /// <summary>
-        /// 是否需要通知
-        /// </summary>
-        /// <param name="record">數據記錄</param>
-        /// <returns></returns>
-        public bool CheckNotifyInterval(Record record)
-        {
-            var device = GetDevice(record.DEVICE_SN);
-            var records = GetRecords(new NotificationRecord { DEVICE_SN = record.DEVICE_SN });
-
-            if ((records as List<NotificationRecord>).Count == 0) return true;
-
-            //最後通知時間
-            var lastTime = records.OrderByDescending(x => x.NOTIFY_TIME).First().NOTIFY_TIME.Value;
-            var nextTime = lastTime.AddMinutes((double)device.NOTIFICATION_SETTING.MUTE_INTERVAL);
-
-            return record.RECORD_TIME > nextTime;
-        }
-
-        /// <summary>
-        /// 通知記錄清單取得
-        /// </summary>
-        /// <param name="deviceNotifyRecord"></param>
-        /// <returns></returns>
-        private IEnumerable<NotificationRecord> GetRecords(NotificationRecord deviceNotifyRecord)
-        {
-            var dao = GenericDataAccessFactory.CreateInstance<NotificationRecord>();
-            return dao.GetList(new QueryOption(), deviceNotifyRecord);
         }
     }
 }
