@@ -145,24 +145,5 @@ namespace BusinessLogic
         {
             _dao.Modify(type, data);
         }
-
-        /// <summary>
-        /// 數據記錄資料取得
-        /// </summary>
-        /// <param name="sn">記錄編號</param>
-        /// <returns></returns>
-        public RecordLog GetRecordLog(int sn)
-        {
-            //查詢條件
-            var option = new QueryOption
-            {
-                Plan = new QueryPlan { Join = "Payload" }
-            };
-
-            //資料
-            var recordLog = new RecordLog { LOG_SN = sn };
-
-            return _dao.Get(option, recordLog);
-        }
     }
 }

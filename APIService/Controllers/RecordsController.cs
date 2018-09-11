@@ -27,7 +27,7 @@ namespace APIService.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public IHttpActionResult PostData()
+        public IHttpActionResult Post()
         {
             try
             {
@@ -84,15 +84,26 @@ namespace APIService.Controllers
             if (_bll.IsError(record, limit, device.RECORD_STATUS))
             {
                 SaveErrorRecordLog(record);
+
                 var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
-                PushNotification("Error", deviceRecord);
+
+                if (_notification.IsNotification(record.RECORD_TIME, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
+                {
+                    PushNotification("Error", deviceRecord);
+                    SaveNotifyRecord(deviceRecord);
+                }
             }
 
             if (_bll.IsRecover(record, limit, device.RECORD_STATUS))
             {
                 SaveRecoverRecordLog(record);
+
                 var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
-                PushNotification("Recover", deviceRecord);
+
+                if (CheckNotification(deviceRecord))
+                {
+                    PushNotification("Recover", deviceRecord);
+                }
             }
         }
 
@@ -126,6 +137,42 @@ namespace APIService.Controllers
             };
 
             _bll.ModifyRecordLog("Recover", data);
+        }
+
+        /// <summary>
+        /// 通知記錄儲存
+        /// </summary>
+        /// <param name="deviceRecord">設備對應告警記錄</param>
+        private void SaveNotifyRecord(DeviceRecord deviceRecord)
+        {
+            var bll = new NotificationRecord_BLL();
+
+            var data = new NotificationRecord
+            {
+                DEVICE_TYPE = "D",
+                DEVICE_SN = deviceRecord.DEVICE_SN,
+                LOG_SN = deviceRecord.LOG_SN
+            };
+
+            bll.SaveNotification(data);
+        }
+
+        /// <summary>
+        /// 告警通知是否存在
+        /// </summary>
+        /// <param name="deviceRecord">設備對應告警記錄</param>
+        /// <returns></returns>
+        private bool CheckNotification(DeviceRecord deviceRecord)
+        {
+            var bll = new NotificationRecord_BLL();
+            var condition = new NotificationRecord
+            {
+                DEVICE_TYPE = "D",
+                DEVICE_SN = deviceRecord.DEVICE_SN,
+                LOG_SN = deviceRecord.LOG_SN
+            };
+
+            return bll.CheckNotification(condition);
         }
 
         /// <summary>
@@ -167,7 +214,7 @@ namespace APIService.Controllers
                 IS_MONITOR = "Y"
             };
 
-            return bll.Get(new QueryOption(), new UserLogin(), condition);
+            return bll.Get(option, new UserLogin(), condition);
         }
 
         /// <summary>
