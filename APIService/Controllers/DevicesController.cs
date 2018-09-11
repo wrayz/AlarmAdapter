@@ -74,7 +74,8 @@ namespace APIService.Controllers
         private void PushNotification(Log log)
         {
             var notification = NotificationFactory.CreateInstance(DeviceType.Network);
-            var payload = notification.GetPayload(log.ACTION_TYPE, log.DEVICE_SN, log.LOG_SN);
+            var type = (EventType)Enum.Parse(typeof(EventType), log.ACTION_TYPE);
+            var payload = notification.GetPayload(type, log.DEVICE_SN, log.LOG_SN);
             var push = new PushService(payload);
 
             push.PushNotification();

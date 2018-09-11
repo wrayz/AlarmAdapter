@@ -37,7 +37,7 @@ namespace BusinessLogic.Notification
         /// <param name="deviceSn">設備編號</param>
         /// <param name="logSn">記錄編號</param>
         /// <returns></returns>
-        public Payload GetPayload(string type, string deviceSn, int? logSn)
+        public Payload GetPayload(EventType type, string deviceSn, int? logSn)
         {
             //紀錄詳細資料處理物件
             var dao = GenericDataAccessFactory.CreateInstance<LogDetail>();
@@ -48,9 +48,7 @@ namespace BusinessLogic.Notification
 
             var logDetail = dao.Get(option, condition);
 
-            var eventType = (EventType)Enum.Parse(typeof(EventType), type);
-
-            return new IMPayload(eventType, logDetail);
+            return new IMPayload(type, logDetail);
         }
     }
 }

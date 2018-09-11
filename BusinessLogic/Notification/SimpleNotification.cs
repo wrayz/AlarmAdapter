@@ -6,7 +6,7 @@ namespace BusinessLogic.Notification
 {
     public class SimpleNotification : INotification
     {
-        public Payload GetPayload(string type, string deviceSn, int? logSn)
+        public Payload GetPayload(EventType type, string deviceSn, int? logSn)
         {
             throw new NotImplementedException();
         }

@@ -85,11 +85,12 @@ namespace APIService.Controllers
             {
                 SaveErrorRecordLog(record);
 
-                var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
-
                 if (_notification.IsNotification(record.RECORD_TIME, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
                 {
-                    PushNotification("Error", deviceRecord);
+                    var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
+
+                    PushNotification(EventType.Error, deviceRecord);
+
                     SaveNotifyRecord(deviceRecord);
                 }
             }
@@ -102,7 +103,7 @@ namespace APIService.Controllers
 
                 if (CheckNotification(deviceRecord))
                 {
-                    PushNotification("Recover", deviceRecord);
+                    PushNotification(EventType.Recover, deviceRecord);
                 }
             }
         }
@@ -178,8 +179,9 @@ namespace APIService.Controllers
         /// <summary>
         /// 推送通知
         /// </summary>
-        /// <param name="log">告警訊息</param>
-        private void PushNotification(string type, DeviceRecord deviceRecord)
+        /// <param name="type">事件類型</param>
+        /// <param name="deviceRecord">設備對應告警記錄</param>
+        private void PushNotification(EventType type, DeviceRecord deviceRecord)
         {
             var payload = _notification.GetPayload(type, deviceRecord.DEVICE_SN, deviceRecord.LOG_SN);
             var push = new PushService(payload);

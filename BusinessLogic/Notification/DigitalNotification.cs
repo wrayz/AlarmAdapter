@@ -9,7 +9,14 @@ namespace BusinessLogic.Notification
 {
     public class DigitalNotification : INotification
     {
-        public Payload GetPayload(string type, string deviceSn, int? logSn)
+        /// <summary>
+        /// 通知物件取得
+        /// </summary>
+        /// <param name="type">事件類型</param>
+        /// <param name="deviceSn">設備編號</param>
+        /// <param name="logSn">記錄編號</param>
+        /// <returns></returns>
+        public Payload GetPayload(EventType type, string deviceSn, int? logSn)
         {
             //紀錄詳細資料處理物件
             var dao = GenericDataAccessFactory.CreateInstance<RecordLog>();
@@ -20,9 +27,7 @@ namespace BusinessLogic.Notification
 
             var recordLog = dao.Get(option, condition);
 
-            var eventType = (EventType)Enum.Parse(typeof(EventType), type);
-
-            return new RecordPayload(eventType, recordLog);
+            return new RecordPayload(type, recordLog);
         }
 
         /// <summary>
