@@ -1,9 +1,14 @@
 ﻿using APIService.Model;
 using BusinessLogic;
+using BusinessLogic.Notification;
 using ModelLibrary;
+using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 
@@ -11,7 +16,7 @@ namespace APIService.Controllers
 {
     public class SimpleLogsController : ApiController
     {
-        private SimpleLog_BLL _bll = new SimpleLog_BLL();
+        private Device _device;
 
         /// <summary>
         /// LogMaster 紀錄
@@ -19,53 +24,34 @@ namespace APIService.Controllers
         /// <param name="log"></param>
         /// <returns></returns>
         [HttpPost]
-        public IHttpActionResult PostData(APILog log)
+        public IHttpActionResult Post(APILog log)
         {
             try
             {
-                if (LicenseLogic.Token == null)
-                {
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 無效，請檢查License Key"));
-                }
+                CheckLicense(log.LOG_TIME);
 
-                //log時間
-                var time = DateTime.Now;
-                //記錄檔
-                //File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
-
-                //設備ID檢查
                 if (string.IsNullOrEmpty(log.DEVICE_ID))
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("資料未包含設備ID，請檢查資料內容"));
+                    throw new HttpRequestException("資料未包含設備ID，請檢查資料內容");
 
-                //對應設備取得
-                var device = GetDevice(log.DEVICE_ID);
-                log.DEVICE_SN = device.DEVICE_SN;
-
-                if (string.IsNullOrEmpty(device.DEVICE_SN))
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("無對應設備，請確認設備為對應的類型[簡易數據設備]"));
-
-                var simpleLog = new SimpleLog
-                {
-                    DEVICE_SN = device.DEVICE_SN,
-                    ERROR_TIME = log.LOG_TIME,
-                    ERROR_INFO = log.LOG_INFO
-                };
-
-                //紀錄新增
-                var insertedLog = _bll.ModifyLog(simpleLog, "L");
-                //記錄編號
-                log.LOG_SN = insertedLog.LOG_SN;
+                SetDevice(log.DEVICE_ID);
+#if Release
+                RecordRawData(log);
+#endif
+                var simpleLog = SaveLog(log);
 
                 //待查黑名單取得
                 var blockIP = GetBlockIP(log.LOG_INFO);
                 //是否回報黑名單
                 if (new AbuseIpDbService(blockIP).IsReported())
                 {
-                    //間隔通知
-                    //PushInterval(log, device);
+                    PushNotification(simpleLog);
                 }
 
                 return Ok();
+            }
+            catch (HttpRequestException ex)
+            {
+                return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
@@ -73,15 +59,74 @@ namespace APIService.Controllers
             }
         }
 
+        private void PushNotification(SimpleLog simpleLog)
+        {
+            var notification = NotificationFactory.CreateInstance(DeviceType.Simple);
+            var payload = notification.GetPayload(EventType.Error, _device.DEVICE_SN, simpleLog.LOG_SN);
+
+            if (notification.IsNotification(simpleLog.ERROR_TIME, _device.NOTIFICATION_SETTING, _device.NOTIFICATION_RECORDS))
+            {
+                var service = new PushService(payload);
+
+                service.PushNotification();
+
+                SaveNotification(simpleLog);
+            }
+        }
+
         /// <summary>
-        /// 設備資料取得
+        /// 通知記錄儲存
+        /// </summary>
+        /// <param name="simpleLog">告警記錄</param>
+        private void SaveNotification(SimpleLog simpleLog)
+        {
+            var bll = new NotificationRecord_BLL();
+
+            var data = new NotificationRecord
+            {
+                DEVICE_TYPE = "S",
+                DEVICE_SN = _device.DEVICE_SN,
+                LOG_SN = simpleLog.LOG_SN
+            };
+
+            bll.SaveNotification(data);
+        }
+
+        /// <summary>
+        /// 告警記錄儲存
+        /// </summary>
+        /// <param name="log">告警記錄</param>
+        /// <returns></returns>
+        private SimpleLog SaveLog(APILog log)
+        {
+            var bll = new SimpleLog_BLL();
+
+            var data = new SimpleLog
+            {
+                DEVICE_SN = _device.DEVICE_SN,
+                ERROR_TIME = log.LOG_TIME,
+                ERROR_INFO = log.LOG_INFO
+            };
+
+            //紀錄新增
+            return bll.ModifyLog(data, "L");
+        }
+
+        /// <summary>
+        /// 設備資料設置
         /// </summary>
         /// <param name="id">設備ID</param>
         /// <returns></returns>
-        private Device GetDevice(string id)
+        private void SetDevice(string id)
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
-            return bll.Get(new QueryOption { Relation = true }, new UserLogin(), new Device { DEVICE_ID = id, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
+            var option = new QueryOption { Relation = true, Plan = new QueryPlan { Join = "Records" } };
+            var condition = new Device { DEVICE_ID = id, DEVICE_TYPE = "S", IS_MONITOR = "Y" };
+
+            _device = bll.Get(option, new UserLogin(), condition);
+
+            if (string.IsNullOrEmpty(_device.DEVICE_SN))
+                throw new HttpRequestException("無對應設備，請確認設備為對應的類型[簡易數據設備]");
         }
 
         /// <summary>
@@ -96,58 +141,30 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 間隔通知
+        /// 原始資料儲存
         /// </summary>
-        /// <param name="log">異常記錄</param>
-        /// <param name="device">設備資訊</param>
-        //private void PushInterval(APILog log, Device device)
-        //{
-        //    //詳細記錄資訊取得
-        //    var detail = _bll.GetSimpleLog(new SimpleLog { LOG_SN = log.LOG_SN, DEVICE_SN = log.DEVICE_SN });
-        //    //通知服務
-        //    var payload = new SimplePayload(detail);
-        //    var pushService = new PushService(payload);
-
-        //    //檢查結果
-        //    var check = false;
-        //    //設定間隔訊息類型
-        //    var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
-
-        //    switch (messageType)
-        //    {
-        //        case MessageType.A:
-        //            check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
-        //            break;
-
-        //        case MessageType.S:
-        //            check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
-        //            break;
-        //    }
-
-        //    if (check)
-        //    {
-        //        //通知
-        //        pushService.PushNotification();
-        //        //通知記錄儲存
-        //        SaveRecord(log);
-        //    }
-        //}
+        /// <param name="log">記錄資料</param>
+        private void RecordRawData(APILog log)
+        {
+            //log時間
+            var time = DateTime.Now;
+            //記錄檔
+            File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
+        }
 
         /// <summary>
-        /// 儲存通知記錄
+        /// License 檢查
         /// </summary>
-        /// <param name="log">設備記錄</param>
-        //private void SaveRecord(APILog log)
-        //{
-        //    var bll = new DeviceNotifyRecord_BLL();
-        //    //通知記錄物件
-        //    var record = new DeviceNotifyRecord
-        //    {
-        //        DEVICE_SN = log.DEVICE_SN,
-        //        RECORD_ID = log.LOG_SN
-        //    };
-        //    //通知記錄更新
-        //    bll.SaveNotifyRecord(record);
-        //}
+        /// <param name="logtime">告警時間</param>
+        private static void CheckLicense(DateTime? logtime)
+        {
+            if (LicenseLogic.Token == null)
+                throw new HttpRequestException("License key 無效，請檢查License Key");
+
+            var token = LicenseLogic.Token;
+
+            if (!(logtime >= token.StartDate && logtime <= token.EndDate))
+                throw new HttpRequestException("License key 已過期，請檢查License Key");
+        }
     }
 }
