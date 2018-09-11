@@ -109,24 +109,6 @@ namespace BusinessLogic
         }
 
         /// <summary>
-        /// 設備資料取得
-        /// </summary>
-        /// <param name="sn">設備編號</param>
-        /// <returns></returns>
-        public Device GetDeviceBySn(string sn)
-        {
-            var dao = GenericDataAccessFactory.CreateInstance<Device>();
-            var data = new Device
-            {
-                DEVICE_SN = sn,
-                DEVICE_TYPE = "D",
-                IS_MONITOR = "Y",
-                RECORD_STATUS = "E"
-            };
-            return dao.Get(new QueryOption(), data);
-        }
-
-        /// <summary>
         /// 數據記錄資料新增
         /// </summary>
         /// <param name="record">數據記錄</param>

@@ -1,8 +1,12 @@
 ﻿using APIService.Model;
 using BusinessLogic;
+using BusinessLogic.Notification;
 using ModelLibrary;
+using ModelLibrary.Enumerate;
+using ModelLibrary.Generic;
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace APIService.Controllers
@@ -26,30 +30,19 @@ namespace APIService.Controllers
             try
             {
                 if (LicenseLogic.Token == null)
-                {
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 無效，請檢查License Key"));
-                }
+                    throw new HttpRequestException("License key 無效，請檢查License Key");
 
-                var token = LicenseLogic.Token;
-                
-                //登入資訊
                 var user = GenericAPIService.GetUserInfo();
 
-                //對應設備取得
-                var device = _bll.GetDeviceBySn(log.DEVICE_SN);
-
-                if (!string.IsNullOrEmpty(device.DEVICE_SN))
+                if (IsErrorDevice(log.DEVICE_SN, user))
                 {
-                    //紀錄資料
-                    var data = new RecordLog
-                    {
-                        LOG_SN = log.LOG_SN,
-                        DEVICE_SN = log.DEVICE_SN,
-                        USERID = user.USERID
-                    };
-                    _bll.ModifyRecordLog("Repair", data);
+                    log.USERID = user.USERID;
+                    _bll.ModifyRecordLog("Repair", log);
 
-                    //間隔通知
+                    if (CheckNotification(log))
+                    {
+                        PushNotification(EventType.Repair, log);
+                    }
 
                     return Ok();
                 }
@@ -62,6 +55,50 @@ namespace APIService.Controllers
             {
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
+        }
+
+        /// <summary>
+        /// 設備是否異常
+        /// </summary>
+        /// <param name="deviceSn">設備編號</param>
+        /// <param name="login">登入人員</param>
+        /// <returns></returns>
+        private bool IsErrorDevice(string deviceSn, UserLogin login)
+        {
+            var condition = new Device { DEVICE_SN = deviceSn, DEVICE_TYPE = "D", IS_MONITOR = "Y", RECORD_STATUS = "E" };
+            return GenericBusinessFactory.CreateInstance<Device>().IsExists(new QueryOption(), login, condition);
+        }
+
+        /// <summary>
+        /// 告警通知是否存在
+        /// </summary>
+        /// <param name="log">記錄資訊</param>
+        /// <returns></returns>
+        private bool CheckNotification(RecordLog log)
+        {
+            var bll = new NotificationRecord_BLL();
+            var condition = new NotificationRecord
+            {
+                DEVICE_TYPE = "D",
+                DEVICE_SN = log.DEVICE_SN,
+                LOG_SN = log.LOG_SN
+            };
+
+            return bll.CheckNotification(condition);
+        }
+
+        /// <summary>
+        /// 推送通知
+        /// </summary>
+        /// <param name="type">事件類型</param>
+        /// <param name="log">記錄資料</param>
+        private void PushNotification(EventType type, RecordLog log)
+        {
+            var notification = NotificationFactory.CreateInstance(DeviceType.Digital);
+            var payload = notification.GetPayload(type, log.DEVICE_SN, log.LOG_SN);
+            var push = new PushService(payload);
+
+            push.PushNotification();
         }
     }
 }
