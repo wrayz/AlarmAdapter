@@ -1,9 +1,13 @@
 ﻿using APIService.Model;
 using BusinessLogic;
+using BusinessLogic.Notification;
 using ModelLibrary;
+using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System;
+using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 
@@ -14,7 +18,7 @@ namespace APIService.Controllers
     /// </summary>
     public class SystemLogsController : ApiController
     {
-        private SimpleLog_BLL _bll = new SimpleLog_BLL();
+        private Device _device;
 
         /// <summary>
         /// SystemLogs 紀錄
@@ -26,28 +30,30 @@ namespace APIService.Controllers
             try
             {
                 if (LicenseLogic.Token == null)
-                {
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("License key 無效，請檢查License Key"));
-                }
+                    throw new HttpRequestException("License key 無效，請檢查License Key");
 
+                //原始資料
                 var content = Request.Content.ReadAsStringAsync().Result;
+                //來源 IP
+                var sourceIp = GetSourceIP();
+#if Release
+                RecordRawData(content, sourceIp);
+#endif
+                //資料解析
+                var data = ParseData(content, sourceIp);
+                //商業邏輯
+                var bll = new SimpleLog_BLL();
+                //儲存
+                var simpleLog = bll.ModifyLog(data, "C");
 
-                //Log 取得
-                var log = GetLog(content);
-
-                if (log == null)
-                    return Ok();
-
-                //紀錄新增
-                var insertedLog = _bll.ModifyLog(log, "C");
-                log.LOG_SN = insertedLog.LOG_SN;
-                //對應設備取得
-                var device = GetDevice(new Device { DEVICE_SN = log.DEVICE_SN, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
-
-                //間隔通知
-                //PushInterval(log, device);
+                //通知
+                PushNotification(simpleLog);
 
                 return Ok();
+            }
+            catch (HttpRequestException ex)
+            {
+                return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
@@ -56,108 +62,87 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 間隔通知
+        /// 告警通知
         /// </summary>
-        /// <param name="simpleLog">異常記錄</param>
-        /// <param name="device">設備資訊</param>
-        //private void PushInterval(SimpleLog simpleLog, Device device)
-        //{
-        //    //詳細記錄資訊取得
-        //    var detail = _bll.GetSimpleLog(new SimpleLog { LOG_SN = simpleLog.LOG_SN, DEVICE_SN = simpleLog.DEVICE_SN });
-        //    //通知服務
-        //    var payload = new SimplePayload(detail);
-        //    var pushService = new PushService(payload);
-
-        //    //設定間隔訊息類型
-        //    var messageType = (MessageType)Enum.Parse(typeof(MessageType), device.NOTIFY_SETTING.MESSAGE_TYPE);
-        //    //檢查結果
-        //    var check = false;
-
-        //    //異常記錄
-        //    var log = new APILog
-        //    {
-        //        DEVICE_SN = simpleLog.DEVICE_SN,
-        //        LOG_INFO = simpleLog.ERROR_INFO,
-        //        LOG_TIME = simpleLog.ERROR_TIME
-        //    };
-
-        //    switch (messageType)
-        //    {
-        //        case MessageType.A:
-        //            check = _bll.CheckAllMessageInterval(log, device.NOTIFY_SETTING);
-        //            break;
-
-        //        case MessageType.S:
-        //            check = _bll.CheckSameMessageInterval(log, device.NOTIFY_SETTING);
-        //            break;
-        //    }
-
-        //    if (check)
-        //    {
-        //        //通知推送
-        //        pushService.PushNotification();
-        //        //通知記錄儲存
-        //        SaveRecord(simpleLog);
-        //    }
-        //}
-
-        /// <summary>
-        /// 儲存通知記錄
-        /// </summary>
-        /// <param name="log">設備記錄</param>
-        //private void SaveRecord(SimpleLog simpleLog)
-        //{
-        //    var bll = new DeviceNotifyRecord_BLL();
-        //    //通知記錄物件
-        //    var record = new DeviceNotifyRecord
-        //    {
-        //        DEVICE_SN = simpleLog.DEVICE_SN,
-        //        RECORD_ID = simpleLog.LOG_SN,
-        //        NOTIFY_TIME = simpleLog.ERROR_TIME
-        //    };
-        //    //通知記錄更新
-        //    bll.SaveNotifyRecord(record);
-        //}
-
-        /// <summary>
-        /// Log 取得
-        /// </summary>
-        /// <param name="plain">原始內容</param>
-        /// <returns></returns>
-        private SimpleLog GetLog(string plain)
+        /// <param name="simpleLog"></param>
+        private void PushNotification(SimpleLog simpleLog)
         {
-            //log訊息
-            var info = plain.Substring(plain.IndexOf("=") + 1);
+            var notification = NotificationFactory.CreateInstance(DeviceType.Simple);
+            var payload = notification.GetPayload(EventType.Error, _device.DEVICE_SN, simpleLog.LOG_SN);
 
-            //來源IP
-            var source = GetSourceIP();
-            //log時間
-            var time = DateTime.Now;
-            //記錄檔
-            //File.AppendAllText("C:/EyesFree/CameraLog.txt", string.Format("{0}, Source: {1}, Log: {2}\n", time.ToString(), source, plain));
+            if (notification.IsNotification(simpleLog.ERROR_TIME, _device.NOTIFICATION_SETTING, _device.NOTIFICATION_RECORDS))
+            {
+                var service = new PushService(payload);
 
-            var device = GetDevice(new Device { DEVICE_ID = source, DEVICE_TYPE = "S", IS_MONITOR = "Y" });
+                service.PushNotification();
+                SaveNotification(simpleLog);
+            }
+        }
 
-            if (string.IsNullOrEmpty(device.DEVICE_SN))
-                return null;
+        /// <summary>
+        /// 通知記錄儲存
+        /// </summary>
+        /// <param name="simpleLog">告警記錄</param>
+        private void SaveNotification(SimpleLog simpleLog)
+        {
+            var bll = new NotificationRecord_BLL();
+            var data = new NotificationRecord
+            {
+                DEVICE_TYPE = "S",
+                DEVICE_SN = _device.DEVICE_SN,
+                LOG_SN = simpleLog.LOG_SN
+            };
+
+            bll.SaveNotification(data);
+        }
+
+        /// <summary>
+        /// 資料解析
+        /// </summary>
+        /// <param name="content">原始內容</param>
+        /// <returns></returns>
+        private SimpleLog ParseData(string content, string ip)
+        {
+            //原始訊息
+            var info = content.Substring(content.IndexOf("=") + 1);
+            //設備資訊設置
+            SetDevice(ip);
+
+            if (string.IsNullOrEmpty(_device.DEVICE_SN)) throw new HttpRequestException("無對應設備");
 
             return new SimpleLog
             {
-                DEVICE_SN = device.DEVICE_SN,
-                ERROR_TIME = time,
+                DEVICE_SN = _device.DEVICE_SN,
+                ERROR_TIME = DateTime.Now,
                 ERROR_INFO = info
             };
         }
 
         /// <summary>
-        /// 設備資訊取得
+        /// 設備資訊設置
         /// </summary>
-        /// <param name="device">實體資料</param>
+        /// <param name="ip">設備 IP</param>
         /// <returns></returns>
-        private Device GetDevice(Device device)
+        private void SetDevice(string ip)
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
-            return bll.Get(new QueryOption { Relation = true }, new UserLogin(), device);
+            var option = new QueryOption { Relation = true, Plan = new QueryPlan { Join = "Records" } };
+            var condition = new Device { DEVICE_TYPE = "S", DEVICE_ID = ip, IS_MONITOR = "Y" };
+
+            _device = bll.Get(option, new UserLogin(), condition);
+        }
+
+        /// <summary>
+        /// 原始資料儲存
+        /// </summary>
+        /// <param name="content">原始資料</param>
+        /// <param name="ip">來源 IP</param>
+        private void RecordRawData(string content, string ip)
+        {
+            //log時間
+            var time = DateTime.Now;
+            //記錄檔
+            File.AppendAllText("C:/EyesFree/CameraLog.txt", string.Format("{0}, Source: {1}, Log: {2}\n", time.ToString(), ip, content));
         }
 
         /// <summary>

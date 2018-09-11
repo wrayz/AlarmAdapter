@@ -111,6 +111,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DeviceLogsController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\RecordLogsController.cs" />
     <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\DevicesController.cs" />

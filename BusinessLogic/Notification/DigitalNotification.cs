@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace BusinessLogic.Notification
 {
+    /// <summary>
+    /// 數據設備通知
+    /// </summary>
     public class DigitalNotification : INotification
     {
         /// <summary>

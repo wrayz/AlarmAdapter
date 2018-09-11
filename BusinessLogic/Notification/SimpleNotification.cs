@@ -1,19 +1,66 @@
-﻿using ModelLibrary;
+﻿using DataAccess;
+using ModelLibrary;
+using ModelLibrary.Generic;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic.Notification
 {
+    /// <summary>
+    /// 簡易設備通知
+    /// </summary>
     public class SimpleNotification : INotification
     {
+        private SimpleLog _simpleLog;
+
+        /// <summary>
+        /// 是否通知
+        /// </summary>
+        /// <param name="time">記錄時間</param>
+        /// <param name="setting">通知設定</param>
+        /// <param name="records">通知記錄清單</param>
+        /// <returns></returns>
         public Payload GetPayload(EventType type, string deviceSn, int? logSn)
         {
-            throw new NotImplementedException();
+            var dao = GenericDataAccessFactory.CreateInstance<SimpleLog>();
+
+            var option = new QueryOption { Plan = new QueryPlan { Join = "Payload" } };
+            var condition = new SimpleLog { DEVICE_SN = deviceSn, LOG_SN = logSn };
+
+            _simpleLog = dao.Get(option, condition);
+
+            return new SimplePayload(_simpleLog);
         }
 
+        /// <summary>
+        /// 是否通知
+        /// </summary>
+        /// <param name="time">記錄時間</param>
+        /// <param name="setting">通知設定</param>
+        /// <param name="records">通知記錄清單</param>
+        /// <returns></returns>
         public bool IsNotification(DateTime? time, NotificationSetting setting, List<NotificationRecord> records)
         {
-            throw new NotImplementedException();
+            NotificationRecord record;
+
+            switch (setting.MESSAGE_TYPE)
+            {
+                case "A":
+                    record = records.FirstOrDefault();
+                    break;
+                case "S":
+                    record = records.Find(x => x.SIMPLE_LOG.ERROR_INFO == _simpleLog.ERROR_INFO);
+                    break;
+                default:
+                    throw new Exception();
+            }
+
+            if (record == null) return true;
+
+            var nextTime = record.NOTIFY_TIME.Value.AddMinutes(setting.MUTE_INTERVAL.Value);
+
+            return time > nextTime;
         }
     }
 }
