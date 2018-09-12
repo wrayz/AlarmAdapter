@@ -23,18 +23,13 @@ namespace ModelLibrary
         public int? LOG_SN { get; set; }
 
         /// <summary>
+        /// 記錄內容
+        /// </summary>
+        public string RECORD_CONTENT{ get; set; }
+
+        /// <summary>
         /// 通知時間
         /// </summary>
         public DateTime? NOTIFY_TIME { get; set; }
-
-        /// <summary>
-        /// 一般網路設備異常記錄
-        /// </summary>
-        public Log NETWORK_LOG { get; set; }
-
-        /// <summary>
-        /// 簡易設備異常記錄
-        /// </summary>
-        public SimpleLog SIMPLE_LOG { get; set; }
     }
 }

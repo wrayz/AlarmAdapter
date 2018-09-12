@@ -68,9 +68,9 @@ namespace APIService.Controllers
             {
                 var payload = notification.GetPayload(EventType.Error, _device.DEVICE_SN, simpleLog.LOG_SN);
                 var service = new PushService(payload);
-
+#if Release
                 service.PushNotification();
-
+#endif
                 SaveNotification(simpleLog);
             }
         }
@@ -87,7 +87,8 @@ namespace APIService.Controllers
             {
                 DEVICE_TYPE = "S",
                 DEVICE_SN = _device.DEVICE_SN,
-                LOG_SN = simpleLog.LOG_SN
+                LOG_SN = simpleLog.LOG_SN,
+                RECORD_CONTENT = simpleLog.ERROR_INFO
             };
 
             bll.SaveNotification(data);

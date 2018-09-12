@@ -163,7 +163,8 @@ namespace APIService.Controllers
             {
                 DEVICE_TYPE = "N",
                 DEVICE_SN = log.DEVICE_SN,
-                LOG_SN = log.LOG_SN
+                LOG_SN = log.LOG_SN,
+                RECORD_CONTENT = log.LOG_INFO
             };
 
             bll.SaveNotification(data);

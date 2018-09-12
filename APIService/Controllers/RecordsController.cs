@@ -157,7 +157,8 @@ namespace APIService.Controllers
             {
                 DEVICE_TYPE = "D",
                 DEVICE_SN = deviceRecord.DEVICE_SN,
-                LOG_SN = deviceRecord.LOG_SN
+                LOG_SN = deviceRecord.LOG_SN,
+                RECORD_CONTENT = "溫濕度計"
             };
 
             bll.SaveNotification(data);

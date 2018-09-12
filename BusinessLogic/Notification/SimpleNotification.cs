@@ -45,10 +45,10 @@ namespace BusinessLogic.Notification
             switch (setting.MESSAGE_TYPE)
             {
                 case "A":
-                    record = records.FirstOrDefault();
+                    record = records.OrderByDescending(x => x.LOG_SN).FirstOrDefault();
                     break;
                 case "S":
-                    record = records.Find(x => x.SIMPLE_LOG.ERROR_INFO == alarm.Content );
+                    record = records.Find(x => x.RECORD_CONTENT == alarm.Content );
                     break;
                 default:
                     throw new Exception();
