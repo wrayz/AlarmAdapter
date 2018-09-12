@@ -1,6 +1,7 @@
 ﻿using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Generic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +21,19 @@ namespace BusinessLogic.Notification
         /// <returns></returns>
         public bool IsNotification(Alarm alarm, NotificationSetting setting, List<NotificationRecord> records)
         {
-            var record = records.FirstOrDefault();
+            NotificationRecord record;
+
+            switch (setting.MESSAGE_TYPE)
+            {
+                case "A":
+                    record = records.FirstOrDefault();
+                    break;
+                case "S":
+                    record = records.Find(x => x.NETWORK_LOG.LOG_INFO == alarm.Content );
+                    break;
+                default:
+                    throw new Exception();
+            }
 
             if (record == null) return true;
 
