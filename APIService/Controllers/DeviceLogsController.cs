@@ -59,7 +59,7 @@ namespace APIService.Controllers
         private void Process(Log data, AlarmType type)
         {
             _bll = new DeviceLog_BLL();
-            _notification = NotificationFactory.CreateInstance(DeviceType.Network);
+            _notification = NotificationFactory.CreateInstance(DeviceType.N);
 
             switch (type)
             {

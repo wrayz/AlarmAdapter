@@ -92,7 +92,7 @@ namespace APIService.Controllers
         /// <param name="log">記錄資料</param>
         private void PushNotification(EventType type, RecordLog log)
         {
-            var notification = NotificationFactory.CreateInstance(DeviceType.Digital);
+            var notification = NotificationFactory.CreateInstance(DeviceType.D);
             var payload = notification.GetPayload(type, log.DEVICE_SN, log.LOG_SN);
             var push = new PushService(payload);
 

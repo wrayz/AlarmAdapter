@@ -2,10 +2,19 @@
 {
     public enum DeviceType
     {
-        Network,
+        /// <summary>
+        /// 一般網路設備
+        /// </summary>
+        N,
 
-        Digital,
+        /// <summary>
+        /// 數據類型設備
+        /// </summary>
+        D,
 
-        Simple
+        /// <summary>
+        /// 簡易設備
+        /// </summary>
+        S
     }
 }

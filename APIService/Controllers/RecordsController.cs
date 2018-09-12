@@ -41,7 +41,7 @@ namespace APIService.Controllers
 #endif
 
                 _bll = new RecordLog_BLL();
-                _notification = NotificationFactory.CreateInstance(DeviceType.Digital);
+                _notification = NotificationFactory.CreateInstance(DeviceType.D);
 
                 //轉換資料
                 var data = _bll.ParseData(content);

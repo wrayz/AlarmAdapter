@@ -66,7 +66,7 @@ namespace APIService.Controllers
         /// <param name="simpleLog"></param>
         private void PushNotification(SimpleLog simpleLog)
         {
-            var notification = NotificationFactory.CreateInstance(DeviceType.Simple);
+            var notification = NotificationFactory.CreateInstance(DeviceType.S);
             var alarm = new Alarm { Time = simpleLog.ERROR_TIME, Content = simpleLog.ERROR_INFO };
 
             if (notification.IsNotification(alarm, _device.NOTIFICATION_SETTING, _device.NOTIFICATION_RECORDS))

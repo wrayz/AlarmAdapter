@@ -11,15 +11,15 @@ namespace BusinessLogic.Notification
 
             switch (type)
             {
-                case DeviceType.Network:
+                case DeviceType.N:
                     notification = new NetworkNotification();
                     break;
 
-                case DeviceType.Digital:
+                case DeviceType.D:
                     notification = new DigitalNotification();
                     break;
 
-                case DeviceType.Simple:
+                case DeviceType.S:
                     notification = new SimpleNotification();
                     break;
 
