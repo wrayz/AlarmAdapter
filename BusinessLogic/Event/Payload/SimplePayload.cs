@@ -29,7 +29,6 @@ namespace BusinessLogic
             BUTTON_STATUS = "N";
             COLOR = "danger";
             TITLE = "設備異常資訊";
-            RECORD_TIME = _simpleLog.ERROR_TIME;
             GROUP_LIST = _simpleLog.GROUP_LIST;
 
             FIELD_LIST = new List<Field>

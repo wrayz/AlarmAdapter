@@ -52,7 +52,7 @@ namespace BusinessLogic
                 case EventType.Recover:
                     TITLE = "異常設備恢復資訊";
                     COLOR = "good";
-                    RECORD_TIME = _logDetail.UP_TIME;
+
                     FIELD_LIST.Add(new Field("恢復時間", _logDetail.UP_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true));
                     FIELD_LIST.Add(new Field("處理人員", _logDetail.USER_NAME, true));
                     break;
@@ -60,7 +60,7 @@ namespace BusinessLogic
                 case EventType.Error:
                     TITLE = "設備異常資訊";
                     COLOR = "danger";
-                    RECORD_TIME = _logDetail.ERROR_TIME;
+
                     FIELD_LIST.Add(new Field("異常時間", _logDetail.ERROR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true));
                     FIELD_LIST.Add(new Field("異常資訊", _logDetail.ERROR_INFO, true));
                     break;
@@ -68,7 +68,7 @@ namespace BusinessLogic
                 case EventType.Repair:
                     TITLE = "異常設備處理資訊";
                     COLOR = "warning";
-                    RECORD_TIME = _logDetail.REPAIR_TIME;
+
                     FIELD_LIST.Add(new Field("處理時間", _logDetail.REPAIR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true));
                     FIELD_LIST.Add(new Field("處理人員", _logDetail.USER_NAME, true));
                     break;

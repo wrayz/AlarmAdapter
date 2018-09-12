@@ -50,7 +50,6 @@ namespace BusinessLogic
                     TITLE = "設備異常資訊";
                     BUTTON_STATUS = "E";
                     COLOR = "danger";
-                    RECORD_TIME = _recordLog.RECORD_TIME;
 
                     FIELD_LIST.Add(new Field("異常數據", string.Format("溫度：{0} 度\n濕度：{1} %", _recordLog.RECORD_TEMPERATURE, _recordLog.RECORD_HUMIDITY), false));
                     FIELD_LIST.Add(new Field("異常時間", _recordLog.RECORD_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true));
@@ -60,7 +59,6 @@ namespace BusinessLogic
                     TITLE = "異常設備處理資訊";
                     BUTTON_STATUS = "R";
                     COLOR = "warning";
-                    RECORD_TIME = _recordLog.REPAIR_TIME;
 
                     FIELD_LIST.Add(new Field("處理時間", _recordLog.REPAIR_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true));
                     FIELD_LIST.Add(new Field("處理人員", _recordLog.USER_INFO.USER_NAME, true));
@@ -70,7 +68,6 @@ namespace BusinessLogic
                     TITLE = "異常設備恢復資訊";
                     BUTTON_STATUS = "N";
                     COLOR = "good";
-                    RECORD_TIME = _recordLog.RECOVER_TIME;
 
                     FIELD_LIST.Add(new Field("現在數據", string.Format("溫度：{0} 度\n濕度：{1} %", _recordLog.RECORD_TEMPERATURE, _recordLog.RECORD_HUMIDITY), false));
                     FIELD_LIST.Add(new Field("恢復時間", _recordLog.RECOVER_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true));

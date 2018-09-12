@@ -1,5 +1,4 @@
 ﻿using ModelLibrary;
-using System;
 using System.Collections.Generic;
 
 namespace BusinessLogic
@@ -55,11 +54,6 @@ namespace BusinessLogic
         /// 訊息標題
         /// </summary>
         public string TITLE { get; set; }
-
-        /// <summary>
-        /// 記錄時間
-        /// </summary>
-        public DateTime? RECORD_TIME { get; set; }
 
         /// <summary>
         /// 設備群組清單
