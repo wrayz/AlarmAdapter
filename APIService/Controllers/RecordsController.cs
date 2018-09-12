@@ -86,8 +86,9 @@ namespace APIService.Controllers
             if (_bll.IsError(record, limit, device.RECORD_STATUS))
             {
                 SaveErrorRecordLog(record);
+                var alarm = new Alarm { Time = record.RECORD_TIME };
 
-                if (_notification.IsNotification(record.RECORD_TIME, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
+                if (_notification.IsNotification(alarm, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
                 {
                     var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
 

@@ -1,7 +1,6 @@
 ﻿using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Generic;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,11 +35,11 @@ namespace BusinessLogic.Notification
         /// <summary>
         /// 是否通知
         /// </summary>
-        /// <param name="time">記錄時間</param>
+        /// <param name="alarm">告警物件</param>
         /// <param name="setting">通知設定</param>
         /// <param name="records">通知記錄清單</param>
         /// <returns></returns>
-        public bool IsNotification(DateTime? time, NotificationSetting setting, List<NotificationRecord> records)
+        public bool IsNotification(Alarm alarm, NotificationSetting setting, List<NotificationRecord> records)
         {
             var record = records.FirstOrDefault();
 
@@ -48,7 +47,7 @@ namespace BusinessLogic.Notification
 
             var nextTime = record.NOTIFY_TIME.Value.AddMinutes(setting.MUTE_INTERVAL.Value);
 
-            return time > nextTime;
+            return alarm.Time > nextTime;
         }
     }
 }

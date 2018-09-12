@@ -1,5 +1,4 @@
 ﻿using ModelLibrary;
-using System;
 using System.Collections.Generic;
 
 namespace BusinessLogic.Notification
@@ -12,11 +11,11 @@ namespace BusinessLogic.Notification
         /// <summary>
         /// 是否通知
         /// </summary>
-        /// <param name="time">記錄時間</param>
+        /// <param name="alarm">告警物件</param>
         /// <param name="setting">通知設定</param>
         /// <param name="records">通知記錄清單</param>
         /// <returns></returns>
-        bool IsNotification(DateTime? time, NotificationSetting setting, List<NotificationRecord> records);
+        bool IsNotification(Alarm alarm, NotificationSetting setting, List<NotificationRecord> records);
 
         /// <summary>
         /// 通知物件取得

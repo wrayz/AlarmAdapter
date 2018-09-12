@@ -12,8 +12,6 @@ namespace BusinessLogic.Notification
     /// </summary>
     public class SimpleNotification : INotification
     {
-        private SimpleLog _simpleLog;
-
         /// <summary>
         /// 是否通知
         /// </summary>
@@ -28,19 +26,19 @@ namespace BusinessLogic.Notification
             var option = new QueryOption { Plan = new QueryPlan { Join = "Payload" } };
             var condition = new SimpleLog { DEVICE_SN = deviceSn, LOG_SN = logSn };
 
-            _simpleLog = dao.Get(option, condition);
+            var simpleLog = dao.Get(option, condition);
 
-            return new SimplePayload(_simpleLog);
+            return new SimplePayload(simpleLog);
         }
 
         /// <summary>
         /// 是否通知
         /// </summary>
-        /// <param name="time">記錄時間</param>
+        /// <param name="alarm">告警物件</param>
         /// <param name="setting">通知設定</param>
         /// <param name="records">通知記錄清單</param>
         /// <returns></returns>
-        public bool IsNotification(DateTime? time, NotificationSetting setting, List<NotificationRecord> records)
+        public bool IsNotification(Alarm alarm, NotificationSetting setting, List<NotificationRecord> records)
         {
             NotificationRecord record;
 
@@ -50,7 +48,7 @@ namespace BusinessLogic.Notification
                     record = records.FirstOrDefault();
                     break;
                 case "S":
-                    record = records.Find(x => x.SIMPLE_LOG.ERROR_INFO == _simpleLog.ERROR_INFO);
+                    record = records.Find(x => x.SIMPLE_LOG.ERROR_INFO == alarm.Content );
                     break;
                 default:
                     throw new Exception();
@@ -60,7 +58,7 @@ namespace BusinessLogic.Notification
 
             var nextTime = record.NOTIFY_TIME.Value.AddMinutes(setting.MUTE_INTERVAL.Value);
 
-            return time > nextTime;
+            return alarm.Time > nextTime;
         }
     }
 }

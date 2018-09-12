@@ -83,9 +83,10 @@ namespace APIService.Controllers
         private void ErrorProcess(Log data)
         {
             var log = _bll.SaveErrorLog(data);
+            var alarm = new Alarm { Time = data.LOG_TIME, Content = log.LOG_INFO };
             var device = GetDevice(log.DEVICE_SN);
 
-            if (_notification.IsNotification(log.LOG_TIME, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
+            if (_notification.IsNotification(alarm, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
             {
 #if Release
                 PushNotification(log);
