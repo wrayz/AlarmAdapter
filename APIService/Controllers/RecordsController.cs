@@ -36,9 +36,7 @@ namespace APIService.Controllers
 
                 var content = Request.Content.ReadAsStringAsync().Result;
 
-#if Release
                 RecordRawData(content);
-#endif
 
                 _bll = new RecordLog_BLL();
                 _notification = NotificationFactory.CreateInstance(DeviceType.D);
@@ -83,6 +81,7 @@ namespace APIService.Controllers
         /// <param name="limit">告警限制</param>
         private void Process(Record record, Device device, RecordLimit limit)
         {
+            //異常
             if (_bll.IsError(record, limit, device.RECORD_STATUS))
             {
                 SaveErrorRecordLog(record);
@@ -92,19 +91,17 @@ namespace APIService.Controllers
                 {
                     var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
 
-#if Release
                     PushNotification(EventType.Error, deviceRecord);
-#endif
 
                     SaveNotifyRecord(deviceRecord);
                 }
             }
-
+            //恢復
             if (_bll.IsRecover(record, limit, device.RECORD_STATUS))
             {
-                SaveRecoverRecordLog(record);
-
                 var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
+
+                SaveRecoverRecordLog(record);
 
                 if (CheckNotification(deviceRecord))
                 {

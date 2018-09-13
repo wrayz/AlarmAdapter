@@ -42,7 +42,7 @@ namespace APIService
         public void PushNotification()
         {
             PushIM().EnsureSuccessStatusCode();
-            PushDesktop().EnsureSuccessStatusCode();
+            //PushDesktop().EnsureSuccessStatusCode();
         }
 
         /// <summary>

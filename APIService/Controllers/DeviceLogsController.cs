@@ -47,7 +47,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
+                return Content(HttpStatusCode.InternalServerError, ex);
             }
         }
 
@@ -88,9 +88,7 @@ namespace APIService.Controllers
 
             if (_notification.IsNotification(alarm, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
             {
-#if Release
                 PushNotification(log);
-#endif
                 SaveNotifyRecord(log);
             }
         }

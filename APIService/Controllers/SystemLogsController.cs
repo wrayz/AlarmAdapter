@@ -35,9 +35,7 @@ namespace APIService.Controllers
                 var content = Request.Content.ReadAsStringAsync().Result;
                 //來源 IP
                 var sourceIp = GetSourceIP();
-#if Release
                 RecordRawData(content, sourceIp);
-#endif
                 //資料解析
                 var data = ParseData(content, sourceIp);
                 //商業邏輯
@@ -73,9 +71,7 @@ namespace APIService.Controllers
             {
                 var payload = notification.GetPayload(EventType.Error, _device.DEVICE_SN, simpleLog.LOG_SN);
                 var service = new PushService(payload);
-#if Release
                 service.PushNotification();
-#endif
                 var data = new NotificationRecord
                 {
                     DEVICE_TYPE = "S",

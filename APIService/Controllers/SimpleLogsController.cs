@@ -34,9 +34,7 @@ namespace APIService.Controllers
                     throw new HttpRequestException("資料未包含設備ID，請檢查資料內容");
 
                 SetDevice(log.DEVICE_ID);
-#if Release
                 RecordRawData(log);
-#endif
                 var simpleLog = SaveLog(log);
 
                 //待查黑名單取得
@@ -68,9 +66,7 @@ namespace APIService.Controllers
             {
                 var payload = notification.GetPayload(EventType.Error, _device.DEVICE_SN, simpleLog.LOG_SN);
                 var service = new PushService(payload);
-#if Release
                 service.PushNotification();
-#endif
                 var data = new NotificationRecord
                 {
                     DEVICE_TYPE = "S",
