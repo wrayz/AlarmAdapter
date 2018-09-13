@@ -157,8 +157,6 @@ namespace APIService.Controllers
         /// <param name="log">告警訊息</param>
         private void SaveNotifyRecord(Log log)
         {
-            var bll = new NotificationRecord_BLL();
-
             var data = new NotificationRecord
             {
                 DEVICE_TYPE = "N",
@@ -167,7 +165,7 @@ namespace APIService.Controllers
                 RECORD_CONTENT = log.LOG_INFO
             };
 
-            bll.SaveNotification(data);
+            _notification.Save(data);
         }
 
         /// <summary>

@@ -34,7 +34,7 @@ namespace APIService.Controllers
                 //通知
                 pushservice.PushNotification();
                 //儲存
-                SaveNotification(record);
+                notification.Save(record);
 
                 return Ok();
             }
@@ -42,16 +42,6 @@ namespace APIService.Controllers
             {
                 return Content(HttpStatusCode.Forbidden, ex);
             }
-        }
-
-        /// <summary>
-        /// 通知儲存
-        /// </summary>
-        /// <param name="record">通知物件</param>
-        private void SaveNotification(NotificationRecord record)
-        {
-            var bll = new NotificationRecord_BLL();
-            bll.SaveNotification(record);
         }
     }
 }

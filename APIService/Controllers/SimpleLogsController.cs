@@ -71,27 +71,15 @@ namespace APIService.Controllers
 #if Release
                 service.PushNotification();
 #endif
-                SaveNotification(simpleLog);
+                var data = new NotificationRecord
+                {
+                    DEVICE_TYPE = "S",
+                    DEVICE_SN = _device.DEVICE_SN,
+                    LOG_SN = simpleLog.LOG_SN,
+                    RECORD_CONTENT = simpleLog.ERROR_INFO
+                };
+                notification.Save(data);
             }
-        }
-
-        /// <summary>
-        /// 通知記錄儲存
-        /// </summary>
-        /// <param name="simpleLog">告警記錄</param>
-        private void SaveNotification(SimpleLog simpleLog)
-        {
-            var bll = new NotificationRecord_BLL();
-
-            var data = new NotificationRecord
-            {
-                DEVICE_TYPE = "S",
-                DEVICE_SN = _device.DEVICE_SN,
-                LOG_SN = simpleLog.LOG_SN,
-                RECORD_CONTENT = simpleLog.ERROR_INFO
-            };
-
-            bll.SaveNotification(data);
         }
 
         /// <summary>

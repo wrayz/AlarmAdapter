@@ -62,5 +62,16 @@ namespace BusinessLogic.Notification
 
             return new IMPayload(type, logDetail);
         }
+
+        /// <summary>
+        /// 通知記錄儲存
+        /// </summary>
+        /// <param name="data">通知記錄資料</param>
+        public void Save(NotificationRecord data)
+        {
+            var dao = GenericDataAccessFactory.CreateInstance<NotificationRecord>();
+
+            dao.Modify("Save", data);
+        }
     }
 }

@@ -25,5 +25,11 @@ namespace BusinessLogic.Notification
         /// <param name="logSn">記錄編號</param>
         /// <returns></returns>
         Payload GetPayload(EventType type, string deviceSn, int? logSn);
+
+        /// <summary>
+        /// 通知記錄儲存
+        /// </summary>
+        /// <param name="data">通知記錄</param>
+        void Save(NotificationRecord data);
     }
 }

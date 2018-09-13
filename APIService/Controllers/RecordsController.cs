@@ -151,8 +151,6 @@ namespace APIService.Controllers
         /// <param name="deviceRecord">設備對應告警記錄</param>
         private void SaveNotifyRecord(DeviceRecord deviceRecord)
         {
-            var bll = new NotificationRecord_BLL();
-
             var data = new NotificationRecord
             {
                 DEVICE_TYPE = "D",
@@ -161,7 +159,7 @@ namespace APIService.Controllers
                 RECORD_CONTENT = "溫濕度計"
             };
 
-            bll.SaveNotification(data);
+            _notification.Save(data);
         }
 
         /// <summary>
