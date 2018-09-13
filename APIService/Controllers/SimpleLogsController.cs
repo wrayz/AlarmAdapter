@@ -65,8 +65,10 @@ namespace APIService.Controllers
             if (notification.IsNotification(alarm, _device.NOTIFICATION_SETTING, _device.NOTIFICATION_RECORDS))
             {
                 var payload = notification.GetPayload(EventType.Error, _device.DEVICE_SN, simpleLog.LOG_SN);
+
                 var service = new PushService(payload);
                 service.PushNotification();
+
                 var data = new NotificationRecord
                 {
                     DEVICE_TYPE = "S",

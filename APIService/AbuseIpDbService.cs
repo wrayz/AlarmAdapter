@@ -52,7 +52,11 @@ namespace APIService
         /// <returns></returns>
         public bool IsReported()
         {
+            if (_abuseIpDbSetting.CONFIDENCE_SCORE == 0)
+                return true;
+
             PostCheckBlock();
+
             if (_reportedIP == null)
                 _reportedIP = new ReportedIP();
 
@@ -93,7 +97,7 @@ namespace APIService
     /// <summary>
     /// 黑名單結果
     /// </summary>
-    class BlockResult
+    internal class BlockResult
     {
         public string networkAddress { get; set; }
 
@@ -113,7 +117,7 @@ namespace APIService
     /// <summary>
     /// 已反應名單
     /// </summary>
-    class ReportedIP
+    internal class ReportedIP
     {
         public string IP { get; set; }
 
