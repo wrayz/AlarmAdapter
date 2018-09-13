@@ -140,7 +140,7 @@ namespace APIService.Controllers
         /// <returns></returns>
         private bool CheckNotification(Log log)
         {
-            var bll = new NotificationRecord_BLL();
+            var bll = GenericBusinessFactory.CreateInstance<NotificationRecord>();
             var condition = new NotificationRecord
             {
                 DEVICE_TYPE = "N",
@@ -148,7 +148,7 @@ namespace APIService.Controllers
                 LOG_SN = log.LOG_SN
             };
 
-            return bll.CheckNotification(condition);
+            return bll.IsExists(new QueryOption(), new UserLogin(), condition);
         }
 
         /// <summary>

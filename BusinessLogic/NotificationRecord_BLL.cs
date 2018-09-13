@@ -16,11 +16,5 @@ namespace BusinessLogic
         {
             _dao.Modify("Save", data);
         }
-
-
-        public bool CheckNotification(NotificationRecord condition)
-        {
-            return _dao.GetCount(new ModelLibrary.Generic.QueryOption(), condition) > 0;
-        }
     }
 }
