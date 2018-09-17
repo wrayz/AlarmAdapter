@@ -84,7 +84,8 @@ namespace APIService.Controllers
             //異常
             if (_bll.IsError(record, limit, device.RECORD_STATUS))
             {
-                SaveErrorRecordLog(record);
+                SaveRecordLog("Abnormal", record);
+
                 var alarm = new Alarm { Time = record.RECORD_TIME };
 
                 if (_notification.IsNotification(alarm, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
@@ -101,7 +102,7 @@ namespace APIService.Controllers
             {
                 var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
 
-                SaveRecoverRecordLog(record);
+                SaveRecordLog("Recover", record);
 
                 if (CheckNotification(deviceRecord))
                 {
@@ -111,10 +112,11 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 異常記錄儲存
+        /// 告警記錄儲存
         /// </summary>
+        /// <param name="type">儲存類型</param>
         /// <param name="record">告警記錄</param>
-        private void SaveErrorRecordLog(Record record)
+        private void SaveRecordLog(string type, Record record)
         {
             var data = new RecordLog
             {
@@ -124,22 +126,7 @@ namespace APIService.Controllers
                 RECORD_HUMIDITY = record.RECORD_HUMIDITY
             };
 
-            _bll.ModifyRecordLog("Abnormal", data);
-        }
-
-        /// <summary>
-        /// 正常記錄儲存
-        /// </summary>
-        /// <param name="record">告警記錄</param>
-        private void SaveRecoverRecordLog(Record record)
-        {
-            var data = new RecordLog
-            {
-                DEVICE_SN = record.DEVICE_SN,
-                RECOVER_TIME = record.RECORD_TIME
-            };
-
-            _bll.ModifyRecordLog("Recover", data);
+            _bll.ModifyRecordLog(type, data);
         }
 
         /// <summary>
