@@ -18,7 +18,7 @@ namespace APIService.Controllers
     public class DeviceLogsController : ApiController
     {
         //一般網路設備商業邏輯
-        private DeviceLog_BLL _bll;
+        private Log_BLL _bll;
         //通知商業邏輯
         private INotification _notification;
 
@@ -58,7 +58,7 @@ namespace APIService.Controllers
         /// <param name="type">告警類型</param>
         private void Process(Log data, AlarmType type)
         {
-            _bll = new DeviceLog_BLL();
+            _bll = new Log_BLL();
             _notification = NotificationFactory.CreateInstance(DeviceType.N);
 
             switch (type)

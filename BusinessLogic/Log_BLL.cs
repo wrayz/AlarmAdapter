@@ -9,7 +9,7 @@ namespace BusinessLogic
     /// <summary>
     /// 一般網路設備告警記錄商業邏輯
     /// </summary>
-    public class DeviceLog_BLL : GenericBusinessLogic<Log>
+    public class Log_BLL : GenericBusinessLogic<Log>
     {
         /// <summary>
         /// 異常紀錄儲存

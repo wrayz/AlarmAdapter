@@ -31,7 +31,7 @@ namespace APIService.Controllers
                 //設備是否異常
                 if (IsErrorDevice(log.DEVICE_SN, login))
                 {
-                    var bll = new DeviceLog_BLL();
+                    var bll = new Log_BLL();
 
                     bll.Modify(log.ACTION_TYPE, login, log);
                 }

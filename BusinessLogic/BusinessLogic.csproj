@@ -80,7 +80,7 @@
     <Compile Include="Notification\NotificationFactory.cs" />
     <Compile Include="Notification\SimpleNotification.cs" />
     <Compile Include="RecordLog_BLL.cs" />
-    <Compile Include="DeviceLog_BLL.cs" />
+    <Compile Include="Log_BLL.cs" />
     <Compile Include="Event\Payload\Field.cs" />
     <Compile Include="Event\Payload\IMPayload.cs" />
     <Compile Include="Generic\GenericBusinessFactory.cs" />
