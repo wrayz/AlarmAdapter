@@ -48,11 +48,11 @@ namespace APIService.Controllers
 
                 foreach (var record in data)
                 {
-                    if (string.IsNullOrEmpty(record.DEVICE_ID)) break;
+                    if (string.IsNullOrEmpty(record.DEVICE_ID)) continue;
 
                     var device = GetDevice(record.DEVICE_ID);
 
-                    if (string.IsNullOrEmpty(device.DEVICE_SN)) break;
+                    if (string.IsNullOrEmpty(device.DEVICE_SN)) continue;
 
                     record.DEVICE_SN = device.DEVICE_SN;
 
