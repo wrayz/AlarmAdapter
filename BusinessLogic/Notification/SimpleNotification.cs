@@ -58,7 +58,7 @@ namespace BusinessLogic.Notification
 
             var nextTime = record.NOTIFY_TIME.Value.AddMinutes(setting.MUTE_INTERVAL.Value);
 
-            return alarm.Time > nextTime;
+            return alarm.Time >= nextTime;
         }
 
         /// <summary>

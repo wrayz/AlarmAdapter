@@ -100,6 +100,10 @@ namespace BusinessLogic
             //使用者資料
             if (isUser)
                 SetLoginUser(data, user.USERID, user.ORG_SN);
+
+            if (extand == null)
+                extand = new GenericExtand();
+
             //物件資料處理
             ModifyBefore(extand.Before, data, user);
             var output = _dao.Modify(type, data, parameters, extand);
