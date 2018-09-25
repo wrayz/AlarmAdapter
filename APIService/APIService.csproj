@@ -180,6 +180,7 @@
     <Content Include="Entity\NotificationSetting.config" />
     <Content Include="Entity\NotificationRecord.config" />
     <Content Include="Entity\AbuseIpDbSetting.config" />
+    <Content Include="Entity\AlarmCondition.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>

@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="AbuseIpDbSetting.cs" />
     <Compile Include="Alarm.cs" />
+    <Compile Include="AlarmCondition.cs" />
     <Compile Include="APILog.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Contact.cs" />

@@ -19,6 +19,7 @@ namespace APIService.Controllers
     {
         //一般網路設備商業邏輯
         private Log_BLL _bll;
+
         //通知商業邏輯
         private INotification _notification;
 
@@ -30,14 +31,14 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult Post(Log log)
         {
-            var type = (AlarmType)Enum.Parse(typeof(AlarmType), log.ACTION_TYPE);
-
             try
             {
                 CheckContent(log);
                 CheckLicense(log.LOG_TIME);
 
-                Process(log, type);
+                var data = GetLogData(log);
+
+                Process(data);
 
                 return Ok();
             }
@@ -56,8 +57,10 @@ namespace APIService.Controllers
         /// </summary>
         /// <param name="data">告警資料</param>
         /// <param name="type">告警類型</param>
-        private void Process(Log data, AlarmType type)
+        private void Process(Log data)
         {
+            var type = (AlarmType)Enum.Parse(typeof(AlarmType), data.ACTION_TYPE);
+
             _bll = new Log_BLL();
             _notification = NotificationFactory.CreateInstance(DeviceType.N);
 
@@ -74,6 +77,29 @@ namespace APIService.Controllers
                 default:
                     throw new Exception("無此告警類型");
             }
+        }
+
+        /// <summary>
+        /// 告警類型取得
+        /// </summary>
+        /// <param name="action">動作類型</param>
+        /// <returns></returns>
+        private Log GetLogData(Log log)
+        {
+            var bll = GenericBusinessFactory.CreateInstance<AlarmCondition>();
+            var alarmCondition = bll.Get(new QueryOption(), new UserLogin(), new AlarmCondition { ACTION_TYPE = log.ACTION_TYPE });
+
+            if (alarmCondition == null) throw new HttpRequestException("無此告警類型對應");
+
+            var data = new Log
+            {
+                DEVICE_ID = log.DEVICE_ID,
+                ACTION_TYPE = alarmCondition.ALARM_TYPE,
+                LOG_INFO = log.LOG_INFO,
+                LOG_TIME = log.LOG_TIME
+            };
+
+            return data;
         }
 
         /// <summary>
