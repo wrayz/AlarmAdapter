@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic
+﻿namespace ModelLibrary.Enumerate
 {
     /// <summary>
     /// 事件類別

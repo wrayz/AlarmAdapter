@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using ModelLibrary;
+using ModelLibrary.Enumerate;
 using System;
 
 namespace BusinessLogic.Event

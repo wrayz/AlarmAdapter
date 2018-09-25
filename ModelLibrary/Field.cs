@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace BusinessLogic
+namespace ModelLibrary
 {
     /// <summary>
     /// 推送訊息物件詳細內容

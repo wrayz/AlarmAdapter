@@ -70,10 +70,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Event\Enum\MessageType.cs" />
-    <Compile Include="Event\Payload\Payload.cs" />
-    <Compile Include="Event\Payload\RecordPayload.cs" />
-    <Compile Include="Event\Payload\SimplePayload.cs" />
+    <Compile Include="Payload\Payload.cs" />
+    <Compile Include="Payload\RecordPayload.cs" />
+    <Compile Include="Payload\SimplePayload.cs" />
     <Compile Include="Notification\DigitalNotification.cs" />
     <Compile Include="Notification\INotification.cs" />
     <Compile Include="Notification\NetworkNotification.cs" />
@@ -81,13 +80,11 @@
     <Compile Include="Notification\SimpleNotification.cs" />
     <Compile Include="RecordLog_BLL.cs" />
     <Compile Include="Log_BLL.cs" />
-    <Compile Include="Event\Payload\Field.cs" />
-    <Compile Include="Event\Payload\IMPayload.cs" />
+    <Compile Include="Payload\IMPayload.cs" />
     <Compile Include="Generic\GenericBusinessFactory.cs" />
     <Compile Include="Generic\GenericBusinessLogicT.cs" />
     <Compile Include="Generic\IBusinessLogicT.cs" />
     <Compile Include="Event\CorrespondDeviceFactory.cs" />
-    <Compile Include="Event\Enum\EventType.cs" />
     <Compile Include="License\LicenseConfig.cs" />
     <Compile Include="License\LicenseLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

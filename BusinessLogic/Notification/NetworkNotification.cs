@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using ModelLibrary;
+using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,11 @@ namespace BusinessLogic.Notification
                 case "A":
                     record = records.OrderByDescending(x => x.LOG_SN).FirstOrDefault();
                     break;
+
                 case "S":
                     record = records.Find(x => x.RECORD_CONTENT == alarm.Content);
                     break;
+
                 default:
                     throw new Exception();
             }

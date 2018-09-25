@@ -65,6 +65,9 @@
     <Compile Include="Config.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="Enumerate\AlarmType.cs" />
+    <Compile Include="Enumerate\EventType.cs" />
+    <Compile Include="Enumerate\MessageType.cs" />
+    <Compile Include="Field.cs" />
     <Compile Include="NotificationRecord.cs" />
     <Compile Include="NotificationSetting.cs" />
     <Compile Include="DeviceRecord.cs" />

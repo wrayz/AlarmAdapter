@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using ModelLibrary;
+using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System.Collections.Generic;
 using System.Linq;
