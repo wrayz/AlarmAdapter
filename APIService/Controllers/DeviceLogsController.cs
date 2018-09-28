@@ -89,7 +89,7 @@ namespace APIService.Controllers
             var bll = GenericBusinessFactory.CreateInstance<AlarmCondition>();
             var alarmCondition = bll.Get(new QueryOption(), new UserLogin(), new AlarmCondition { ACTION_TYPE = log.ACTION_TYPE });
 
-            if (alarmCondition == null) throw new HttpRequestException("無此告警類型對應");
+            if (string.IsNullOrEmpty(alarmCondition.ALARM_TYPE)) throw new HttpRequestException("無此告警類型對應");
 
             var data = new Log
             {
