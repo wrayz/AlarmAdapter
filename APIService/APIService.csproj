@@ -119,7 +119,6 @@
     <Compile Include="Controllers\LanguagesController.cs" />
     <Compile Include="Controllers\SimpleLogsController.cs" />
     <Compile Include="Controllers\SystemLogsController.cs" />
-    <Compile Include="Controllers\CactiController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="GenericAPIService.cs" />
     <Compile Include="Global.asax.cs">

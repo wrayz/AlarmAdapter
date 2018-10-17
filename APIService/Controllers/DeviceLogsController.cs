@@ -4,7 +4,9 @@ using BusinessLogic.Notification;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -36,15 +38,41 @@ namespace APIService.Controllers
                 CheckContent(log);
                 CheckLicense(log.LOG_TIME);
 
-                var data = GetLogData(log);
-
-                Process(data);
+                Process(log);
 
                 return Ok();
             }
             catch (HttpRequestException ex)
             {
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return Content(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        [Route("api/cacti")]
+        [HttpPost]
+        public IHttpActionResult Post()
+        {
+            try
+            {
+                //原始資料
+                var content = Request.Content.ReadAsStringAsync().Result;
+
+                RecordRawData(content);
+
+                var log = JsonConvert.DeserializeObject<Log>(content);
+
+                CheckContent(log);
+                CheckLicense(log.LOG_TIME);
+
+                var data = GetLogData(log);
+
+                Process(data);
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -220,6 +248,16 @@ namespace APIService.Controllers
 
             if (!(logtime >= token.StartDate && logtime <= token.EndDate))
                 throw new HttpRequestException("License key 已過期，請檢查License Key");
+        }
+
+        /// <summary>
+        /// 原始資料儲存
+        /// </summary>
+        /// <param name="content">記錄資料</param>
+        private void RecordRawData(string content)
+        {
+            var time = DateTime.Now;
+            File.AppendAllText("C:/EyesFree/CactiRawData.txt", string.Format("{0}, {1}\n", time.ToString(), content));
         }
 
         /// <summary>
