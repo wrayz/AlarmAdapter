@@ -74,6 +74,9 @@ namespace DataAccess
                 cmd.Parameters.Add("@ERROR_INFO", SqlDbType.NVarChar).Value = log.ERROR_INFO;
                 cmd.Parameters.Add("@LOG_SN", SqlDbType.Int).Direction = ParameterDirection.Output;
 
+                if (type == "L")
+                    cmd.Parameters.Add("@ABUSE_SCORE", SqlDbType.Int).Value = log.ABUSE_SCORE;
+
                 // Execute
                 cmd.ExecuteNonQuery();
                 

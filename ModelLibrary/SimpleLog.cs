@@ -37,5 +37,10 @@ namespace ModelLibrary
         /// 設備群組清單
         /// </summary>
         public List<DeviceGroup> GROUP_LIST { get; set; }
+
+        /// <summary>
+        /// 黑名單分數
+        /// </summary>
+        public int? ABUSE_SCORE { get; set; }
     }
 }

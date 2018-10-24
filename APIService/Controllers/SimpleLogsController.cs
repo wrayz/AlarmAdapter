@@ -41,8 +41,8 @@ namespace APIService.Controllers
 
                 //黑名單資料檢查服務
                 var abuseService = new AbuseIpDbService(blockIP);
-
-                var simpleLog = SaveLog(log);
+                //儲存記錄
+                var simpleLog = SaveLog(log, abuseService.ReportedIP.abuseConfidenceScore);
 
                 //是否回報黑名單
                 if (abuseService.IsReported())
@@ -89,8 +89,9 @@ namespace APIService.Controllers
         /// 告警記錄儲存
         /// </summary>
         /// <param name="log">告警記錄</param>
+        /// <param name="abuseScore">黑名單分數</param>
         /// <returns></returns>
-        private SimpleLog SaveLog(APILog log)
+        private SimpleLog SaveLog(APILog log, int abuseScore)
         {
             var bll = new SimpleLog_BLL();
 
@@ -98,7 +99,8 @@ namespace APIService.Controllers
             {
                 DEVICE_SN = _device.DEVICE_SN,
                 ERROR_TIME = log.LOG_TIME,
-                ERROR_INFO = log.LOG_INFO
+                ERROR_INFO = log.LOG_INFO,
+                ABUSE_SCORE = abuseScore
             };
 
             //紀錄新增
