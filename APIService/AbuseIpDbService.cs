@@ -57,10 +57,10 @@ namespace APIService
         /// <returns></returns>
         public bool IsReported()
         {
-            if (_abuseIpDbSetting.CONFIDENCE_SCORE == 0)
+            if (_abuseIpDbSetting.ABUSE_SCORE == 0)
                 return true;
 
-            return ReportedIP.abuseConfidenceScore >= _abuseIpDbSetting.CONFIDENCE_SCORE;
+            return ReportedIP.abuseConfidenceScore >= _abuseIpDbSetting.ABUSE_SCORE;
         }
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace APIService
             {
                 client.BaseAddress = new Uri(@"https://www.abuseipdb.com/");
 
-                string formatApi = "check-block/json?network={0}/31&key={1}&days=1";
-                var requestUri = string.Format(formatApi, _ipAddress, _abuseIpDbSetting.API_KEY);
+                string formatApi = "check-block/json?network={0}/{1}&key={2}&days={3}";
+                var requestUri = string.Format(formatApi, _ipAddress, _abuseIpDbSetting.CIDR, _abuseIpDbSetting.API_KEY, _abuseIpDbSetting.SEARCHE_DAYS);
 
                 using (var response = client.PostAsync(requestUri, null).Result)
                 {

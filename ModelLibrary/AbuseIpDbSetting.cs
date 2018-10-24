@@ -1,7 +1,7 @@
 ﻿namespace ModelLibrary
 {
     /// <summary>
-    /// 黑名單資料庫設定
+    /// 黑名單 API 設定
     /// </summary>
     public class AbuseIpDbSetting
     {
@@ -11,8 +11,18 @@
         public string API_KEY { get; set; }
 
         /// <summary>
-        /// 信任分數
+        /// 黑名單分數
         /// </summary>
-        public int CONFIDENCE_SCORE { get; set; }
+        public int ABUSE_SCORE { get; set; }
+
+        /// <summary>
+        /// 無類別域間路由
+        /// </summary>
+        public int CIDR { get; set; }
+
+        /// <summary>
+        /// 查詢天數
+        /// </summary>
+        public int SEARCHE_DAYS { get; set; }
     }
 }
