@@ -2,7 +2,6 @@
 using ModelLibrary;
 using ModelLibrary.Generic;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 
 namespace APIService
@@ -25,7 +24,7 @@ namespace APIService
         /// <summary>
         /// 黑名單報告清單
         /// </summary>
-        private ReportedIP _reportedIP;
+        public ReportedIP ReportedIP { get; private set; }
 
         /// <summary>
         /// 建構式
@@ -34,13 +33,19 @@ namespace APIService
         {
             _ipAddress = ipAddress;
 
-            GetAbuseDbIpSetting();
+            InitSet();
+        }
+
+        private void InitSet()
+        {
+            SetAbuseDbIpSetting();
+            SetReportedIP();
         }
 
         /// <summary>
         /// 黑名單資料庫設定資料取得
         /// </summary>
-        private void GetAbuseDbIpSetting()
+        private void SetAbuseDbIpSetting()
         {
             var bll = GenericBusinessFactory.CreateInstance<AbuseIpDbSetting>();
             _abuseIpDbSetting = bll.Get(new QueryOption(), new UserLogin());
@@ -55,18 +60,13 @@ namespace APIService
             if (_abuseIpDbSetting.CONFIDENCE_SCORE == 0)
                 return true;
 
-            PostCheckBlock();
-
-            if (_reportedIP == null)
-                _reportedIP = new ReportedIP();
-
-            return _reportedIP.abuseConfidenceScore >= _abuseIpDbSetting.CONFIDENCE_SCORE;
+            return ReportedIP.abuseConfidenceScore >= _abuseIpDbSetting.CONFIDENCE_SCORE;
         }
 
         /// <summary>
         /// 使用 Abuse Api 確認黑名單
         /// </summary>
-        private void PostCheckBlock()
+        private void SetReportedIP()
         {
             using (var client = new HttpClient())
             {
@@ -83,7 +83,8 @@ namespace APIService
 
                         var blockResult = response.Content.ReadAsAsync<BlockResult>().Result;
 
-                        _reportedIP = blockResult.reportedIPs.Find(x => x.IP.Contains(_ipAddress));
+                        var reported = blockResult.reportedIPs.Find(x => x.IP.Contains(_ipAddress));
+                        ReportedIP = reported == null ? new ReportedIP() : reported;
                     }
                     catch (HttpRequestException)
                     {
@@ -92,45 +93,5 @@ namespace APIService
                 }
             }
         }
-    }
-
-    /// <summary>
-    /// 黑名單結果
-    /// </summary>
-    internal class BlockResult
-    {
-        public string networkAddress { get; set; }
-
-        public string netmask { get; set; }
-
-        public string minAddress { get; set; }
-
-        public string maxAddress { get; set; }
-
-        public int numPossibleHosts { get; set; }
-
-        public string addressSpaceDesc { get; set; }
-
-        public List<ReportedIP> reportedIPs { get; set; }
-    }
-
-    /// <summary>
-    /// 已反應名單
-    /// </summary>
-    internal class ReportedIP
-    {
-        public string IP { get; set; }
-
-        public string NumReports { get; set; }
-
-        public string MostRecentReport { get; set; }
-
-        public int Public { get; set; }
-
-        public string CountryCode { get; set; }
-
-        public int IsWhitelisted { get; set; }
-
-        public int abuseConfidenceScore { get; set; }
     }
 }

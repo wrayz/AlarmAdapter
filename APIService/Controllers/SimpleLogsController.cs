@@ -35,12 +35,17 @@ namespace APIService.Controllers
 
                 SetDevice(log.DEVICE_ID);
                 RecordRawData(log);
-                var simpleLog = SaveLog(log);
 
                 //待查黑名單取得
                 var blockIP = GetBlockIP(log.LOG_INFO);
+
+                //黑名單資料檢查服務
+                var abuseService = new AbuseIpDbService(blockIP);
+
+                var simpleLog = SaveLog(log);
+
                 //是否回報黑名單
-                if (new AbuseIpDbService(blockIP).IsReported())
+                if (abuseService.IsReported())
                 {
                     PushNotification(simpleLog);
                 }
