@@ -17,6 +17,7 @@ namespace APIService.Controllers
     public class SimpleLogsController : ApiController
     {
         private Device _device;
+        private APILog _log;
 
         /// <summary>
         /// LogMaster 紀錄
@@ -26,6 +27,8 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult Post(APILog log)
         {
+            _log = log;
+
             try
             {
                 CheckLicense(log.LOG_TIME);
@@ -55,6 +58,11 @@ namespace APIService.Controllers
             catch (HttpRequestException ex)
             {
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
+            }
+            catch (NotSupportedException)
+            {
+                PushNotification(SaveLog(_log, -1));
+                return Ok();
             }
             catch (Exception ex)
             {

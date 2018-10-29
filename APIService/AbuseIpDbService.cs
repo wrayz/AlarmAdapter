@@ -88,7 +88,7 @@ namespace APIService
                     }
                     catch (HttpRequestException)
                     {
-                        return;
+                        throw new NotSupportedException();
                     }
                 }
             }

@@ -179,7 +179,9 @@
     <Content Include="Entity\GroupDevice.config" />
     <Content Include="Entity\NotificationSetting.config" />
     <Content Include="Entity\NotificationRecord.config" />
-    <Content Include="Entity\AbuseIpDbSetting.config" />
+    <Content Include="Entity\AbuseIpDbSetting.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Entity\AlarmCondition.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
