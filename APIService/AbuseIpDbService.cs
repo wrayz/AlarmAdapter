@@ -33,13 +33,7 @@ namespace APIService
         {
             _ipAddress = ipAddress;
 
-            InitSet();
-        }
-
-        private void InitSet()
-        {
             SetAbuseDbIpSetting();
-            SetReportedIP();
         }
 
         /// <summary>
@@ -55,8 +49,10 @@ namespace APIService
         /// 黑名單是否已報告
         /// </summary>
         /// <returns></returns>
-        public bool IsReported()
+        public bool Check()
         {
+            SetReportedIP();
+
             if (_abuseIpDbSetting.ABUSE_SCORE == 0)
                 return true;
 

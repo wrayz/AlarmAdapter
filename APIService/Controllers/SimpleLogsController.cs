@@ -17,7 +17,9 @@ namespace APIService.Controllers
     public class SimpleLogsController : ApiController
     {
         private Device _device;
-        private APILog _log;
+        private SimpleLog _simpleLog;
+        private INotification _notification;
+        private AbuseIpDbService _abuseService;
 
         /// <summary>
         /// LogMaster 紀錄
@@ -27,8 +29,6 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult Post(APILog log)
         {
-            _log = log;
-
             try
             {
                 CheckLicense(log.LOG_TIME);
@@ -39,18 +39,18 @@ namespace APIService.Controllers
                 SetDevice(log.DEVICE_ID);
                 RecordRawData(log);
 
+                //間隔通知
+                _notification = NotificationFactory.CreateInstance(DeviceType.S);
+                _simpleLog = SaveLog(log);
                 //待查黑名單取得
-                var blockIP = GetBlockIP(log.LOG_INFO);
-
+                var blockIP = GetBlockIP(_simpleLog.ERROR_INFO);
                 //黑名單資料檢查服務
-                var abuseService = new AbuseIpDbService(blockIP);
-                //儲存記錄
-                var simpleLog = SaveLog(log, abuseService.ReportedIP.abuseConfidenceScore);
+                _abuseService = new AbuseIpDbService(blockIP);
 
-                //是否回報黑名單
-                if (abuseService.IsReported())
+                if (CheckNotification())
                 {
-                    PushNotification(simpleLog);
+                    UpdateLog(_abuseService.ReportedIP.abuseConfidenceScore);
+                    Push();
                 }
 
                 return Ok();
@@ -61,7 +61,8 @@ namespace APIService.Controllers
             }
             catch (NotSupportedException)
             {
-                PushNotification(SaveLog(_log, -1));
+                UpdateLog(-1);
+                Push();
                 return Ok();
             }
             catch (Exception ex)
@@ -70,27 +71,47 @@ namespace APIService.Controllers
             }
         }
 
-        private void PushNotification(SimpleLog simpleLog)
+        /// <summary>
+        /// 通知檢查
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckNotification()
         {
-            var notification = NotificationFactory.CreateInstance(DeviceType.S);
-            var alarm = new Alarm { Time = simpleLog.ERROR_TIME, Content = simpleLog.ERROR_INFO };
+            var alarm = new Alarm { Time = _simpleLog.ERROR_TIME, Content = _simpleLog.ERROR_INFO };
 
-            if (notification.IsNotification(alarm, _device.NOTIFICATION_SETTING, _device.NOTIFICATION_RECORDS))
+            return _notification.IsNotification(alarm, _device.NOTIFICATION_SETTING, _device.NOTIFICATION_RECORDS) &&
+                   _abuseService.Check();
+        }
+
+        /// <summary>
+        /// 推播
+        /// </summary>
+        private void Push()
+        {
+            var payload = _notification.GetPayload(EventType.Error, _device.DEVICE_SN, _simpleLog.LOG_SN);
+
+            var service = new PushService(payload);
+            service.PushNotification();
+
+            var data = new NotificationRecord
             {
-                var payload = notification.GetPayload(EventType.Error, _device.DEVICE_SN, simpleLog.LOG_SN);
+                DEVICE_TYPE = "S",
+                DEVICE_SN = _device.DEVICE_SN,
+                LOG_SN = _simpleLog.LOG_SN,
+                RECORD_CONTENT = _simpleLog.ERROR_INFO
+            };
 
-                var service = new PushService(payload);
-                service.PushNotification();
+            _notification.Save(data);
+        }
 
-                var data = new NotificationRecord
-                {
-                    DEVICE_TYPE = "S",
-                    DEVICE_SN = _device.DEVICE_SN,
-                    LOG_SN = simpleLog.LOG_SN,
-                    RECORD_CONTENT = simpleLog.ERROR_INFO
-                };
-                notification.Save(data);
-            }
+        /// <summary>
+        /// Log 訊息更新
+        /// </summary>
+        /// <param name="abuseConfidenceScore">黑名單分數</param>
+        private void UpdateLog(int abuseConfidenceScore)
+        {
+            var bll = GenericBusinessFactory.CreateInstance<SimpleLog>();
+            bll.Modify("Update", new UserLogin(), new SimpleLog { LOG_SN = _simpleLog.LOG_SN, ABUSE_SCORE = abuseConfidenceScore });
         }
 
         /// <summary>
@@ -99,7 +120,7 @@ namespace APIService.Controllers
         /// <param name="log">告警記錄</param>
         /// <param name="abuseScore">黑名單分數</param>
         /// <returns></returns>
-        private SimpleLog SaveLog(APILog log, int abuseScore)
+        private SimpleLog SaveLog(APILog log)
         {
             var bll = new SimpleLog_BLL();
 
@@ -108,7 +129,6 @@ namespace APIService.Controllers
                 DEVICE_SN = _device.DEVICE_SN,
                 ERROR_TIME = log.LOG_TIME,
                 ERROR_INFO = log.LOG_INFO,
-                ABUSE_SCORE = abuseScore
             };
 
             //紀錄新增
