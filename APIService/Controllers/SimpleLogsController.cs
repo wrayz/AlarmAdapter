@@ -1,6 +1,5 @@
 ﻿using APIService.Model;
 using BusinessLogic;
-using BusinessLogic.Notification;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
@@ -9,17 +8,13 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Web.Http;
 
 namespace APIService.Controllers
 {
     public class SimpleLogsController : ApiController
     {
-        private Device _device;
-        private SimpleLog _simpleLog;
-        private INotification _notification;
-        private AbuseIpDbService _abuseService;
+        private SimpleLog_BLL _bll = new SimpleLog_BLL();
 
         /// <summary>
         /// LogMaster 紀錄
@@ -36,23 +31,22 @@ namespace APIService.Controllers
                 if (string.IsNullOrEmpty(log.DEVICE_ID))
                     throw new HttpRequestException("資料未包含設備ID，請檢查資料內容");
 
-                SetDevice(log.DEVICE_ID);
                 RecordRawData(log);
 
-                //間隔通知
-                _notification = NotificationFactory.CreateInstance(DeviceType.S);
-                _simpleLog = SaveLog(log);
-                //待查黑名單取得
-                var blockIP = GetBlockIP(_simpleLog.ERROR_INFO);
-                //黑名單資料檢查服務
-                _abuseService = new AbuseIpDbService(blockIP);
+                _bll.InitLogmasterData(log);
 
-                if (CheckNotification())
+                if (_bll.CheckNotification())
                 {
-                    UpdateLog(_abuseService.ReportedIP.abuseConfidenceScore);
-                    Push();
-                }
+                    if (_bll.AbuseIpDbSetting.ABUSE_SCORE == 0)
+                        Push();
+                    else
+                    {
+                        var blockHole = GetBlockHole();
 
+                        if (_bll.CheckBlockHole(blockHole))
+                            Push();
+                    }
+                }
                 return Ok();
             }
             catch (HttpRequestException ex)
@@ -61,7 +55,6 @@ namespace APIService.Controllers
             }
             catch (NotSupportedException)
             {
-                UpdateLog(-1);
                 Push();
                 return Ok();
             }
@@ -72,15 +65,28 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 通知檢查
+        /// 黑名單資訊取得
         /// </summary>
+        /// <param name="abuseSetting"></param>
         /// <returns></returns>
-        private bool CheckNotification()
+        private BlockHole GetBlockHole()
         {
-            var alarm = new Alarm { Time = _simpleLog.ERROR_TIME, Content = _simpleLog.ERROR_INFO };
+            var bll = GenericBusinessFactory.CreateInstance<BlockHole>();
+            var blockHole = bll.Get(new QueryOption(), new UserLogin(), new BlockHole { IP_ADDRESS = _bll.IpAddress });
 
-            return _notification.IsNotification(alarm, _device.NOTIFICATION_SETTING, _device.NOTIFICATION_RECORDS) &&
-                   _abuseService.Check();
+            //黑名單是否需要重新查詢分數
+            if (_bll.CheckBlockCycle(blockHole))
+            {
+                var abuseService = new AbuseIpDbService(_bll.IpAddress);
+                var reportedIp = abuseService.GetReportedIP(_bll.AbuseIpDbSetting);
+
+                blockHole.IP_ADDRESS = _bll.IpAddress;
+                blockHole.ABUSE_SCORE = reportedIp.abuseConfidenceScore;
+
+                bll.Modify("Save", new UserLogin(), blockHole);
+            }
+
+            return blockHole;
         }
 
         /// <summary>
@@ -88,79 +94,28 @@ namespace APIService.Controllers
         /// </summary>
         private void Push()
         {
-            var payload = _notification.GetPayload(EventType.Error, _device.DEVICE_SN, _simpleLog.LOG_SN);
+            var payload = _bll.Notification.GetPayload(EventType.Error, _bll.Device.DEVICE_SN, _bll.SimpleLog.LOG_SN);
 
             var service = new PushService(payload);
             service.PushNotification();
 
+            SaveNotification();
+        }
+
+        /// <summary>
+        /// 通知記錄儲存
+        /// </summary>
+        private void SaveNotification()
+        {
             var data = new NotificationRecord
             {
                 DEVICE_TYPE = "S",
-                DEVICE_SN = _device.DEVICE_SN,
-                LOG_SN = _simpleLog.LOG_SN,
-                RECORD_CONTENT = _simpleLog.ERROR_INFO
+                DEVICE_SN = _bll.Device.DEVICE_SN,
+                LOG_SN = _bll.SimpleLog.LOG_SN,
+                RECORD_CONTENT = _bll.SimpleLog.ERROR_INFO
             };
 
-            _notification.Save(data);
-        }
-
-        /// <summary>
-        /// Log 訊息更新
-        /// </summary>
-        /// <param name="abuseConfidenceScore">黑名單分數</param>
-        private void UpdateLog(int abuseConfidenceScore)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<SimpleLog>();
-            bll.Modify("Update", new UserLogin(), new SimpleLog { LOG_SN = _simpleLog.LOG_SN, ABUSE_SCORE = abuseConfidenceScore });
-        }
-
-        /// <summary>
-        /// 告警記錄儲存
-        /// </summary>
-        /// <param name="log">告警記錄</param>
-        /// <param name="abuseScore">黑名單分數</param>
-        /// <returns></returns>
-        private SimpleLog SaveLog(APILog log)
-        {
-            var bll = new SimpleLog_BLL();
-
-            var data = new SimpleLog
-            {
-                DEVICE_SN = _device.DEVICE_SN,
-                ERROR_TIME = log.LOG_TIME,
-                ERROR_INFO = log.LOG_INFO,
-            };
-
-            //紀錄新增
-            return bll.ModifyLog(data, "L");
-        }
-
-        /// <summary>
-        /// 設備資料設置
-        /// </summary>
-        /// <param name="id">設備ID</param>
-        /// <returns></returns>
-        private void SetDevice(string id)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<Device>();
-            var option = new QueryOption { Relation = true, Plan = new QueryPlan { Join = "Records" } };
-            var condition = new Device { DEVICE_ID = id, DEVICE_TYPE = "S", IS_MONITOR = "Y" };
-
-            _device = bll.Get(option, new UserLogin(), condition);
-
-            if (string.IsNullOrEmpty(_device.DEVICE_SN))
-                throw new HttpRequestException("無對應設備，請確認設備為對應的類型[簡易數據設備]");
-        }
-
-        /// <summary>
-        /// 待查黑名單取得
-        /// </summary>
-        /// <param name="info">Logmaster 訊息</param>
-        /// <returns></returns>
-        private string GetBlockIP(string info)
-        {
-            var list = Regex.Split(info, "detect block ip ");
-            return list[1];
+            _bll.Notification.Save(data);
         }
 
         /// <summary>

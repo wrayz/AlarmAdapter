@@ -17,59 +17,24 @@ namespace APIService
         private string _ipAddress;
 
         /// <summary>
-        /// 黑名單資料庫設定
-        /// </summary>
-        private AbuseIpDbSetting _abuseIpDbSetting;
-
-        /// <summary>
-        /// 黑名單報告清單
-        /// </summary>
-        public ReportedIP ReportedIP { get; private set; }
-
-        /// <summary>
         /// 建構式
         /// </summary>
         public AbuseIpDbService(string ipAddress)
         {
             _ipAddress = ipAddress;
-
-            SetAbuseDbIpSetting();
-        }
-
-        /// <summary>
-        /// 黑名單資料庫設定資料取得
-        /// </summary>
-        private void SetAbuseDbIpSetting()
-        {
-            var bll = GenericBusinessFactory.CreateInstance<AbuseIpDbSetting>();
-            _abuseIpDbSetting = bll.Get(new QueryOption(), new UserLogin());
-        }
-
-        /// <summary>
-        /// 黑名單是否已報告
-        /// </summary>
-        /// <returns></returns>
-        public bool Check()
-        {
-            SetReportedIP();
-
-            if (_abuseIpDbSetting.ABUSE_SCORE == 0)
-                return true;
-
-            return ReportedIP.abuseConfidenceScore >= _abuseIpDbSetting.ABUSE_SCORE;
         }
 
         /// <summary>
         /// 使用 Abuse Api 確認黑名單
         /// </summary>
-        private void SetReportedIP()
+        public ReportedIP GetReportedIP(AbuseIpDbSetting abuse)
         {
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(@"https://www.abuseipdb.com/");
 
                 string formatApi = "check-block/json?network={0}/{1}&key={2}&days={3}";
-                var requestUri = string.Format(formatApi, _ipAddress, _abuseIpDbSetting.CIDR, _abuseIpDbSetting.API_KEY, _abuseIpDbSetting.SEARCHE_DAYS);
+                var requestUri = string.Format(formatApi, _ipAddress, abuse.CIDR, abuse.API_KEY, abuse.SEARCHE_DAYS);
 
                 using (var response = client.PostAsync(requestUri, null).Result)
                 {
@@ -80,7 +45,7 @@ namespace APIService
                         var blockResult = response.Content.ReadAsAsync<BlockResult>().Result;
 
                         var reported = blockResult.reportedIPs.Find(x => x.IP.Contains(_ipAddress));
-                        ReportedIP = reported == null ? new ReportedIP() : reported;
+                        return reported ?? new ReportedIP();
                     }
                     catch (HttpRequestException)
                     {

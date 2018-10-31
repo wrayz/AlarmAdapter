@@ -15,11 +15,11 @@ namespace ModelLibrary
         /// <summary>
         /// 黑名單分數
         /// </summary>
-        public int ABUSE_SCORE { get; set; }
+        public int? ABUSE_SCORE { get; set; }
 
         /// <summary>
         /// 請求時間
         /// </summary>
-        public DateTime REQUEST_TIME { get; set; }
+        public DateTime? REQUEST_TIME { get; set; }
     }
 }
