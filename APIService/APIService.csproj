@@ -183,6 +183,9 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Entity\AlarmCondition.config" />
+    <Content Include="Entity\BlockHole.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>

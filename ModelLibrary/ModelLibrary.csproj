@@ -63,6 +63,7 @@
     <Compile Include="Alarm.cs" />
     <Compile Include="AlarmCondition.cs" />
     <Compile Include="APILog.cs" />
+    <Compile Include="BlockHole.cs" />
     <Compile Include="BlockResult.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Contact.cs" />
