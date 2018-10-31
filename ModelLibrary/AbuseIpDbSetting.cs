@@ -24,5 +24,10 @@
         /// 查詢天數
         /// </summary>
         public int SEARCHE_DAYS { get; set; }
+
+        /// <summary>
+        /// 檢查週期(分）
+        /// </summary>
+        public int CHECK_CYCLE { get; set; }
     }
 }
