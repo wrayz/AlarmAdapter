@@ -63,7 +63,7 @@ namespace DataAccess
         private Device DeviceQuery(string id, OperatorType type, List<object> subCondition)
         {
             //對應設備ID且為監控狀態之設備
-            var condition = new Device() { DEVICE_ID = id, IS_MONITOR = "Y" };
+            var condition = new Device() { DEVICE_ID = id, IS_MONITOR = "Y", DEVICE_TYPE = "N" };
 
             _context.Main.Query(condition)
                         .Query(_target, type, subCondition);
