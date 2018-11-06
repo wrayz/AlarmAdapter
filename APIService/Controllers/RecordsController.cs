@@ -36,7 +36,7 @@ namespace APIService.Controllers
 
                 var content = Request.Content.ReadAsStringAsync().Result;
 
-                RecordRawData(content);
+                WriteRawData(content);
 
                 _bll = new RecordLog_BLL();
                 _notification = NotificationFactory.CreateInstance(DeviceType.D);
@@ -65,10 +65,12 @@ namespace APIService.Controllers
             }
             catch (HttpRequestException ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -104,7 +106,7 @@ namespace APIService.Controllers
 
                 SaveRecoverRecordLog(record);
 
-                if (CheckNotification(deviceRecord))
+                if (IsNotification(deviceRecord))
                 {
                     PushNotification(EventType.Recover, deviceRecord);
                 }
@@ -167,7 +169,7 @@ namespace APIService.Controllers
         /// </summary>
         /// <param name="deviceRecord">設備對應告警記錄</param>
         /// <returns></returns>
-        private bool CheckNotification(DeviceRecord deviceRecord)
+        private bool IsNotification(DeviceRecord deviceRecord)
         {
             var bll = GenericBusinessFactory.CreateInstance<NotificationRecord>();
             var condition = new NotificationRecord
@@ -239,15 +241,25 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 記錄檔
+        /// 記錄檔寫入
         /// </summary>
         /// <param name="content">原始資料</param>
-        private void RecordRawData(string content)
+        private void WriteRawData(string content)
         {
             //log時間
             var time = DateTime.Now;
             //記錄檔
             File.AppendAllText("C:/EyesFree/DataLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), content));
+        }
+
+        /// <summary>
+        /// NLog 寫入
+        /// </summary>
+        /// <param name="message">訊息</param>
+        private void WriteNLog(string message)
+        {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            logger.Info(message);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace APIService.Controllers
 
                 _bll.InitLogmasterData(log);
 
-                if (_bll.CheckNotification())
+                if (_bll.IsNotification())
                 {
                     if (_bll.AbuseIpDbSetting.ABUSE_SCORE == 0)
                         Push();
@@ -43,7 +43,7 @@ namespace APIService.Controllers
                     {
                         var blockHole = GetBlockHole();
 
-                        if (_bll.CheckBlockHole(blockHole))
+                        if (_bll.IsBlockHole(blockHole))
                             Push();
                     }
                 }
@@ -51,15 +51,17 @@ namespace APIService.Controllers
             }
             catch (HttpRequestException ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
-            catch (NotSupportedException)
+            catch (NotSupportedException ex)
             {
                 Push();
                 return Ok();
             }
             catch (Exception ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -143,6 +145,16 @@ namespace APIService.Controllers
 
             if (!(logtime >= token.StartDate && logtime <= token.EndDate))
                 throw new HttpRequestException("License key 已過期，請檢查License Key");
+        }
+
+        /// <summary>
+        /// NLog 寫入
+        /// </summary>
+        /// <param name="message">訊息</param>
+        private void WriteNLog(string message)
+        {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            logger.Info(message);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="notification"></param>
         /// <returns></returns>
-        public bool CheckNotification()
+        public bool IsNotification()
         {
             var alarm = new Alarm { Time = SimpleLog.ERROR_TIME, Content = SimpleLog.ERROR_INFO };
 
@@ -60,7 +60,7 @@ namespace BusinessLogic
         /// 黑名單分數檢查
         /// </summary>
         /// <returns></returns>
-        public bool CheckBlockHole(BlockHole blockHole)
+        public bool IsBlockHole(BlockHole blockHole)
         {
             return blockHole.ABUSE_SCORE.Value >= AbuseIpDbSetting.ABUSE_SCORE;
         }
@@ -93,7 +93,7 @@ namespace BusinessLogic
             Device = bll.Get(option, new UserLogin(), condition);
 
             if (string.IsNullOrEmpty(Device.DEVICE_SN))
-                throw new HttpRequestException("無對應設備，請確認設備為對應的類型[簡易數據設備]");
+                throw new HttpRequestException($"{ id } 無對應設備，請檢查 EyesFree 設備設定");
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace APIService.Controllers
@@ -29,16 +30,12 @@ namespace APIService.Controllers
                 log.USERID = login.USERID;
 
                 //設備是否異常
-                if (IsErrorDevice(log.DEVICE_SN, login))
-                {
-                    var bll = new Log_BLL();
+                if (!IsErrorDevice(log.DEVICE_SN, login))
+                    throw new HttpRequestException($"設備 { log.DEVICE_SN } 狀態並非異常，無需修復");
 
-                    bll.Modify(log.ACTION_TYPE, login, log);
-                }
-                else
-                {
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("無對應設備，或對應設備狀態不符"));
-                }
+                var bll = new Log_BLL();
+
+                bll.Modify(log.ACTION_TYPE, login, log);
 
                 //是否通知
                 if (CheckNotification(log))
@@ -46,8 +43,14 @@ namespace APIService.Controllers
 
                 return Ok();
             }
+            catch (HttpResponseException ex)
+            {
+                WriteNLog(ex.Message);
+                return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
+            }
             catch (Exception ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -94,6 +97,16 @@ namespace APIService.Controllers
             };
 
             return bll.IsExists(new QueryOption(), new UserLogin(), condition);
+        }
+
+        /// <summary>
+        /// NLog 寫入
+        /// </summary>
+        /// <param name="message">訊息</param>
+        private void WriteNLog(string message)
+        {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            logger.Info(message);
         }
     }
 }

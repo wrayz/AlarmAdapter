@@ -50,10 +50,12 @@ namespace APIService.Controllers
             }
             catch (HttpRequestException ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -94,8 +96,6 @@ namespace APIService.Controllers
             var info = content.Substring(content.IndexOf("=") + 1);
             //設備資訊設置
             SetDevice(ip);
-
-            if (string.IsNullOrEmpty(_device.DEVICE_SN)) throw new HttpRequestException("無對應設備");
 
             return new SimpleLog
             {
@@ -156,6 +156,16 @@ namespace APIService.Controllers
 
             if (!(time >= token.StartDate && time <= token.EndDate))
                 throw new HttpRequestException("License key 已過期，請檢查License Key");
+        }
+
+        /// <summary>
+        /// NLog 寫入
+        /// </summary>
+        /// <param name="message">訊息</param>
+        private void WriteNLog(string message)
+        {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            logger.Info(message);
         }
     }
 }

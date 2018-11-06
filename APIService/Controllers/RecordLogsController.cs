@@ -30,27 +30,29 @@ namespace APIService.Controllers
 
                 var user = GenericAPIService.GetUserInfo();
 
-                if (IsErrorDevice(log.DEVICE_SN, user))
+                if (!IsErrorDevice(log.DEVICE_SN, user))
+                    throw new HttpRequestException($"設備 { log.DEVICE_SN } 狀態並非異常，無需修復");
+
+                log.USERID = user.USERID;
+
+                var bll = new RecordLog_BLL();
+                bll.ModifyRecordLog("Repair", log);
+
+                if (IsNotification(log))
                 {
-                    log.USERID = user.USERID;
-
-                    var bll = new RecordLog_BLL();
-                    bll.ModifyRecordLog("Repair", log);
-
-                    if (CheckNotification(log))
-                    {
-                        PushNotification(EventType.Repair, log);
-                    }
-
-                    return Ok();
+                    PushNotification(EventType.Repair, log);
                 }
-                else
-                {
-                    return Content(HttpStatusCode.Forbidden, new APIResponse("無對應設備，或對應設備狀態不符"));
-                }
+
+                return Ok();
+            }
+            catch (HttpResponseException ex)
+            {
+                WriteNLog(ex.Message);
+                return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -72,7 +74,7 @@ namespace APIService.Controllers
         /// </summary>
         /// <param name="log">記錄資訊</param>
         /// <returns></returns>
-        private bool CheckNotification(RecordLog log)
+        private bool IsNotification(RecordLog log)
         {
             var bll = GenericBusinessFactory.CreateInstance<NotificationRecord>();
             var condition = new NotificationRecord
@@ -112,6 +114,16 @@ namespace APIService.Controllers
 
             if (!(time >= token.StartDate && time <= token.EndDate))
                 throw new HttpRequestException("License key 已過期，請檢查License Key");
+        }
+
+        /// <summary>
+        /// NLog 寫入
+        /// </summary>
+        /// <param name="message">訊息</param>
+        private void WriteNLog(string message)
+        {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            logger.Info(message);
         }
     }
 }

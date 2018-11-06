@@ -44,10 +44,12 @@ namespace APIService.Controllers
             }
             catch (HttpRequestException ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.InternalServerError, ex);
             }
         }
@@ -61,7 +63,7 @@ namespace APIService.Controllers
                 //原始資料
                 var content = Request.Content.ReadAsStringAsync().Result;
 
-                RecordRawData(content);
+                WriteRawData(content);
 
                 var log = JsonConvert.DeserializeObject<Log>(content);
 
@@ -76,6 +78,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
+                WriteNLog(ex.Message);
                 return Content(HttpStatusCode.InternalServerError, ex);
             }
         }
@@ -103,7 +106,7 @@ namespace APIService.Controllers
                     break;
 
                 default:
-                    throw new Exception("無此告警類型");
+                    throw new Exception($"無 { data.ACTION_TYPE } 告警類型");
             }
         }
 
@@ -117,7 +120,8 @@ namespace APIService.Controllers
             var bll = GenericBusinessFactory.CreateInstance<AlarmCondition>();
             var alarmCondition = bll.Get(new QueryOption(), new UserLogin(), new AlarmCondition { ACTION_TYPE = log.ACTION_TYPE });
 
-            if (string.IsNullOrEmpty(alarmCondition.ALARM_TYPE)) throw new HttpRequestException("無此告警類型對應");
+            if (string.IsNullOrEmpty(alarmCondition.ALARM_TYPE))
+                throw new HttpRequestException($"無 { log.ACTION_TYPE } 告警類型");
 
             var data = new Log
             {
@@ -228,7 +232,7 @@ namespace APIService.Controllers
         {
             //設備ID檢查
             if (string.IsNullOrEmpty(log.DEVICE_ID))
-                throw new HttpRequestException("資料未包含設備ID，請檢查資料");
+                throw new HttpRequestException($"EyesFree 尚未設置設備ID { log.DEVICE_ID }，請檢查設定");
         }
 
         /// <summary>
@@ -251,13 +255,23 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 原始資料儲存
+        /// 原始資料寫入
         /// </summary>
         /// <param name="content">記錄資料</param>
-        private void RecordRawData(string content)
+        private void WriteRawData(string content)
         {
             var time = DateTime.Now;
             File.AppendAllText("C:/EyesFree/CactiRawData.txt", string.Format("{0}, {1}\n", time.ToString(), content));
+        }
+
+        /// <summary>
+        /// NLog 寫入
+        /// </summary>
+        /// <param name="message">訊息</param>
+        private void WriteNLog(string message)
+        {
+            var logger = NLog.LogManager.GetCurrentClassLogger();
+            logger.Info(message);
         }
 
         /// <summary>
