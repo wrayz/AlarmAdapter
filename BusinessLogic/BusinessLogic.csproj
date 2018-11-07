@@ -88,7 +88,7 @@
     <Compile Include="License\LicenseConfig.cs" />
     <Compile Include="License\LicenseLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecordParser\CactiSnmpParser.cs" />
+    <Compile Include="RecordParser\CactiParser.cs" />
     <Compile Include="RecordParser\IParser.cs" />
     <Compile Include="RecordParser\ParserFactory.cs" />
     <Compile Include="SimpleLog_BLL.cs" />
