@@ -10,20 +10,20 @@ namespace BusinessLogic.RecordParser
         /// <summary>
         /// 解析器產生
         /// </summary>
-        /// <param name="parserName">解析器名稱</param>
+        /// <param name="type">解析器類型</param>
         /// <returns></returns>
-        public static IParser CreateInstance(string parserName)
+        public static IParser CreateInstance(string type)
         {
             IParser parser;
 
-            switch (parserName)
+            switch (type)
             {
                 case "Cacti":
                     parser = new CactiParser();
                     break;
 
                 default:
-                    throw new NotImplementedException($"尚未實作 { parserName } 解析器");
+                    throw new NotImplementedException($"尚未實作 { type } 解析器");
             }
 
             return parser;

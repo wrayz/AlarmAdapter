@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParserTests.cs" />
+    <Compile Include="AlarmTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

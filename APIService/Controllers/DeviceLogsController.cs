@@ -118,15 +118,15 @@ namespace APIService.Controllers
         private Log GetLogData(Log log)
         {
             var bll = GenericBusinessFactory.CreateInstance<AlarmCondition>();
-            var alarmCondition = bll.Get(new QueryOption(), new UserLogin(), new AlarmCondition { ACTION_TYPE = log.ACTION_TYPE });
+            var alarmCondition = bll.Get(new QueryOption(), new UserLogin(), new AlarmCondition { TARGET_NAME = log.ACTION_TYPE });
 
-            if (string.IsNullOrEmpty(alarmCondition.ALARM_TYPE))
+            if (string.IsNullOrEmpty(alarmCondition.TARGET_VALUE))
                 throw new HttpRequestException($"無 { log.ACTION_TYPE } 告警類型");
 
             var data = new Log
             {
                 DEVICE_ID = log.DEVICE_ID,
-                ACTION_TYPE = alarmCondition.ALARM_TYPE,
+                ACTION_TYPE = alarmCondition.TARGET_VALUE,
                 LOG_INFO = log.LOG_INFO,
                 LOG_TIME = log.LOG_TIME
             };

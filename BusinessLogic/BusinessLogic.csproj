@@ -78,6 +78,10 @@
     <Compile Include="Notification\NetworkNotification.cs" />
     <Compile Include="Notification\NotificationFactory.cs" />
     <Compile Include="Notification\SimpleNotification.cs" />
+    <Compile Include="RecordAlarm\AlarmFactory.cs" />
+    <Compile Include="RecordAlarm\Alarm.cs" />
+    <Compile Include="RecordAlarm\CactiAlarm.cs" />
+    <Compile Include="RecordAlarm\IAlarm.cs" />
     <Compile Include="RecordLog_BLL.cs" />
     <Compile Include="Log_BLL.cs" />
     <Compile Include="Payload\IMPayload.cs" />
