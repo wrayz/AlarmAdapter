@@ -1,5 +1,6 @@
 ﻿using APIService.Model;
 using BusinessLogic;
+using BusinessLogic.License;
 using BusinessLogic.Notification;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
@@ -148,14 +149,8 @@ namespace APIService.Controllers
         /// </summary>
         private static void CheckLicense()
         {
-            if (LicenseLogic.Token == null)
-                throw new HttpRequestException("License key 無效，請檢查License Key");
-
-            var token = LicenseLogic.Token;
-            var time = DateTime.Now;
-
-            if (!(time >= token.StartDate && time <= token.EndDate))
-                throw new HttpRequestException("License key 已過期，請檢查License Key");
+            var license = new LicenseBusinessLogic();
+            license.Verify(DateTime.Now);
         }
 
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using APIService.Model;
 using BusinessLogic;
+using BusinessLogic.License;
 using BusinessLogic.Notification;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
@@ -9,7 +10,6 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 
 namespace APIService.Controllers
@@ -35,8 +35,7 @@ namespace APIService.Controllers
         {
             try
             {
-                CheckContent(log);
-                CheckLicense(log.LOG_TIME);
+                CheckValid(log);
 
                 Process(log);
 
@@ -62,13 +61,11 @@ namespace APIService.Controllers
             {
                 //原始資料
                 var content = Request.Content.ReadAsStringAsync().Result;
+                var log = JsonConvert.DeserializeObject<Log>(content);
 
                 WriteRawData(content);
 
-                var log = JsonConvert.DeserializeObject<Log>(content);
-
-                CheckContent(log);
-                CheckLicense(log.LOG_TIME);
+                CheckValid(log);
 
                 var data = GetLogData(log);
 
@@ -225,33 +222,16 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 內容檢查
+        /// 合法性檢查
         /// </summary>
         /// <param name="log">告警訊息</param>
-        private void CheckContent(Log log)
+        private void CheckValid(Log log)
         {
-            //設備ID檢查
             if (string.IsNullOrEmpty(log.DEVICE_ID))
                 throw new HttpRequestException($"EyesFree 尚未設置設備ID { log.DEVICE_ID }，請檢查設定");
-        }
 
-        /// <summary>
-        /// License 檢查
-        /// </summary>
-        /// <param name="logtime">告警訊息時間</param>
-        private void CheckLicense(DateTime? logtime)
-        {
-            //來源IP驗證
-            //if (!Validate())
-            //    return Content(HttpStatusCode.Unauthorized, new APIResponse("來源IP未認證"));
-
-            if (LicenseLogic.Token == null)
-                throw new HttpRequestException("License key 無效，請檢查License Key");
-
-            var token = LicenseLogic.Token;
-
-            if (!(logtime >= token.StartDate && logtime <= token.EndDate))
-                throw new HttpRequestException("License key 已過期，請檢查License Key");
+            var license = new LicenseBusinessLogic();
+            license.Verify(log.LOG_TIME);
         }
 
         /// <summary>
@@ -272,15 +252,6 @@ namespace APIService.Controllers
         {
             var logger = NLog.LogManager.GetCurrentClassLogger();
             logger.Info(message);
-        }
-
-        /// <summary>
-        /// 來源IP驗證
-        /// </summary>
-        /// <returns></returns>
-        private bool Validate()
-        {
-            return HttpContext.Current.Request.ServerVariables["LOCAL_ADDR"] == HttpContext.Current.Request.UserHostAddress;
         }
     }
 }

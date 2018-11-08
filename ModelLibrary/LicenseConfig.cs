@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic
+﻿namespace ModelLibrary
 {
     /// <summary>
     /// License參數資料
