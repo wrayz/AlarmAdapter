@@ -1,14 +1,7 @@
-﻿using System.Collections.Generic;
-using ModelLibrary;
-
-namespace BusinessLogic.RecordAlarm
+﻿namespace BusinessLogic.RecordAlarm
 {
     internal class CactiAlarm : Alarm
     {
-        public CactiAlarm(List<AlarmCondition> alarmConditions) : base(alarmConditions)
-        {
-        }
-
         /// <summary>
         /// 告警條件檢查
         /// </summary>

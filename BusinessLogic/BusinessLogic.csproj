@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Director\WorkDirector.cs" />
     <Compile Include="License\NetworkCard.cs" />
     <Compile Include="Payload\Payload.cs" />
     <Compile Include="Payload\RecordPayload.cs" />

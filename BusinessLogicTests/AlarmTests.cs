@@ -42,10 +42,10 @@ namespace BusinessLogicTests
             };
 
             var type = "Cacti";
-            var alarm = AlarmFactory.CreateInstance(type, _alarmConditions);
+            var alarm = AlarmFactory.CreateInstance(type);
 
             //Act
-            var actual = alarm.IsException(deviceMonitor);
+            var actual = alarm.IsException(_alarmConditions, deviceMonitor);
 
             //Assert
             Assert.AreEqual(expected, actual);

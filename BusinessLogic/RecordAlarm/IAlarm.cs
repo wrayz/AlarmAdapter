@@ -1,4 +1,5 @@
 ﻿using ModelLibrary;
+using System.Collections.Generic;
 
 namespace BusinessLogic.RecordAlarm
 {
@@ -10,8 +11,9 @@ namespace BusinessLogic.RecordAlarm
         /// <summary>
         /// 是否異常
         /// </summary>
+        /// <param name="alarmConditions">告警條件清單</param>
         /// <param name="deviceMonitor">設備監控訊息</param>
         /// <returns></returns>
-        bool IsException(DeviceMonitor deviceMonitor);
+        bool IsException(List<AlarmCondition> alarmConditions, DeviceMonitor deviceMonitor);
     }
 }

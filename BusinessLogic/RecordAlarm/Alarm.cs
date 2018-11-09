@@ -8,25 +8,15 @@ namespace BusinessLogic.RecordAlarm
     /// </summary>
     public abstract class Alarm : IAlarm
     {
-        private List<AlarmCondition> _alarmConditions;
-
-        /// <summary>
-        /// 建構式
-        /// </summary>
-        /// <param name="alarmConditions">告警條件</param>
-        public Alarm(List<AlarmCondition> alarmConditions)
-        {
-            _alarmConditions = alarmConditions;
-        }
-
         /// <summary>
         /// 是否異常
         /// </summary>
+        /// <param name="alarmConditions">告警條件清單</param>
         /// <param name="deviceMonitor">設備監控訊息</param>
         /// <returns></returns>
-        public bool IsException(DeviceMonitor deviceMonitor)
+        public bool IsException(List<AlarmCondition> alarmConditions, DeviceMonitor deviceMonitor)
         {
-            var condition = _alarmConditions.Find(x => x.DEVICE_SN == deviceMonitor.DEVICE_SN && x.TARGET_NAME == deviceMonitor.TARGET_NAME);
+            var condition = alarmConditions.Find(x => x.DEVICE_SN == deviceMonitor.DEVICE_SN && x.TARGET_NAME == deviceMonitor.TARGET_NAME);
 
             return Check(condition.TARGET_VALUE, deviceMonitor.TARGET_VALUE) ? condition.IS_EXCEPTION : !condition.IS_EXCEPTION;
         }

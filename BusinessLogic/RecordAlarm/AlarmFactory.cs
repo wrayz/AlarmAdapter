@@ -12,17 +12,16 @@ namespace BusinessLogic.RecordAlarm
         /// <summary>
         /// 告警器實體產生
         /// </summary>
-        /// <param name="type">設備類型</param>
-        /// <param name="alarmConditions">告警條件</param>
+        /// <param name="type">偵測器類型</param>
         /// <returns></returns>
-        public static Alarm CreateInstance(string type, List<AlarmCondition> alarmConditions)
+        public static Alarm CreateInstance(string type)
         {
             Alarm alarm;
 
             switch (type)
             {
                 case "Cacti":
-                    alarm = new CactiAlarm(alarmConditions);
+                    alarm = new CactiAlarm();
                     break;
 
                 default:
