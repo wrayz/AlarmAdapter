@@ -1,5 +1,8 @@
 ﻿using BusinessLogic.Director;
+using BusinessLogicTests.Fake;
 using ModelLibrary;
+using ModelLibrary.Enumerate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
@@ -26,6 +29,18 @@ namespace BusinessLogicTests.Steps
             _alarmConditions = table.CreateSet<AlarmCondition>().ToList();
         }
 
+        [Given(@"偵測器""(.*)""")]
+        public void Given偵測器(string detector)
+        {
+            ScenarioContext.Current.Set(detector, "detector");
+        }
+
+        [Given(@"設備類型為""(.*)""")]
+        public void Given設備類型為(string deviceType)
+        {
+            ScenarioContext.Current.Set(deviceType, "deviceType");
+        }
+
         [Given(@"原始訊息為""(.*)""")]
         public void Given原始訊息為(string originRecord)
         {
@@ -35,8 +50,10 @@ namespace BusinessLogicTests.Steps
         [When(@"執行EF作業")]
         public void When執行EF作業()
         {
+            var detector= ScenarioContext.Current.Get<string>("detector");
+            var deviceType = ScenarioContext.Current.Get<string>("deviceType");
             var originRecord = ScenarioContext.Current.Get<string>("originRecord");
-            _workDirector = new WorkDirector(originRecord);
+            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _alarmConditions);
 
             _workDirector.Execute();
         }

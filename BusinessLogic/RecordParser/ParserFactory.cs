@@ -28,5 +28,10 @@ namespace BusinessLogic.RecordParser
 
             return parser;
         }
+
+        internal static object CreateInstance(object detectorType)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

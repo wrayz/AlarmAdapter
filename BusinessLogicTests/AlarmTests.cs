@@ -45,7 +45,7 @@ namespace BusinessLogicTests
             var alarm = AlarmFactory.CreateInstance(type);
 
             //Act
-            var actual = alarm.IsException(_alarmConditions, deviceMonitor);
+            var actual = alarm.IsException(deviceMonitor, _alarmConditions);
 
             //Assert
             Assert.AreEqual(expected, actual);
