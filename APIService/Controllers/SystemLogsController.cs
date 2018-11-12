@@ -6,7 +6,6 @@ using ModelLibrary;
 using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -28,15 +27,16 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult PostData()
         {
+            var logger = NLog.LogManager.GetLogger("Camera");
+
             try
             {
+                var content = Request.Content.ReadAsStringAsync().Result;
+                var sourceIp = GetSourceIP();
+                logger.Info(string.Format("{0} | {1}", sourceIp, content));
+
                 CheckLicense();
 
-                //原始資料
-                var content = Request.Content.ReadAsStringAsync().Result;
-                //來源 IP
-                var sourceIp = GetSourceIP();
-                RecordRawData(content, sourceIp);
                 //資料解析
                 var data = ParseData(content, sourceIp);
                 //商業邏輯
@@ -51,12 +51,12 @@ namespace APIService.Controllers
             }
             catch (HttpRequestException ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -121,19 +121,6 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 原始資料儲存
-        /// </summary>
-        /// <param name="content">原始資料</param>
-        /// <param name="ip">來源 IP</param>
-        private void RecordRawData(string content, string ip)
-        {
-            //log時間
-            var time = DateTime.Now;
-            //記錄檔
-            File.AppendAllText("C:/EyesFree/CameraLog.txt", string.Format("{0}, Source: {1}, Log: {2}\n", time.ToString(), ip, content));
-        }
-
-        /// <summary>
         /// 取得來源IP
         /// </summary>
         /// <returns></returns>
@@ -151,16 +138,6 @@ namespace APIService.Controllers
         {
             var license = new LicenseBusinessLogic();
             license.Verify(DateTime.Now);
-        }
-
-        /// <summary>
-        /// NLog 寫入
-        /// </summary>
-        /// <param name="message">訊息</param>
-        private void WriteNLog(string message)
-        {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            logger.Info(message);
         }
     }
 }

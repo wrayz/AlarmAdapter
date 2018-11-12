@@ -7,7 +7,6 @@ using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -33,8 +32,12 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult Post(Log log)
         {
+            var logger = NLog.LogManager.GetLogger("Cacti");
+
             try
             {
+                logger.Info(JsonConvert.SerializeObject(log));
+
                 CheckValid(log);
 
                 Process(log);
@@ -43,12 +46,12 @@ namespace APIService.Controllers
             }
             catch (HttpRequestException ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.InternalServerError, ex);
             }
         }
@@ -57,13 +60,15 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult Post()
         {
+            var logger = NLog.LogManager.GetLogger("Cacti");
+
             try
             {
                 //原始資料
                 var content = Request.Content.ReadAsStringAsync().Result;
-                var log = JsonConvert.DeserializeObject<Log>(content);
+                logger.Info(content);
 
-                WriteRawData(content);
+                var log = JsonConvert.DeserializeObject<Log>(content);
 
                 CheckValid(log);
 
@@ -75,7 +80,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.InternalServerError, ex);
             }
         }
@@ -232,26 +237,6 @@ namespace APIService.Controllers
 
             var license = new LicenseBusinessLogic();
             license.Verify(log.LOG_TIME);
-        }
-
-        /// <summary>
-        /// 原始資料寫入
-        /// </summary>
-        /// <param name="content">記錄資料</param>
-        private void WriteRawData(string content)
-        {
-            var time = DateTime.Now;
-            File.AppendAllText("C:/EyesFree/CactiRawData.txt", string.Format("{0}, {1}\n", time.ToString(), content));
-        }
-
-        /// <summary>
-        /// NLog 寫入
-        /// </summary>
-        /// <param name="message">訊息</param>
-        private void WriteNLog(string message)
-        {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            logger.Info(message);
         }
     }
 }

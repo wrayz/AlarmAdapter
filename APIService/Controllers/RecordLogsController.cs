@@ -25,6 +25,8 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult PostData(RecordLog log)
         {
+            var logger = NLog.LogManager.GetLogger("iFace Repair");
+
             try
             {
                 CheckLicense();
@@ -48,12 +50,12 @@ namespace APIService.Controllers
             }
             catch (HttpResponseException ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -109,16 +111,6 @@ namespace APIService.Controllers
         {
             var license = new LicenseBusinessLogic();
             license.Verify(DateTime.Now);
-        }
-
-        /// <summary>
-        /// NLog 寫入
-        /// </summary>
-        /// <param name="message">訊息</param>
-        private void WriteNLog(string message)
-        {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            logger.Info(message);
         }
     }
 }

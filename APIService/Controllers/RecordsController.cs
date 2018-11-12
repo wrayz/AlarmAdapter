@@ -6,7 +6,6 @@ using ModelLibrary;
 using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -31,13 +30,14 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult Post()
         {
+            var logger = NLog.LogManager.GetLogger("iFace");
+
             try
             {
-                CheckLicense();
-
                 var content = Request.Content.ReadAsStringAsync().Result;
+                logger.Info(content);
 
-                WriteRawData(content);
+                CheckLicense();
 
                 _bll = new RecordLog_BLL();
                 _notification = NotificationFactory.CreateInstance(DeviceType.D);
@@ -66,12 +66,12 @@ namespace APIService.Controllers
             }
             catch (HttpRequestException ex)
             {
-                WriteNLog(ex.Message);
+                logger.Equals(ex);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
-                WriteNLog(ex.Message);
+                logger.Equals(ex);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -113,8 +113,6 @@ namespace APIService.Controllers
                 }
             }
         }
-
-
 
         /// <summary>
         /// 異常記錄儲存
@@ -233,28 +231,6 @@ namespace APIService.Controllers
         {
             var license = new LicenseBusinessLogic();
             license.Verify(DateTime.Now);
-        }
-
-        /// <summary>
-        /// 記錄檔寫入
-        /// </summary>
-        /// <param name="content">原始資料</param>
-        private void WriteRawData(string content)
-        {
-            //log時間
-            var time = DateTime.Now;
-            //記錄檔
-            File.AppendAllText("C:/EyesFree/DataLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), content));
-        }
-
-        /// <summary>
-        /// NLog 寫入
-        /// </summary>
-        /// <param name="message">訊息</param>
-        private void WriteNLog(string message)
-        {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            logger.Info(message);
         }
     }
 }

@@ -25,14 +25,16 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult Post(APILog log)
         {
+            var logger = NLog.LogManager.GetLogger("Logmaster");
+
             try
             {
+                logger.Info(JsonConvert.SerializeObject(log));
+
                 CheckLicense(log.LOG_TIME);
 
                 if (string.IsNullOrEmpty(log.DEVICE_ID))
                     throw new HttpRequestException("資料未包含設備ID，請檢查資料內容");
-
-                RecordRawData(log);
 
                 _bll.InitLogmasterData(log);
 
@@ -52,17 +54,17 @@ namespace APIService.Controllers
             }
             catch (HttpRequestException ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
-            catch (NotSupportedException ex)
+            catch (NotSupportedException)
             {
                 Push();
                 return Ok();
             }
             catch (Exception ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -122,18 +124,6 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 原始資料儲存
-        /// </summary>
-        /// <param name="log">記錄資料</param>
-        private void RecordRawData(APILog log)
-        {
-            //log時間
-            var time = DateTime.Now;
-            //記錄檔
-            File.AppendAllText("C:/EyesFree/SimpleLog.txt", string.Format("{0}, Log: {1}\n", time.ToString(), JsonConvert.SerializeObject(log)));
-        }
-
-        /// <summary>
         /// License 檢查
         /// </summary>
         /// <param name="logtime">告警時間</param>
@@ -141,16 +131,6 @@ namespace APIService.Controllers
         {
             var license = new LicenseBusinessLogic();
             license.Verify(logtime);
-        }
-
-        /// <summary>
-        /// NLog 寫入
-        /// </summary>
-        /// <param name="message">訊息</param>
-        private void WriteNLog(string message)
-        {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            logger.Info(message);
         }
     }
 }

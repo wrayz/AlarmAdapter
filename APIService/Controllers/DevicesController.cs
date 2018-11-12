@@ -24,6 +24,8 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult Repair(Log log)
         {
+            var logger = NLog.LogManager.GetLogger("Cacti Repair");
+
             try
             {
                 var login = GenericAPIService.GetUserInfo();
@@ -45,12 +47,12 @@ namespace APIService.Controllers
             }
             catch (HttpResponseException ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.Forbidden, new APIResponse(ex.Message));
             }
             catch (Exception ex)
             {
-                WriteNLog(ex.Message);
+                logger.Error(ex);
                 return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
             }
         }
@@ -97,16 +99,6 @@ namespace APIService.Controllers
             };
 
             return bll.IsExists(new QueryOption(), new UserLogin(), condition);
-        }
-
-        /// <summary>
-        /// NLog 寫入
-        /// </summary>
-        /// <param name="message">訊息</param>
-        private void WriteNLog(string message)
-        {
-            var logger = NLog.LogManager.GetCurrentClassLogger();
-            logger.Info(message);
         }
     }
 }
