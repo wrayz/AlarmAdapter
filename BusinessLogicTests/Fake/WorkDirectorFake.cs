@@ -12,8 +12,8 @@ namespace BusinessLogicTests.Fake
         private List<Device> _devices;
         private List<AlarmCondition> _alarmConditions;
 
-        public WorkDirectorFake(string detector, string originRecord, string deviceType,
-                                List<Device> devices, List<AlarmCondition> alarmConditions)
+        public WorkDirectorFake(string detector, string originRecord, DeviceType deviceType,
+                                List<Device> devices, List<AlarmCondition> alarmConditions, List<DeviceMonitor> previousMonitors)
             : base(detector, originRecord, deviceType)
         {
             _devices = devices;

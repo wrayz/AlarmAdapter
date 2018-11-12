@@ -119,6 +119,24 @@ testRunner.Given("設備清單為", ((string)(null)), table1, "Given ");
 #line 11
 testRunner.Given("告警條件為", ((string)(null)), table2, "Given ");
 #line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "RECORD_SN",
+                        "DEVICE_SN",
+                        "TARGET_NAME",
+                        "IS_EXCEPTION"});
+            table3.AddRow(new string[] {
+                        "2018111200001",
+                        "2018001",
+                        "Traffic - Gi1/0/20 [traffic_in]",
+                        "false"});
+            table3.AddRow(new string[] {
+                        "2018111200002",
+                        "2018002",
+                        "Traffic - Gi1/0/20 [traffic_in]",
+                        "true"});
+#line 14
+testRunner.Given("前次監控訊息為", ((string)(null)), table3, "Given ");
+#line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -127,63 +145,19 @@ testRunner.Given("告警條件為", ((string)(null)), table2, "Given ");
         public virtual void Cacti_ALERT訊息()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cacti_ALERT訊息", null, ((string[])(null)));
-#line 15
+#line 20
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 6
 this.FeatureBackground();
-#line 16
+#line 21
  testRunner.Given("偵測器\"Cacti\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 17
+#line 22
  testRunner.And("設備類型為\"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
+#line 23
  testRunner.And("原始訊息為\"{ \"id\":\"192.168.10.99\", \"target\": \"Traffic - Gi1/0/20 [traffic_in]\", \"actio" +
                     "n\":\"ALERT\", \"info\":\"current value is 5630.6207\",\"time\":\"2018/11/06 18:08:34\" }\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
- testRunner.When("執行EF作業", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "DEVICE_SN",
-                        "DEVICE_ID",
-                        "TARGET_NAME",
-                        "TARGET_VALUE",
-                        "TARGET_CONTENT",
-                        "RECEIVE_TIME",
-                        "IS_EXCEPTION"});
-            table3.AddRow(new string[] {
-                        "2018001",
-                        "192.168.10.99",
-                        "Traffic - Gi1/0/20 [traffic_in]",
-                        "ALERT",
-                        "current value is 5630.6207",
-                        "2018/11/06 18:08:34",
-                        "true"});
-#line 20
- testRunner.Then("EF解析告警結果為", ((string)(null)), table3, "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cacti_NORMAL訊息")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "IntegrateTestFeature")]
-        public virtual void Cacti_NORMAL訊息()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cacti_NORMAL訊息", null, ((string[])(null)));
 #line 24
-this.ScenarioInitialize(scenarioInfo);
-            this.ScenarioStart();
-#line 6
-this.FeatureBackground();
-#line 25
- testRunner.Given("偵測器\"Cacti\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 26
- testRunner.And("設備類型為\"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
- testRunner.And("原始訊息為\"{ \"id\":\"192.168.10.98\", \"target\": \"Traffic - Gi1/0/20 [traffic_in]\", \"actio" +
-                    "n\":\"NORMAL\", \"info\":\"current value is 5630.6207\",\"time\":\"2018/11/06 18:08:34\" }\"" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
  testRunner.When("執行EF作業", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -195,6 +169,71 @@ this.FeatureBackground();
                         "RECEIVE_TIME",
                         "IS_EXCEPTION"});
             table4.AddRow(new string[] {
+                        "2018001",
+                        "192.168.10.99",
+                        "Traffic - Gi1/0/20 [traffic_in]",
+                        "ALERT",
+                        "current value is 5630.6207",
+                        "2018/11/06 18:08:34",
+                        "true"});
+#line 25
+ testRunner.Then("EF解析告警結果為", ((string)(null)), table4, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "DEVICE_SN",
+                        "DEVICE_ID",
+                        "TARGET_NAME",
+                        "TARGET_VALUE",
+                        "TARGET_CONTENT",
+                        "RECEIVE_TIME",
+                        "IS_EXCEPTION",
+                        "IS_NOTIFICATION"});
+            table5.AddRow(new string[] {
+                        "2018001",
+                        "192.168.10.99",
+                        "Traffic - Gi1/0/20 [traffic_in]",
+                        "ALERT",
+                        "current value is 5630.6207",
+                        "2018/11/06 18:08:34",
+                        "true",
+                        "true"});
+#line 28
+ testRunner.And("EF狀態通知結果為", ((string)(null)), table5, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Cacti_NORMAL訊息")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "IntegrateTestFeature")]
+        public virtual void Cacti_NORMAL訊息()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cacti_NORMAL訊息", null, ((string[])(null)));
+#line 32
+this.ScenarioInitialize(scenarioInfo);
+            this.ScenarioStart();
+#line 6
+this.FeatureBackground();
+#line 33
+ testRunner.Given("偵測器\"Cacti\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 34
+ testRunner.And("設備類型為\"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.And("原始訊息為\"{ \"id\":\"192.168.10.98\", \"target\": \"Traffic - Gi1/0/20 [traffic_in]\", \"actio" +
+                    "n\":\"NORMAL\", \"info\":\"current value is 5630.6207\",\"time\":\"2018/11/06 18:08:34\" }\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+ testRunner.When("執行EF作業", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "DEVICE_SN",
+                        "DEVICE_ID",
+                        "TARGET_NAME",
+                        "TARGET_VALUE",
+                        "TARGET_CONTENT",
+                        "RECEIVE_TIME",
+                        "IS_EXCEPTION"});
+            table6.AddRow(new string[] {
                         "2018002",
                         "192.168.10.98",
                         "Traffic - Gi1/0/20 [traffic_in]",
@@ -202,8 +241,29 @@ this.FeatureBackground();
                         "current value is 5630.6207",
                         "2018/11/06 18:08:34",
                         "false"});
-#line 29
- testRunner.Then("EF解析告警結果為", ((string)(null)), table4, "Then ");
+#line 37
+ testRunner.Then("EF解析告警結果為", ((string)(null)), table6, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "DEVICE_SN",
+                        "DEVICE_ID",
+                        "TARGET_NAME",
+                        "TARGET_VALUE",
+                        "TARGET_CONTENT",
+                        "RECEIVE_TIME",
+                        "IS_EXCEPTION",
+                        "IS_NOTIFICATION"});
+            table7.AddRow(new string[] {
+                        "2018002",
+                        "192.168.10.98",
+                        "Traffic - Gi1/0/20 [traffic_in]",
+                        "NORMAL",
+                        "current value is 5630.6207",
+                        "2018/11/06 18:08:34",
+                        "false",
+                        "true"});
+#line 40
+ testRunner.And("EF狀態通知結果為", ((string)(null)), table7, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

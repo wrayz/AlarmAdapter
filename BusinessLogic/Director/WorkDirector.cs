@@ -15,7 +15,6 @@ namespace BusinessLogic.Director
         private readonly string _detector;
         private readonly string _deviceType;
         private readonly string _originRecord;
-
         private IParser _parser;
         private RecordAlarm.Alarm _alarmer;
 
@@ -27,11 +26,11 @@ namespace BusinessLogic.Director
         /// <param name="detector">偵測器</param>
         /// <param name="originRecord">原始訊息</param>
         /// <param name="deviceType">設備類型</param>
-        public WorkDirector(string detector, string originRecord, string deviceType)
+        public WorkDirector(string detector, string originRecord, DeviceType deviceType)
         {
-            _deviceType = deviceType;
-            _originRecord = originRecord;
             _detector = detector;
+            _originRecord = originRecord;
+            _deviceType = Enum.GetName(typeof(DeviceType), deviceType);
         }
 
         /// <summary>
