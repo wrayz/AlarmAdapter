@@ -71,6 +71,7 @@
     <Compile Include="Enumerate\AlarmType.cs" />
     <Compile Include="Enumerate\EventType.cs" />
     <Compile Include="Enumerate\MessageType.cs" />
+    <Compile Include="Enumerate\NotificationType.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="LicenseConfig.cs" />
     <Compile Include="NotificationRecord.cs" />

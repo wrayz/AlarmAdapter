@@ -15,7 +15,10 @@ Given 前次監控訊息為
 	| RECORD_SN    | DEVICE_SN | TARGET_NAME                     | IS_EXCEPTION |
 	| 2018111200001 | 2018001   | Traffic - Gi1/0/20 [traffic_in] | false        |
 	| 2018111200002 | 2018002   | Traffic - Gi1/0/20 [traffic_in] | true         |
-
+Given 通知條件為
+	| DEVICE_SN | NOTIFICATION_TYPE | MESSAGE_TYPE | MUTE_INTERVAL |
+	| 2018001   | 2                 | 0            | 2             |
+	| 2018002   | 2                 | 1            | 0             |
 
 Scenario: Cacti_ALERT訊息
 	Given 偵測器"Cacti" 
@@ -25,7 +28,7 @@ Scenario: Cacti_ALERT訊息
 	Then EF解析告警結果為
 	| DEVICE_SN | DEVICE_ID     | TARGET_NAME                     | TARGET_VALUE | TARGET_CONTENT             | RECEIVE_TIME        | IS_EXCEPTION |
 	| 2018001   | 192.168.10.99 | Traffic - Gi1/0/20 [traffic_in] | ALERT        | current value is 5630.6207 | 2018/11/06 18:08:34 | true         |
-	And EF狀態通知結果為
+	And EF通知檢查結果為
 	| DEVICE_SN | DEVICE_ID     | TARGET_NAME                     | TARGET_VALUE | TARGET_CONTENT             | RECEIVE_TIME        | IS_EXCEPTION | IS_NOTIFICATION |
 	| 2018001   | 192.168.10.99 | Traffic - Gi1/0/20 [traffic_in] | ALERT        | current value is 5630.6207 | 2018/11/06 18:08:34 | true         | true            |
 
@@ -37,6 +40,6 @@ Scenario: Cacti_NORMAL訊息
 	Then EF解析告警結果為
 	| DEVICE_SN | DEVICE_ID     | TARGET_NAME                     | TARGET_VALUE | TARGET_CONTENT             | RECEIVE_TIME        | IS_EXCEPTION |
 	| 2018002   | 192.168.10.98 | Traffic - Gi1/0/20 [traffic_in] | NORMAL       | current value is 5630.6207 | 2018/11/06 18:08:34 | false        |
-	And EF狀態通知結果為
+	And EF通知檢查結果為
 	| DEVICE_SN | DEVICE_ID     | TARGET_NAME                     | TARGET_VALUE | TARGET_CONTENT             | RECEIVE_TIME        | IS_EXCEPTION | IS_NOTIFICATION |
 	| 2018002   | 192.168.10.98 | Traffic - Gi1/0/20 [traffic_in] | NORMAL       | current value is 5630.6207 | 2018/11/06 18:08:34 | false        | true            |

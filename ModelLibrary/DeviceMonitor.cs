@@ -1,12 +1,15 @@
-﻿using System;
-
-namespace ModelLibrary
+﻿namespace ModelLibrary
 {
 	/// <summary>
-	/// 設備監控資訊 
+	/// 設備監控資訊
 	/// </summary>
 	public class DeviceMonitor
 	{
+		/// <summary>
+		/// 記錄編號
+		/// </summary>
+		public string RECORD_SN { get; set; }
+
 		/// <summary>
 		/// 設備編號
 		/// </summary>
@@ -35,12 +38,12 @@ namespace ModelLibrary
 		/// <summary>
 		/// 是否異常
 		/// </summary>
-		public bool IS_EXCEPTION { get; set; }
+		public bool? IS_EXCEPTION { get; set; }
 
 		/// <summary>
 		/// 是否通知
 		/// </summary>
-		public bool IS_NOTIFICATION { get; set; }
+		public bool? IS_NOTIFICATION { get; set; }
 
 		/// <summary>
 		/// 接收時間
@@ -58,8 +61,8 @@ namespace ModelLibrary
 				return false;
 			else
 			{
-				return deviceMonitor.DEVICE_ID == DEVICE_ID && 
-					   deviceMonitor.TARGET_NAME == TARGET_NAME && 
+				return deviceMonitor.DEVICE_ID == DEVICE_ID &&
+					   deviceMonitor.TARGET_NAME == TARGET_NAME &&
 					   deviceMonitor.TARGET_VALUE == TARGET_VALUE &&
 					   deviceMonitor.TARGET_CONTENT == TARGET_CONTENT &&
 					   deviceMonitor.RECEIVE_TIME == RECEIVE_TIME;

@@ -43,7 +43,7 @@ namespace BusinessLogic.Notification
         {
             NotificationRecord record;
 
-            switch (setting.MESSAGE_TYPE)
+            switch (setting.INTERVAL_TYPE)
             {
                 case "A":
                     record = records.OrderByDescending(x => x.LOG_SN).FirstOrDefault();

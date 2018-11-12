@@ -1,4 +1,6 @@
-﻿namespace ModelLibrary
+﻿using ModelLibrary.Enumerate;
+
+namespace ModelLibrary
 {
     /// <summary>
     /// 告警通知設定
@@ -11,9 +13,14 @@
         public string DEVICE_SN { get; set; }
 
         /// <summary>
-        /// 訊息種類
+        /// 通知類型
         /// </summary>
-        public string MESSAGE_TYPE { get; set; }
+        public NotificationType NOTICATION_TYPE { get; set; }
+
+        /// <summary>
+        /// 間隔類型
+        /// </summary>
+        public string INTERVAL_TYPE { get; set; }
 
         /// <summary>
         /// 關閉間隔時間

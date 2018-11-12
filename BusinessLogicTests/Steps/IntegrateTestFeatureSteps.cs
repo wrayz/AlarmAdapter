@@ -17,6 +17,7 @@ namespace BusinessLogicTests.Steps
         private List<AlarmCondition> _alarmConditions;
         private WorkDirector _workDirector;
         private List<DeviceMonitor> _previousMonitors;
+        private List<NotificationSetting> _notificationConditions;
 
         [Given(@"設備清單為")]
         public void Given設備清單為(Table table)
@@ -28,6 +29,29 @@ namespace BusinessLogicTests.Steps
         public void Given告警條件為(Table table)
         {
             _alarmConditions = table.CreateSet<AlarmCondition>().ToList();
+        }
+
+        [Given(@"前次監控訊息為")]
+        public void Given前次監控訊息為(Table table)
+        {
+            _previousMonitors = table.CreateSet<DeviceMonitor>().ToList();
+        }
+
+        [Given(@"通知條件為")]
+        public void Given通知條件為(Table table)
+        {
+            _notificationConditions = table.Rows.Select(x => 
+            {
+                var condition = new NotificationSetting
+                {
+                    DEVICE_SN = x[0],
+                    NOTICATION_TYPE = (NotificationType)Convert.ToInt32(x[1]),
+                    INTERVAL_TYPE = x[2],
+                    MUTE_INTERVAL = Convert.ToInt32(x[3])
+                };
+
+                return condition;
+            }).ToList();
         }
 
         [Given(@"偵測器""(.*)""")]
@@ -42,12 +66,6 @@ namespace BusinessLogicTests.Steps
             ScenarioContext.Current.Set((DeviceType)Enum.Parse(typeof(DeviceType), deviceType), "deviceType");
         }
 
-        [Given(@"前次監控訊息為")]
-        public void Given前次監控訊息為(Table table)
-        {
-            _previousMonitors = table.CreateSet<DeviceMonitor>().ToList();
-        }
-
         [Given(@"原始訊息為""(.*)""")]
         public void Given原始訊息為(string originRecord)
         {
@@ -60,7 +78,7 @@ namespace BusinessLogicTests.Steps
             var detector= ScenarioContext.Current.Get<string>("detector");
             var originRecord = ScenarioContext.Current.Get<string>("originRecord");
             var deviceType = ScenarioContext.Current.Get<DeviceType>("deviceType");
-            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _alarmConditions, _previousMonitors);
+            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _alarmConditions, _previousMonitors, _notificationConditions);
 
             _workDirector.Execute();
         }
@@ -71,7 +89,7 @@ namespace BusinessLogicTests.Steps
             table.CompareToSet(_workDirector.Monitors);
         }
 
-        [Then(@"EF狀態通知結果為")]
+        [Then(@"EF通知檢查結果為")]
         public void ThenEF通知檢查結果為(Table table)
         {
             table.CompareToSet(_workDirector.Monitors);

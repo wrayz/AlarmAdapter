@@ -1,15 +1,18 @@
 ﻿namespace ModelLibrary.Enumerate
 {
-    public enum MessageType
+    /// <summary>
+    /// 間隔種類
+    /// </summary>
+    public enum IntervalType
     {
         /// <summary>
         /// 全部訊息
         /// </summary>
-        A,
+        AllMessage,
 
         /// <summary>
         /// 相同訊息
         /// </summary>
-        S
+        SameMessage
     }
 }

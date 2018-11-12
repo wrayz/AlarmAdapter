@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.RecordAlarm;
+using BusinessLogic.RecordNotifier;
 using BusinessLogic.RecordParser;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
@@ -13,10 +14,13 @@ namespace BusinessLogic.Director
     public class WorkDirector
     {
         private readonly string _detector;
-        private readonly string _deviceType;
         private readonly string _originRecord;
+        private readonly string _deviceType;
+        private readonly NotificationType _statusNotification;
+
         private IParser _parser;
         private RecordAlarm.Alarm _alarmer;
+        private Notifier _notifier;
 
         internal List<DeviceMonitor> Monitors { get; private set; }
 
@@ -47,6 +51,10 @@ namespace BusinessLogic.Director
                 var device = GetDevice(monitor.DEVICE_ID, _deviceType);
                 monitor.DEVICE_SN = device.DEVICE_SN;
                 monitor.IS_EXCEPTION = _alarmer.IsException(monitor, device.ALARM_CONDITIONS);
+
+                var previousMonitor = GetPreviousMonitor(monitor);
+                var notificationCondition = GetNotificationCondition(device.DEVICE_SN);
+                monitor.IS_NOTIFICATION = _notifier.IsNotification(notificationCondition, monitor, previousMonitor);
             });
         }
 
@@ -57,6 +65,7 @@ namespace BusinessLogic.Director
         {
             _parser = ParserFactory.CreateInstance(_detector);
             _alarmer = AlarmFactory.CreateInstance(_detector);
+            _notifier = new Notifier();
         }
 
         /// <summary>
@@ -66,6 +75,26 @@ namespace BusinessLogic.Director
         /// <param name="deviceType">設備類型</param>
         /// <returns></returns>
         protected virtual Device GetDevice(string deviceId, string deviceType)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 前次監控訊息取得
+        /// </summary>
+        /// <param name="monitor">當前監控訊息</param>
+        /// <returns></returns>
+        protected virtual DeviceMonitor GetPreviousMonitor(DeviceMonitor monitor)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 通知條件取得
+        /// </summary>
+        /// <param name="deviceSn">設備編號</param>
+        /// <returns></returns>
+        protected virtual NotificationSetting GetNotificationCondition(string deviceSn)
         {
             throw new NotImplementedException();
         }
