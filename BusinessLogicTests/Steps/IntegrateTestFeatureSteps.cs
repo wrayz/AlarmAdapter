@@ -17,7 +17,7 @@ namespace BusinessLogicTests.Steps
         private List<AlarmCondition> _alarmConditions;
         private WorkDirector _workDirector;
         private List<DeviceMonitor> _previousMonitors;
-        private List<NotificationSetting> _notificationConditions;
+        private List<NotificationCondition> _notificationConditions;
 
         [Given(@"設備清單為")]
         public void Given設備清單為(Table table)
@@ -42,12 +42,12 @@ namespace BusinessLogicTests.Steps
         {
             _notificationConditions = table.Rows.Select(x => 
             {
-                var condition = new NotificationSetting
+                var condition = new NotificationCondition
                 {
                     DEVICE_SN = x[0],
                     NOTICATION_TYPE = (NotificationType)Convert.ToInt32(x[1]),
                     INTERVAL_TYPE = (IntervalType)Convert.ToInt32(x[2]),
-                    MUTE_INTERVAL = Convert.ToInt32(x[3])
+                    INTERVAL_TIME = Convert.ToInt32(x[3])
                 };
 
                 return condition;

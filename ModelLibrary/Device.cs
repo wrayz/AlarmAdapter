@@ -50,7 +50,7 @@ namespace ModelLibrary
         /// <summary>
         /// 通知設定
         /// </summary>
-        public NotificationSetting NOTIFICATION_SETTING { get; set; }
+        public NotificationCondition NOTIFICATION_CONDITION { get; set; }
 
         /// <summary>
         /// 通知記錄

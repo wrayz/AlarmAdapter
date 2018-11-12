@@ -3,9 +3,9 @@
 namespace ModelLibrary
 {
     /// <summary>
-    /// 告警通知設定
+    /// 通知條件
     /// </summary>
-    public class NotificationSetting
+    public class NotificationCondition
     {
         /// <summary>
         /// 設備編號
@@ -23,8 +23,8 @@ namespace ModelLibrary
         public IntervalType INTERVAL_TYPE { get; set; }
 
         /// <summary>
-        /// 關閉間隔時間
+        /// 間隔時間
         /// </summary>
-        public int? MUTE_INTERVAL { get; set; }
+        public int? INTERVAL_TIME { get; set; }
     }
 }

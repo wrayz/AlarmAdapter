@@ -53,7 +53,7 @@ namespace BusinessLogic
         {
             var alarm = new Alarm { Time = SimpleLog.ERROR_TIME, Content = SimpleLog.ERROR_INFO };
 
-            return Notification.IsNotification(alarm, Device.NOTIFICATION_SETTING, Device.NOTIFICATION_RECORDS);
+            return Notification.IsNotification(alarm, Device.NOTIFICATION_CONDITION, Device.NOTIFICATION_RECORDS);
         }
 
         /// <summary>

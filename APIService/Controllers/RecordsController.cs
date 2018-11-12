@@ -91,7 +91,7 @@ namespace APIService.Controllers
 
                 var alarm = new Alarm { Time = record.RECORD_TIME };
 
-                if (_notification.IsNotification(alarm, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
+                if (_notification.IsNotification(alarm, device.NOTIFICATION_CONDITION, device.NOTIFICATION_RECORDS))
                 {
                     var deviceRecord = GetDeviceRecord(record.DEVICE_SN);
 

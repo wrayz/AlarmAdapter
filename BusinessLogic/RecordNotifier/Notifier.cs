@@ -14,7 +14,7 @@ namespace BusinessLogic.RecordNotifier
         /// <param name="currentMonitor"></param>
         /// <param name="previousMonitor"></param>
         /// <returns></returns>
-        public bool IsNotification(NotificationSetting condition, DeviceMonitor currentMonitor, DeviceMonitor previousMonitor)
+        public bool IsNotification(NotificationCondition condition, DeviceMonitor currentMonitor, DeviceMonitor previousMonitor)
         {
             var statusNotifier = StatusNotifierFactory.CreateInstance(condition.NOTICATION_TYPE);
             var result = statusNotifier.Check(currentMonitor, previousMonitor);

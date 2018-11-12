@@ -94,7 +94,7 @@ namespace BusinessLogic.Director
         /// </summary>
         /// <param name="deviceSn">設備編號</param>
         /// <returns></returns>
-        protected virtual NotificationSetting GetNotificationCondition(string deviceSn)
+        protected virtual NotificationCondition GetNotificationCondition(string deviceSn)
         {
             throw new NotImplementedException();
         }

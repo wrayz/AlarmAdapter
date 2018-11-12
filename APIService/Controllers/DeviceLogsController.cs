@@ -146,7 +146,7 @@ namespace APIService.Controllers
             var alarm = new Alarm { Time = data.LOG_TIME, Content = log.LOG_INFO };
             var device = GetDevice(log.DEVICE_SN);
 
-            if (_notification.IsNotification(alarm, device.NOTIFICATION_SETTING, device.NOTIFICATION_RECORDS))
+            if (_notification.IsNotification(alarm, device.NOTIFICATION_CONDITION, device.NOTIFICATION_RECORDS))
             {
                 PushNotification(log);
                 SaveNotifyRecord(log);

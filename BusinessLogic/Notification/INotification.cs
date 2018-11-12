@@ -16,7 +16,7 @@ namespace BusinessLogic.Notification
         /// <param name="setting">通知設定</param>
         /// <param name="records">通知記錄清單</param>
         /// <returns></returns>
-        bool IsNotification(Alarm alarm, NotificationSetting setting, List<NotificationRecord> records);
+        bool IsNotification(Alarm alarm, NotificationCondition setting, List<NotificationRecord> records);
 
         /// <summary>
         /// 通知物件取得

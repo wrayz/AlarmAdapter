@@ -17,8 +17,8 @@ Given 前次監控訊息為
 	| 2018111200002 | 2018002   | Traffic - Gi1/0/20 [traffic_in] | true         |
 Given 通知條件為
 	| DEVICE_SN | NOTIFICATION_TYPE | MESSAGE_TYPE | MUTE_INTERVAL |
-	| 2018001   | 2                 | 0            | 2             |
-	| 2018002   | 2                 | 1            | 0             |
+	| 2018001   | 0                 | 0            | 2             |
+	| 2018002   | 0                 | 1            | 0             |
 
 Scenario: Cacti_ALERT訊息
 	Given 偵測器"Cacti" 

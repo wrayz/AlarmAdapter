@@ -75,7 +75,7 @@
     <Compile Include="Field.cs" />
     <Compile Include="LicenseConfig.cs" />
     <Compile Include="NotificationRecord.cs" />
-    <Compile Include="NotificationSetting.cs" />
+    <Compile Include="NotificationCondition.cs" />
     <Compile Include="DeviceRecord.cs" />
     <Compile Include="Enumerate\DeviceType.cs" />
     <Compile Include="GroupDevice.cs" />

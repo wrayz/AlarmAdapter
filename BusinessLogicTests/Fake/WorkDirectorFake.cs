@@ -11,13 +11,13 @@ namespace BusinessLogicTests.Fake
         private List<Device> _devices;
         private List<AlarmCondition> _alarmConditions;
         private List<DeviceMonitor> _previousMonitors;
-        private List<NotificationSetting> _notificationConditions;
+        private List<NotificationCondition> _notificationConditions;
 
         public WorkDirectorFake(string detector, string originRecord, DeviceType deviceType, 
                                 List<Device> devices,
                                 List<AlarmCondition> alarmConditions, 
                                 List<DeviceMonitor> previousMonitors,
-                                List<NotificationSetting> notificationConditions)
+                                List<NotificationCondition> notificationConditions)
             : base(detector, originRecord, deviceType)
         {
             _devices = devices;
@@ -43,7 +43,7 @@ namespace BusinessLogicTests.Fake
                                     .First();
         }
 
-        protected override NotificationSetting GetNotificationCondition(string deviceSn)
+        protected override NotificationCondition GetNotificationCondition(string deviceSn)
         {
             return _notificationConditions.Find(x => x.DEVICE_SN == deviceSn);
         }

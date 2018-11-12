@@ -70,7 +70,7 @@ namespace APIService.Controllers
             var notification = NotificationFactory.CreateInstance(DeviceType.S);
             var alarm = new Alarm { Time = simpleLog.ERROR_TIME, Content = simpleLog.ERROR_INFO };
 
-            if (notification.IsNotification(alarm, _device.NOTIFICATION_SETTING, _device.NOTIFICATION_RECORDS))
+            if (notification.IsNotification(alarm, _device.NOTIFICATION_CONDITION, _device.NOTIFICATION_RECORDS))
             {
                 var payload = notification.GetPayload(EventType.Error, _device.DEVICE_SN, simpleLog.LOG_SN);
                 var service = new PushService(payload);

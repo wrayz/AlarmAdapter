@@ -6,6 +6,11 @@
     public enum NotificationType
     {
         /// <summary>
+        /// 狀態變化
+        /// </summary>
+        StatusChange,
+
+        /// <summary>
         /// 持續異常
         /// </summary>
         ContinuityAbnormality,
@@ -14,10 +19,5 @@
         /// 持續正常
         /// </summary>
         NormalContinuity,
-
-        /// <summary>
-        /// 狀態變化
-        /// </summary>
-        StatusChange
     }
 }

@@ -16,9 +16,9 @@ namespace BusinessLogic.Notification
         /// <summary>
         /// 是否通知
         /// </summary>
-        /// <param name="time">記錄時間</param>
-        /// <param name="setting">通知設定</param>
-        /// <param name="records">通知記錄清單</param>
+        /// <param name="type">事件類型</param>
+        /// <param name="deviceSn">設備編號</param>
+        /// <param name="logSn">記錄編號</param>
         /// <returns></returns>
         public Payload GetPayload(EventType type, string deviceSn, int? logSn)
         {
@@ -36,14 +36,14 @@ namespace BusinessLogic.Notification
         /// 是否通知
         /// </summary>
         /// <param name="alarm">告警物件</param>
-        /// <param name="setting">通知設定</param>
+        /// <param name="condition">通知條件</param>
         /// <param name="records">通知記錄清單</param>
         /// <returns></returns>
-        public bool IsNotification(Alarm alarm, NotificationSetting setting, List<NotificationRecord> records)
+        public bool IsNotification(Alarm alarm, NotificationCondition condition, List<NotificationRecord> records)
         {
             NotificationRecord record;
 
-            switch (setting.INTERVAL_TYPE)
+            switch (condition.INTERVAL_TYPE)
             {
                 case IntervalType.AllMessage:
                     record = records.OrderByDescending(x => x.LOG_SN).FirstOrDefault();
@@ -59,7 +59,7 @@ namespace BusinessLogic.Notification
 
             if (record == null) return true;
 
-            var nextTime = record.NOTIFY_TIME.Value.AddMinutes(setting.MUTE_INTERVAL.Value);
+            var nextTime = record.NOTIFY_TIME.Value.AddMinutes(condition.INTERVAL_TIME.Value);
 
             return alarm.Time >= nextTime;
         }

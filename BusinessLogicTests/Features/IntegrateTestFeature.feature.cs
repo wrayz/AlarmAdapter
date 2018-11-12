@@ -144,12 +144,12 @@ testRunner.Given("前次監控訊息為", ((string)(null)), table3, "Given ");
                         "MUTE_INTERVAL"});
             table4.AddRow(new string[] {
                         "2018001",
-                        "2",
+                        "0",
                         "0",
                         "2"});
             table4.AddRow(new string[] {
                         "2018002",
-                        "2",
+                        "0",
                         "1",
                         "0"});
 #line 18
