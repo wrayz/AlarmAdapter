@@ -26,11 +26,11 @@ namespace BusinessLogic.Notification
 
             switch (setting.INTERVAL_TYPE)
             {
-                case "A":
+                case IntervalType.AllMessage:
                     record = records.OrderByDescending(x => x.LOG_SN).FirstOrDefault();
                     break;
 
-                case "S":
+                case IntervalType.SameMessage:
                     record = records.Find(x => x.RECORD_CONTENT == alarm.Content);
                     break;
 

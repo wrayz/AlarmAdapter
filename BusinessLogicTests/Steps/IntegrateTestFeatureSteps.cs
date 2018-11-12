@@ -46,7 +46,7 @@ namespace BusinessLogicTests.Steps
                 {
                     DEVICE_SN = x[0],
                     NOTICATION_TYPE = (NotificationType)Convert.ToInt32(x[1]),
-                    INTERVAL_TYPE = x[2],
+                    INTERVAL_TYPE = (IntervalType)Convert.ToInt32(x[2]),
                     MUTE_INTERVAL = Convert.ToInt32(x[3])
                 };
 
