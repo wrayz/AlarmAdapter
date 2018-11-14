@@ -18,14 +18,14 @@ namespace ModelLibrary
 		public string DEVICE_SN { get; set; }
 
 		/// <summary>
-		/// 設備識別碼
-		/// </summary>
-		public string DEVICE_ID { get; set; }
-
-		/// <summary>
 		/// 監控項目名稱
 		/// </summary>
 		public string TARGET_NAME { get; set; }
+
+		/// <summary>
+		/// 設備識別碼
+		/// </summary>
+		public string DEVICE_ID { get; set; }
 
 		/// <summary>
 		/// 監控項目條件值

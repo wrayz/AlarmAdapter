@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Director;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,18 +13,21 @@ namespace BusinessLogicTests.Fake
         private List<AlarmCondition> _alarmConditions;
         private List<DeviceMonitor> _previousMonitors;
         private List<NotificationCondition> _notificationConditions;
+        private List<RecordNotification> _notificationRecords;
 
         public WorkDirectorFake(string detector, string originRecord, DeviceType deviceType,
                                 List<Device> devices,
                                 List<AlarmCondition> alarmConditions,
                                 List<DeviceMonitor> previousMonitors,
-                                List<NotificationCondition> notificationConditions)
+                                List<NotificationCondition> notificationConditions,
+                                List<RecordNotification> notificationRecords)
             : base(detector, originRecord, deviceType)
         {
             _devices = devices;
             _alarmConditions = alarmConditions;
             _previousMonitors = previousMonitors;
             _notificationConditions = notificationConditions;
+            _notificationRecords = notificationRecords;
         }
 
         protected override Device GetDevice(string deviceId, string deviceType)
@@ -48,9 +52,32 @@ namespace BusinessLogicTests.Fake
             return _notificationConditions.Find(x => x.DEVICE_SN == deviceSn);
         }
 
-        protected override NotificationRecord GetNotificationRecord(NotificationCondition condition)
+        protected override RecordNotification GetNotificationRecord(DeviceMonitor monitor, NotificationCondition condition)
         {
-            return base.GetNotificationRecord(condition);
+            IEnumerable<RecordNotification> records;
+
+            switch (condition.INTERVAL_LEVEL)
+            {
+                case IntervalLevel.Device:
+                    records = _notificationRecords.Where(x => x.DEVICE_SN == monitor.DEVICE_SN)
+                                                 .OrderByDescending(y => y.NOTIFICATION_TIME);
+                    break;
+
+                case IntervalLevel.MonitorTarget:
+                    records = _notificationRecords.Where(x => x.DEVICE_SN == monitor.DEVICE_SN && x.TARGET_NAME == monitor.TARGET_NAME)
+                                                 .OrderByDescending(y => y.NOTIFICATION_TIME);
+                    break;
+
+                case IntervalLevel.TargetMessage:
+                    records = _notificationRecords.Where(x => x.DEVICE_SN == monitor.DEVICE_SN && x.TARGET_NAME == monitor.TARGET_NAME && x.TARGET_MESSAGE == monitor.TARGET_MESSAGE)
+                                                 .OrderByDescending(y => y.NOTIFICATION_TIME);
+                    break;
+
+                default:
+                    throw new Exception($"無 { condition.INTERVAL_LEVEL } 層級定義");
+            }
+
+            return records.Count() > 0 ? records.First() : new RecordNotification();
         }
     }
 }

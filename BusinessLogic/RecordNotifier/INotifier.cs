@@ -15,6 +15,6 @@ namespace BusinessLogic.RecordNotifier
         /// <param name="previousMonitor">前次監控訊息</param>
         /// <param name="notificationRecord">通知記錄</param>
         /// <returns></returns>
-        bool IsNotification(NotificationCondition notificationCondition, DeviceMonitor currentMonitor, DeviceMonitor previousMonitor, NotificationRecord notificationRecord);
+        bool IsNotification(NotificationCondition notificationCondition, DeviceMonitor currentMonitor, DeviceMonitor previousMonitor, RecordNotification notificationRecord);
     }
 }

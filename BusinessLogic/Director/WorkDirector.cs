@@ -16,13 +16,15 @@ namespace BusinessLogic.Director
         private readonly string _detector;
         private readonly string _originRecord;
         private readonly string _deviceType;
-        private readonly NotificationType _statusNotification;
 
         private IParser _parser;
         private RecordAlarm.Alarm _alarmer;
         private INotifier _notifier;
 
-        internal List<DeviceMonitor> Monitors { get; private set; }
+        /// <summary>
+        /// 設備監控資訊清單
+        /// </summary>
+        public List<DeviceMonitor> Monitors { get; private set; }
 
         /// <summary>
         /// 建構式
@@ -46,6 +48,7 @@ namespace BusinessLogic.Director
 
             Monitors = _parser.ParseRecord(_originRecord);
 
+            //TODO: ForEach 想辦法調掉
             Monitors.ForEach(monitor =>
             {
                 var device = GetDevice(monitor.DEVICE_ID, _deviceType);
@@ -54,9 +57,11 @@ namespace BusinessLogic.Director
                 monitor.IS_EXCEPTION = _alarmer.IsException(monitor, device.ALARM_CONDITIONS);
 
                 var condition = GetNotificationCondition(device.DEVICE_SN);
+                //TODO: 使用靜態 Dictionary 將前次監控資訊存在 Memory（重開機要在初始化進資料庫）
                 var previousMonitor = GetPreviousDeviceMonitor(monitor);
-                var record = GetNotificationRecord(condition);
+                var record = GetNotificationRecord(monitor, condition);
 
+                //TODO: 之後通知層獨立於 WorkDirector 
                 monitor.IS_NOTIFICATION = _notifier.IsNotification(condition, monitor, previousMonitor, record);
             });
         }
@@ -105,9 +110,10 @@ namespace BusinessLogic.Director
         /// <summary>
         /// 通知記錄取得
         /// </summary>
+        /// <param name="monitor">監控資訊</param>
         /// <param name="condition">通知條件</param>
         /// <returns></returns>
-        protected virtual NotificationRecord GetNotificationRecord(NotificationCondition condition)
+        protected virtual RecordNotification GetNotificationRecord(DeviceMonitor monitor, NotificationCondition condition)
         {
             throw new NotImplementedException();
         }

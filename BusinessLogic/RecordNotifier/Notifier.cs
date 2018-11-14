@@ -18,7 +18,7 @@ namespace BusinessLogic.RecordNotifier
         /// <param name="previousMonitor">前次監控訊息</param>
         /// <param name="notificationRecord">通知記錄</param>
         /// <returns></returns>
-        public bool IsNotification(NotificationCondition notificationCondition, DeviceMonitor currentMonitor, DeviceMonitor previousMonitor, NotificationRecord notificationRecord)
+        public bool IsNotification(NotificationCondition notificationCondition, DeviceMonitor currentMonitor, DeviceMonitor previousMonitor, RecordNotification notificationRecord)
         {
             _notificationCondition = notificationCondition;
             _currentMonitor = currentMonitor;
@@ -41,13 +41,14 @@ namespace BusinessLogic.RecordNotifier
         /// <summary>
         /// 間隔通知檢查
         /// </summary>
+        /// <param name="notificationRecord">通知記錄</param>
         /// <returns></returns>
-        private bool CheckNotificationInterval(NotificationRecord record)
+        private bool CheckNotificationInterval(RecordNotification record)
         {
-            if (record.NOTIFY_TIME == null)
+            if (record.NOTIFICATION_TIME == null)
                 return true;
 
-            var nextTime = record.NOTIFY_TIME.Value.AddMinutes(_notificationCondition.INTERVAL_TIME.Value);
+            var nextTime = record.NOTIFICATION_TIME.Value.AddMinutes(_notificationCondition.INTERVAL_TIME.Value);
 
             return _currentMonitor.RECEIVE_TIME >= nextTime;
         }

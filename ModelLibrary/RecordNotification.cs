@@ -3,14 +3,14 @@
 namespace ModelLibrary
 {
     /// <summary>
-    /// 告警通知記錄
+    /// 通知記錄資訊
     /// </summary>
-    public class NotificationRecord
+    public class RecordNotification
     {
         /// <summary>
-        /// 設備類型
+        /// 記錄編號
         /// </summary>
-        public string DEVICE_TYPE { get; set; }
+        public string RECORD_SN { get; set; }
 
         /// <summary>
         /// 設備編號
@@ -18,18 +18,18 @@ namespace ModelLibrary
         public string DEVICE_SN { get; set; }
 
         /// <summary>
-        /// 記錄編號 
+        /// 監控項目名稱
         /// </summary>
-        public int? LOG_SN { get; set; }
+        public string TARGET_NAME { get; set; }
 
         /// <summary>
-        /// 記錄內容
+        /// 監控項目訊息
         /// </summary>
-        public string RECORD_CONTENT { get; set; }
+        public string TARGET_MESSAGE{ get; set; }
 
         /// <summary>
         /// 通知時間
         /// </summary>
-        public DateTime? NOTIFY_TIME { get; set; }
+        public DateTime? NOTIFICATION_TIME { get; set; }
     }
 }

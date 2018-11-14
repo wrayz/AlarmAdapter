@@ -18,7 +18,7 @@ namespace BusinessLogicTests.Steps
         private WorkDirector _workDirector;
         private List<DeviceMonitor> _previousMonitors;
         private List<NotificationCondition> _notificationConditions;
-        private List<NotificationRecord> _notificationRecords;
+        private List<RecordNotification> _notificationRecords;
 
         [Given(@"設備清單為")]
         public void Given設備清單為(Table table)
@@ -58,7 +58,7 @@ namespace BusinessLogicTests.Steps
         [Given(@"通知記錄為")]
         public void Given通知記錄為(Table table)
         {
-            _notificationRecords = table.CreateSet<NotificationRecord>().ToList();
+            _notificationRecords = table.CreateSet<RecordNotification>().ToList();
         }
 
         [Given(@"偵測器""(.*)""")]
@@ -85,7 +85,7 @@ namespace BusinessLogicTests.Steps
             var detector= ScenarioContext.Current.Get<string>("detector");
             var originRecord = ScenarioContext.Current.Get<string>("originRecord");
             var deviceType = ScenarioContext.Current.Get<DeviceType>("deviceType");
-            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _alarmConditions, _previousMonitors, _notificationConditions);
+            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _alarmConditions, _previousMonitors, _notificationConditions, _notificationRecords);
 
             _workDirector.Execute();
         }
