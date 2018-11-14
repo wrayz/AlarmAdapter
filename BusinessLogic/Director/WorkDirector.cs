@@ -84,7 +84,8 @@ namespace BusinessLogic.Director
         /// <returns></returns>
         protected virtual Device GetDevice(string deviceId, string deviceType)
         {
-            throw new NotImplementedException();
+            var bll = GenericBusinessFactory.CreateInstance<Device>();
+            return (bll as Device_BLL).GetDevice(deviceId, deviceType);
         }
 
         /// <summary>

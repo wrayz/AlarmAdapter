@@ -1,4 +1,6 @@
 ﻿using ModelLibrary;
+using ModelLibrary.Enumerate;
+using System;
 
 namespace BusinessLogic.RecordNotifier
 {
@@ -33,7 +35,8 @@ namespace BusinessLogic.RecordNotifier
         /// <returns></returns>
         private bool CheckStatusNotification(DeviceMonitor previousMonitor)
         {
-            var statusNotifier = StatusNotifierFactory.CreateInstance(_notificationCondition.NOTICATION_TYPE);
+            var type = (NotificationType)Enum.Parse(typeof(NotificationType), _notificationCondition.NOTICATION_TYPE);
+            var statusNotifier = StatusNotifierFactory.CreateInstance(type);
 
             return statusNotifier.Check(_currentMonitor, previousMonitor);
         }

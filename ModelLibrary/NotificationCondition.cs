@@ -15,12 +15,12 @@ namespace ModelLibrary
         /// <summary>
         /// 通知類型
         /// </summary>
-        public NotificationType NOTICATION_TYPE { get; set; }
+        public string NOTICATION_TYPE { get; set; }
 
         /// <summary>
         /// 間隔類型
         /// </summary>
-        public IntervalLevel INTERVAL_LEVEL { get; set; }
+        public string INTERVAL_LEVEL { get; set; }
 
         /// <summary>
         /// 間隔時間

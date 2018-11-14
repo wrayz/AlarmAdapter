@@ -46,8 +46,8 @@ namespace BusinessLogicTests.Steps
                 var condition = new NotificationCondition
                 {
                     DEVICE_SN = x[0],
-                    NOTICATION_TYPE = (NotificationType)Convert.ToInt32(x[1]),
-                    INTERVAL_LEVEL = (IntervalLevel)Convert.ToInt32(x[2]),
+                    NOTICATION_TYPE = x[1],
+                    INTERVAL_LEVEL = x[2],
                     INTERVAL_TIME = Convert.ToInt32(x[3])
                 };
 

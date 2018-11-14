@@ -55,8 +55,9 @@ namespace BusinessLogicTests.Fake
         protected override RecordNotification GetNotificationRecord(DeviceMonitor monitor, NotificationCondition condition)
         {
             IEnumerable<RecordNotification> records;
+            var level = (IntervalLevel)Enum.Parse(typeof(IntervalLevel), condition.INTERVAL_LEVEL);
 
-            switch (condition.INTERVAL_LEVEL)
+            switch (level)
             {
                 case IntervalLevel.Device:
                     records = _notificationRecords.Where(x => x.DEVICE_SN == monitor.DEVICE_SN)

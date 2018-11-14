@@ -56,34 +56,34 @@ namespace APIService.Controllers
             }
         }
 
-        [Route("api/cacti")]
-        [HttpPost]
-        public IHttpActionResult Post()
-        {
-            var logger = NLog.LogManager.GetLogger("Cacti");
+        //[Route("api/cacti")]
+        //[HttpPost]
+        //public IHttpActionResult Post()
+        //{
+        //    var logger = NLog.LogManager.GetLogger("Cacti");
 
-            try
-            {
-                //原始資料
-                var content = Request.Content.ReadAsStringAsync().Result;
-                logger.Info(content);
+        //    try
+        //    {
+        //        //原始資料
+        //        var content = Request.Content.ReadAsStringAsync().Result;
+        //        logger.Info(content);
 
-                var log = JsonConvert.DeserializeObject<Log>(content);
+        //        var log = JsonConvert.DeserializeObject<Log>(content);
 
-                CheckValid(log);
+        //        CheckValid(log);
 
-                var data = GetLogData(log);
+        //        var data = GetLogData(log);
 
-                Process(data);
+        //        Process(data);
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex);
-                return Content(HttpStatusCode.InternalServerError, ex);
-            }
-        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logger.Error(ex);
+        //        return Content(HttpStatusCode.InternalServerError, ex);
+        //    }
+        //}
 
         /// <summary>
         /// 告警處理

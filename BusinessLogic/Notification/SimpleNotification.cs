@@ -43,7 +43,9 @@ namespace BusinessLogic.Notification
         {
             NotificationRecord record;
 
-            switch (condition.INTERVAL_LEVEL)
+            var level = (IntervalLevel)Enum.Parse(typeof(IntervalLevel), condition.INTERVAL_LEVEL);
+
+            switch (level)
             {
                 case IntervalLevel.Device:
                     record = records.OrderByDescending(x => x.LOG_SN).FirstOrDefault();
