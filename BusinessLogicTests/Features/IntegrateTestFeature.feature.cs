@@ -198,7 +198,7 @@ this.FeatureBackground();
                         "DEVICE_ID",
                         "TARGET_NAME",
                         "TARGET_VALUE",
-                        "TARGET_CONTENT",
+                        "TARGET_MESSAGE",
                         "RECEIVE_TIME",
                         "IS_EXCEPTION"});
             table6.AddRow(new string[] {
@@ -217,7 +217,7 @@ this.FeatureBackground();
                         "DEVICE_ID",
                         "TARGET_NAME",
                         "TARGET_VALUE",
-                        "TARGET_CONTENT",
+                        "TARGET_MESSAGE",
                         "RECEIVE_TIME",
                         "IS_EXCEPTION",
                         "IS_NOTIFICATION"});
@@ -263,7 +263,7 @@ this.FeatureBackground();
                         "DEVICE_ID",
                         "TARGET_NAME",
                         "TARGET_VALUE",
-                        "TARGET_CONTENT",
+                        "TARGET_MESSAGE",
                         "RECEIVE_TIME",
                         "IS_EXCEPTION"});
             table8.AddRow(new string[] {
@@ -282,7 +282,7 @@ this.FeatureBackground();
                         "DEVICE_ID",
                         "TARGET_NAME",
                         "TARGET_VALUE",
-                        "TARGET_CONTENT",
+                        "TARGET_MESSAGE",
                         "RECEIVE_TIME",
                         "IS_EXCEPTION",
                         "IS_NOTIFICATION"});

@@ -33,9 +33,9 @@ namespace ModelLibrary
 		public string TARGET_VALUE { get; set; }
 
 		/// <summary>
-		/// 監控項目訊息內容
+		/// 監控項目訊息
 		/// </summary>
-		public string TARGET_CONTENT { get; set; }
+		public string TARGET_MESSAGE { get; set; }
 
 		/// <summary>
 		/// 是否異常
@@ -66,7 +66,7 @@ namespace ModelLibrary
 				return deviceMonitor.DEVICE_ID == DEVICE_ID &&
 					   deviceMonitor.TARGET_NAME == TARGET_NAME &&
 					   deviceMonitor.TARGET_VALUE == TARGET_VALUE &&
-					   deviceMonitor.TARGET_CONTENT == TARGET_CONTENT &&
+					   deviceMonitor.TARGET_MESSAGE == TARGET_MESSAGE &&
 					   deviceMonitor.RECEIVE_TIME == RECEIVE_TIME;
 			}
 		}

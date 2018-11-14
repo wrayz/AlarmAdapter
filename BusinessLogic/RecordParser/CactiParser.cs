@@ -28,7 +28,7 @@ namespace BusinessLogic.RecordParser
                     DEVICE_ID = data["id"],
                     TARGET_NAME = data["target"],
                     TARGET_VALUE = data["action"],
-                    TARGET_CONTENT = data["info"],
+                    TARGET_MESSAGE = data["info"],
                     RECEIVE_TIME = DateTime.Parse(data["time"], CultureInfo.InvariantCulture)
         }
     };
