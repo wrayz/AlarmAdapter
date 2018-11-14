@@ -1,4 +1,6 @@
-﻿namespace ModelLibrary
+﻿using System;
+
+namespace ModelLibrary
 {
 	/// <summary>
 	/// 設備監控資訊
@@ -48,7 +50,7 @@
 		/// <summary>
 		/// 接收時間
 		/// </summary>
-		public string RECEIVE_TIME { get; set; }
+		public DateTime? RECEIVE_TIME { get; set; }
 
 		/// <summary>
 		/// 等於

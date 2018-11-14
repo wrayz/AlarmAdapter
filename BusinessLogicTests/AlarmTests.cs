@@ -1,7 +1,9 @@
 ﻿using BusinessLogic.RecordAlarm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModelLibrary;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace BusinessLogicTests
 {
@@ -38,7 +40,7 @@ namespace BusinessLogicTests
                 TARGET_NAME = "Traffic - Gi1/0/20 [traffic_in]",
                 TARGET_VALUE = "ALERT",
                 TARGET_CONTENT = "current value is 5630.6207",
-                RECEIVE_TIME = "2018/11/06 18:08:34"
+                RECEIVE_TIME = DateTime.Parse("2018/11/06 18:08:34", CultureInfo.InvariantCulture)
             };
 
             var type = "Cacti";

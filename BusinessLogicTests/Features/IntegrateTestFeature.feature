@@ -19,6 +19,9 @@ Given 通知條件為
 	| DEVICE_SN | NOTIFICATION_TYPE | MESSAGE_TYPE | MUTE_INTERVAL |
 	| 2018001   | 0                 | 0            | 2             |
 	| 2018002   | 0                 | 1            | 0             |
+Given 通知記錄為
+	| RECORD_SN     | DEVICE_SN | TARGET_NAME                     | TARGET_MESSAGE             | NOTIFICATION_TIME   |
+	| 2018111200001 | 2018002   | Traffic - Gi1/0/20 [traffic_in] | current value is 5630.6207 | 2018/11/06 17:08:30 |
 
 Scenario: Cacti_ALERT訊息
 	Given 偵測器"Cacti" 

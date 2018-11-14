@@ -18,6 +18,7 @@ namespace BusinessLogicTests.Steps
         private WorkDirector _workDirector;
         private List<DeviceMonitor> _previousMonitors;
         private List<NotificationCondition> _notificationConditions;
+        private List<NotificationRecord> _notificationRecords;
 
         [Given(@"設備清單為")]
         public void Given設備清單為(Table table)
@@ -46,12 +47,18 @@ namespace BusinessLogicTests.Steps
                 {
                     DEVICE_SN = x[0],
                     NOTICATION_TYPE = (NotificationType)Convert.ToInt32(x[1]),
-                    INTERVAL_TYPE = (IntervalType)Convert.ToInt32(x[2]),
+                    INTERVAL_LEVEL = (IntervalLevel)Convert.ToInt32(x[2]),
                     INTERVAL_TIME = Convert.ToInt32(x[3])
                 };
 
                 return condition;
             }).ToList();
+        }
+
+        [Given(@"通知記錄為")]
+        public void Given通知記錄為(Table table)
+        {
+            _notificationRecords = table.CreateSet<NotificationRecord>().ToList();
         }
 
         [Given(@"偵測器""(.*)""")]

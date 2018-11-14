@@ -97,6 +97,7 @@
     <Compile Include="Event\CorrespondDeviceFactory.cs" />
     <Compile Include="License\LicenseBusinessLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecordNotifier\INotifier.cs" />
     <Compile Include="RecordNotifier\IStatusNotifier.cs" />
     <Compile Include="RecordNotifier\Notifier.cs" />
     <Compile Include="RecordNotifier\StatusChangeNotifier.cs" />

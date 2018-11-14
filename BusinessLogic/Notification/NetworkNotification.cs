@@ -24,13 +24,13 @@ namespace BusinessLogic.Notification
         {
             NotificationRecord record;
 
-            switch (condition.INTERVAL_TYPE)
+            switch (condition.INTERVAL_LEVEL)
             {
-                case IntervalType.AllMessage:
+                case IntervalLevel.Device:
                     record = records.OrderByDescending(x => x.LOG_SN).FirstOrDefault();
                     break;
 
-                case IntervalType.SameMessage:
+                case IntervalLevel.MonitorTarget:
                     record = records.Find(x => x.RECORD_CONTENT == alarm.Content);
                     break;
 

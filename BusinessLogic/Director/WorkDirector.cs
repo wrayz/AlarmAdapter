@@ -20,7 +20,7 @@ namespace BusinessLogic.Director
 
         private IParser _parser;
         private RecordAlarm.Alarm _alarmer;
-        private Notifier _notifier;
+        private INotifier _notifier;
 
         internal List<DeviceMonitor> Monitors { get; private set; }
 
@@ -50,11 +50,14 @@ namespace BusinessLogic.Director
             {
                 var device = GetDevice(monitor.DEVICE_ID, _deviceType);
                 monitor.DEVICE_SN = device.DEVICE_SN;
+
                 monitor.IS_EXCEPTION = _alarmer.IsException(monitor, device.ALARM_CONDITIONS);
 
-                var previousMonitor = GetPreviousMonitor(monitor);
-                var notificationCondition = GetNotificationCondition(device.DEVICE_SN);
-                monitor.IS_NOTIFICATION = _notifier.IsNotification(notificationCondition, monitor, previousMonitor);
+                var condition = GetNotificationCondition(device.DEVICE_SN);
+                var previousMonitor = GetPreviousDeviceMonitor(monitor);
+                var record = GetNotificationRecord(condition);
+
+                monitor.IS_NOTIFICATION = _notifier.IsNotification(condition, monitor, previousMonitor, record);
             });
         }
 
@@ -84,7 +87,7 @@ namespace BusinessLogic.Director
         /// </summary>
         /// <param name="monitor">當前監控訊息</param>
         /// <returns></returns>
-        protected virtual DeviceMonitor GetPreviousMonitor(DeviceMonitor monitor)
+        protected virtual DeviceMonitor GetPreviousDeviceMonitor(DeviceMonitor monitor)
         {
             throw new NotImplementedException();
         }
@@ -95,6 +98,16 @@ namespace BusinessLogic.Director
         /// <param name="deviceSn">設備編號</param>
         /// <returns></returns>
         protected virtual NotificationCondition GetNotificationCondition(string deviceSn)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 通知記錄取得
+        /// </summary>
+        /// <param name="condition">通知條件</param>
+        /// <returns></returns>
+        protected virtual NotificationRecord GetNotificationRecord(NotificationCondition condition)
         {
             throw new NotImplementedException();
         }

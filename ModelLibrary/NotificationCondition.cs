@@ -20,7 +20,7 @@ namespace ModelLibrary
         /// <summary>
         /// 間隔類型
         /// </summary>
-        public IntervalType INTERVAL_TYPE { get; set; }
+        public IntervalLevel INTERVAL_LEVEL { get; set; }
 
         /// <summary>
         /// 間隔時間

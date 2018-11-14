@@ -13,9 +13,9 @@ namespace BusinessLogicTests.Fake
         private List<DeviceMonitor> _previousMonitors;
         private List<NotificationCondition> _notificationConditions;
 
-        public WorkDirectorFake(string detector, string originRecord, DeviceType deviceType, 
+        public WorkDirectorFake(string detector, string originRecord, DeviceType deviceType,
                                 List<Device> devices,
-                                List<AlarmCondition> alarmConditions, 
+                                List<AlarmCondition> alarmConditions,
                                 List<DeviceMonitor> previousMonitors,
                                 List<NotificationCondition> notificationConditions)
             : base(detector, originRecord, deviceType)
@@ -36,9 +36,9 @@ namespace BusinessLogicTests.Fake
             return device;
         }
 
-        protected override DeviceMonitor GetPreviousMonitor(DeviceMonitor monitor)
+        protected override DeviceMonitor GetPreviousDeviceMonitor(DeviceMonitor monitor)
         {
-            return _previousMonitors.Where(x => x.DEVICE_SN == monitor.DEVICE_SN && x.TARGET_NAME == monitor.TARGET_NAME)
+            return _previousMonitors.Where(x => x.DEVICE_SN == monitor.DEVICE_SN)
                                     .OrderByDescending(y => y.RECORD_SN)
                                     .First();
         }
@@ -46,6 +46,11 @@ namespace BusinessLogicTests.Fake
         protected override NotificationCondition GetNotificationCondition(string deviceSn)
         {
             return _notificationConditions.Find(x => x.DEVICE_SN == deviceSn);
+        }
+
+        protected override NotificationRecord GetNotificationRecord(NotificationCondition condition)
+        {
+            return base.GetNotificationRecord(condition);
         }
     }
 }

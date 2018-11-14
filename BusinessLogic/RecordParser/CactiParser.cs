@@ -1,6 +1,8 @@
 ﻿using ModelLibrary;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace BusinessLogic.RecordParser
 {
@@ -27,9 +29,9 @@ namespace BusinessLogic.RecordParser
                     TARGET_NAME = data["target"],
                     TARGET_VALUE = data["action"],
                     TARGET_CONTENT = data["info"],
-                    RECEIVE_TIME = data["time"]
-                }
-            };
+                    RECEIVE_TIME = DateTime.Parse(data["time"], CultureInfo.InvariantCulture)
+        }
+    };
         }
     }
 }
