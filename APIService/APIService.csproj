@@ -197,6 +197,7 @@
     <Content Include="Entity\Monitor.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Entity\RecordNotification.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>

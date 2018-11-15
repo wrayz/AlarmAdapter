@@ -25,6 +25,6 @@ namespace ModelLibrary
         /// <summary>
         /// 間隔時間
         /// </summary>
-        public int? INTERVAL_TIME { get; set; }
+        public int INTERVAL_TIME { get; set; }
     }
 }

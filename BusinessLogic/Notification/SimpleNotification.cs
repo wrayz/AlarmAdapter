@@ -61,7 +61,7 @@ namespace BusinessLogic.Notification
 
             if (record == null) return true;
 
-            var nextTime = record.NOTIFY_TIME.Value.AddMinutes(condition.INTERVAL_TIME.Value);
+            var nextTime = record.NOTIFY_TIME.Value.AddMinutes(condition.INTERVAL_TIME);
 
             return alarm.Time >= nextTime;
         }

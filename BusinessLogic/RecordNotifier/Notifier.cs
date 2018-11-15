@@ -51,7 +51,7 @@ namespace BusinessLogic.RecordNotifier
             if (record.NOTIFICATION_TIME == null)
                 return true;
 
-            var nextTime = record.NOTIFICATION_TIME.Value.AddMinutes(_notificationCondition.INTERVAL_TIME.Value);
+            var nextTime = record.NOTIFICATION_TIME.Value.AddMinutes(_notificationCondition.INTERVAL_TIME);
 
             return _currentMonitor.RECEIVE_TIME >= nextTime;
         }

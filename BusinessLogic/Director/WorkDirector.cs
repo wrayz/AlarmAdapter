@@ -119,7 +119,8 @@ namespace BusinessLogic.Director
         /// <returns></returns>
         protected virtual RecordNotification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
         {
-            throw new NotImplementedException();
+            var bll = GenericBusinessFactory.CreateInstance<RecordNotification>();
+            return (bll as RecordNotification_BLL).GetRecord(monitor, condition);
         }
     }
 }
