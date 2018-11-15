@@ -33,7 +33,7 @@ namespace BusinessLogicTests
             //Arrange
             var expected = true;
 
-            var deviceMonitor = new DeviceMonitor
+            var monitor = new Monitor
             {
                 DEVICE_SN = "2018001",
                 DEVICE_ID = "192.168.10.99",
@@ -47,7 +47,7 @@ namespace BusinessLogicTests
             var alarm = AlarmFactory.CreateInstance(type);
 
             //Act
-            var actual = alarm.IsException(deviceMonitor, _alarmConditions);
+            var actual = alarm.IsException(monitor, _alarmConditions);
 
             //Assert
             Assert.AreEqual(expected, actual);

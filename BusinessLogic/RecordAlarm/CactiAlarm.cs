@@ -19,21 +19,21 @@ namespace BusinessLogic.RecordAlarm
         /// <summary>
         /// 告警條件預設檢查
         /// </summary>
-        /// <param name="deviceMonitor">設備監控訊息</param>
+        /// <param name="monitor">監控訊息</param>
         /// <returns></returns>
-        protected override bool DefaultCheck(DeviceMonitor deviceMonitor)
+        protected override bool DefaultCheck(Monitor monitor)
         {
             var condition = new AlarmCondition
             {
-                DEVICE_SN = deviceMonitor.DEVICE_SN,
-                TARGET_NAME = deviceMonitor.TARGET_NAME,
+                DEVICE_SN = monitor.DEVICE_SN,
+                TARGET_NAME = monitor.TARGET_NAME,
                 TARGET_VALUE = "ALERT",
                 IS_EXCEPTION = true
             };
 
             //AddAlarmCondition(condition);
 
-            return condition.TARGET_VALUE == deviceMonitor.TARGET_VALUE;
+            return condition.TARGET_VALUE == monitor.TARGET_VALUE;
         }
 
         /// <summary>

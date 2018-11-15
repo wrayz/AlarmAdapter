@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Monitor_BLL.cs" />
     <Compile Include="Device_BLL.cs" />
     <Compile Include="Director\WorkDirector.cs" />
     <Compile Include="License\NetworkCard.cs" />

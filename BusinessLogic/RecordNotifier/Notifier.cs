@@ -10,7 +10,7 @@ namespace BusinessLogic.RecordNotifier
     internal class Notifier : INotifier
     {
         private NotificationCondition _notificationCondition;
-        private DeviceMonitor _currentMonitor;
+        private Monitor _currentMonitor;
 
         /// <summary>
         /// 是否通知
@@ -20,7 +20,7 @@ namespace BusinessLogic.RecordNotifier
         /// <param name="previousMonitor">前次監控訊息</param>
         /// <param name="notificationRecord">通知記錄</param>
         /// <returns></returns>
-        public bool IsNotification(NotificationCondition notificationCondition, DeviceMonitor currentMonitor, DeviceMonitor previousMonitor, RecordNotification notificationRecord)
+        public bool IsNotification(NotificationCondition notificationCondition, Monitor currentMonitor, Monitor previousMonitor, RecordNotification notificationRecord)
         {
             _notificationCondition = notificationCondition;
             _currentMonitor = currentMonitor;
@@ -33,7 +33,7 @@ namespace BusinessLogic.RecordNotifier
         /// </summary>
         /// <param name="previousMonitor">前次監控訊息</param>
         /// <returns></returns>
-        private bool CheckStatusNotification(DeviceMonitor previousMonitor)
+        private bool CheckStatusNotification(Monitor previousMonitor)
         {
             var type = (NotificationType)Enum.Parse(typeof(NotificationType), _notificationCondition.NOTICATION_TYPE);
             var statusNotifier = StatusNotifierFactory.CreateInstance(type);

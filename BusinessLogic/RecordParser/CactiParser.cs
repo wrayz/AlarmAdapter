@@ -16,14 +16,14 @@ namespace BusinessLogic.RecordParser
         /// </summary>
         /// <param name="raw">原始訊息</param>
         /// <returns></returns>
-        public List<DeviceMonitor> ParseRecord(string raw)
+        public List<Monitor> ParseRecord(string raw)
         {
-            var monitors = new List<DeviceMonitor>();
+            var monitors = new List<Monitor>();
             var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(raw);
 
-            return new List<DeviceMonitor>
+            return new List<Monitor>
             {
-                new DeviceMonitor
+                new Monitor
                 {
                     DEVICE_ID = data["id"],
                     TARGET_NAME = data["target"],

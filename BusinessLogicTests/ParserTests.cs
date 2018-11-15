@@ -19,9 +19,9 @@ namespace BusinessLogicTests
 
             var raw = "{\"id\":\"192.168.10.99\", \"target\": \"Traffic - Gi1/0/20 [traffic_in]\", \"action\":\"ALERT\", \"info\":\"current value is 5630.6207\",\"time\":\"2018/11/06 18:08:34\"}";
 
-            var expected = new List<DeviceMonitor>
+            var expected = new List<Monitor>
             {
-                new DeviceMonitor
+                new Monitor
                 {
                     DEVICE_ID = "192.168.10.99",
                     TARGET_NAME = "Traffic - Gi1/0/20 [traffic_in]",

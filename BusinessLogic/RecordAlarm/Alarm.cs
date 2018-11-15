@@ -12,25 +12,25 @@ namespace BusinessLogic.RecordAlarm
         /// <summary>
         /// 是否異常
         /// </summary>
-        /// <param name="deviceMonitor">設備監控訊息</param>
+        /// <param name="monitor">監控訊息</param>
         /// <param name="alarmConditions">告警條件清單</param>
         /// <returns></returns>
-        public bool IsException(DeviceMonitor deviceMonitor, List<AlarmCondition> alarmConditions)
+        public bool IsException(Monitor monitor, List<AlarmCondition> alarmConditions)
         {
             if (alarmConditions.Count == 0)
-                return DefaultCheck(deviceMonitor);
+                return DefaultCheck(monitor);
 
-            var condition = alarmConditions.Find(x => x.DEVICE_SN == deviceMonitor.DEVICE_SN && x.TARGET_NAME == deviceMonitor.TARGET_NAME);
+            var condition = alarmConditions.Find(x => x.DEVICE_SN == monitor.DEVICE_SN && x.TARGET_NAME == monitor.TARGET_NAME);
 
-            return Check(condition.TARGET_VALUE, deviceMonitor.TARGET_VALUE) ? condition.IS_EXCEPTION : !condition.IS_EXCEPTION;
+            return Check(condition.TARGET_VALUE, monitor.TARGET_VALUE) ? condition.IS_EXCEPTION : !condition.IS_EXCEPTION;
         }
 
         /// <summary>
         /// 告警條件檢查
         /// </summary>
-        /// <param name="record">監控條件值</param>
+        /// <param name="monitor">監控資訊</param>
         /// <returns></returns>
-        protected abstract bool DefaultCheck(DeviceMonitor deviceMonitor);
+        protected abstract bool DefaultCheck(Monitor monitor);
 
         /// <summary>
         /// 告警條件檢查

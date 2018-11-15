@@ -13,6 +13,6 @@ namespace BusinessLogic.RecordNotifier
         /// <param name="currentMonitor"></param>
         /// <param name="previousMonitor"></param>
         /// <returns></returns>
-        bool Check(DeviceMonitor currentMonitor, DeviceMonitor previousMonitor);
+        bool Check(Monitor currentMonitor, Monitor previousMonitor);
     }
 }

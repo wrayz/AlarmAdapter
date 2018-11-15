@@ -67,7 +67,7 @@
     <Compile Include="BlockResult.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Contact.cs" />
-    <Compile Include="DeviceMonitor.cs" />
+    <Compile Include="Monitor.cs" />
     <Compile Include="Enumerate\AlarmType.cs" />
     <Compile Include="Enumerate\EventType.cs" />
     <Compile Include="Enumerate\IntervalLevel.cs" />

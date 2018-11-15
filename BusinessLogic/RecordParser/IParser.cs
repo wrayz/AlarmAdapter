@@ -10,6 +10,6 @@ namespace BusinessLogic.RecordParser
         /// </summary>
         /// <param name="record">原始記錄</param>
         /// <returns></returns>
-        List<DeviceMonitor> ParseRecord(string record);
+        List<Monitor> ParseRecord(string record);
     }
 }

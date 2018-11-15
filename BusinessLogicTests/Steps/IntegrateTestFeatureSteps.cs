@@ -16,7 +16,7 @@ namespace BusinessLogicTests.Steps
         private List<Device> _devices;
         private List<AlarmCondition> _alarmConditions;
         private WorkDirector _workDirector;
-        private List<DeviceMonitor> _previousMonitors;
+        private List<Monitor> _previousMonitors;
         private List<NotificationCondition> _notificationConditions;
         private List<RecordNotification> _notificationRecords;
 
@@ -35,7 +35,7 @@ namespace BusinessLogicTests.Steps
         [Given(@"前次監控訊息為")]
         public void Given前次監控訊息為(Table table)
         {
-            _previousMonitors = table.CreateSet<DeviceMonitor>().ToList();
+            _previousMonitors = table.CreateSet<Monitor>().ToList();
         }
 
         [Given(@"通知條件為")]

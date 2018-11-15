@@ -13,7 +13,7 @@ namespace BusinessLogic.RecordNotifier
         /// <param name="currentMonitor">當前監控訊息</param>
         /// <param name="previousMonitor">前次監控訊息</param>
         /// <returns></returns>
-        public bool Check(DeviceMonitor currentMonitor, DeviceMonitor previousMonitor)
+        public bool Check(Monitor currentMonitor, Monitor previousMonitor)
         {
             if (previousMonitor.IS_EXCEPTION == null)
                 return currentMonitor.IS_EXCEPTION.Value;

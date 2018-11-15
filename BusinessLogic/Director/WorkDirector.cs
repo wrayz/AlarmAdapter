@@ -24,7 +24,7 @@ namespace BusinessLogic.Director
         /// <summary>
         /// 設備監控資訊清單
         /// </summary>
-        public List<DeviceMonitor> Monitors { get; private set; }
+        public List<Monitor> Monitors { get; private set; }
 
         /// <summary>
         /// 建構式
@@ -58,7 +58,7 @@ namespace BusinessLogic.Director
 
                 var condition = GetNotificationCondition(device.DEVICE_SN);
                 //TODO: 使用靜態 Dictionary 將前次監控資訊存在 Memory（重開機要在初始化進資料庫）
-                var previousMonitor = GetPreviousDeviceMonitor(monitor);
+                var previousMonitor = GetPreviousMonitor(monitor);
                 var record = GetNotificationRecord(monitor, condition);
 
                 //TODO: 之後通知層獨立於 WorkDirector 
@@ -93,9 +93,10 @@ namespace BusinessLogic.Director
         /// </summary>
         /// <param name="monitor">當前監控訊息</param>
         /// <returns></returns>
-        protected virtual DeviceMonitor GetPreviousDeviceMonitor(DeviceMonitor monitor)
+        protected virtual Monitor GetPreviousMonitor(Monitor monitor)
         {
-            throw new NotImplementedException();
+            var bll = GenericBusinessFactory.CreateInstance<Monitor>();
+            return (bll as Monitor_BLL).GetPreviousMonitor(monitor);
         }
 
         /// <summary>
@@ -114,7 +115,7 @@ namespace BusinessLogic.Director
         /// <param name="monitor">監控資訊</param>
         /// <param name="condition">通知條件</param>
         /// <returns></returns>
-        protected virtual RecordNotification GetNotificationRecord(DeviceMonitor monitor, NotificationCondition condition)
+        protected virtual RecordNotification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
         {
             throw new NotImplementedException();
         }
