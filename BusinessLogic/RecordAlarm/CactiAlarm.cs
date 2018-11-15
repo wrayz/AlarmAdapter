@@ -1,8 +1,11 @@
 ﻿using ModelLibrary;
-using System;
+using ModelLibrary.Generic;
 
 namespace BusinessLogic.RecordAlarm
 {
+    /// <summary>
+    /// Cacti 告警器
+    /// </summary>
     internal class CactiAlarm : Alarm
     {
         /// <summary>
@@ -23,26 +26,29 @@ namespace BusinessLogic.RecordAlarm
         /// <returns></returns>
         protected override bool DefaultCheck(Monitor monitor)
         {
+            var value = monitor.TARGET_NAME == "Ping" ? "DOWN" : "ALERT";
             var condition = new AlarmCondition
             {
                 DEVICE_SN = monitor.DEVICE_SN,
                 TARGET_NAME = monitor.TARGET_NAME,
-                TARGET_VALUE = "ALERT",
+                TARGET_VALUE = value,
                 IS_EXCEPTION = "Y"
             };
 
-            //AddAlarmCondition(condition);
+            Save(condition);
 
             return condition.TARGET_VALUE == monitor.TARGET_VALUE;
         }
 
         /// <summary>
-        /// 告警條件新增
+        /// 告警條件儲存
         /// </summary>
-        /// <param name="condition">告警條件</param>
-        private void AddAlarmCondition(AlarmCondition condition)
+        /// <param name="data">實體資料</param>
+        private void Save(AlarmCondition data)
         {
-            throw new NotImplementedException();
+            var bll = GenericBusinessFactory.CreateInstance<AlarmCondition>();
+
+            bll.Modify("Insert", new UserLogin(), data);
         }
     }
 }

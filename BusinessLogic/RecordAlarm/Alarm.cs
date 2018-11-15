@@ -34,6 +34,8 @@ namespace BusinessLogic.RecordAlarm
         /// <param name="monitor">監控資訊</param>
         /// <returns></returns>
         protected abstract bool DefaultCheck(Monitor monitor);
+        
+        //TODO: DefaultCheck，待前端做出監控項目新增後再拿掉。
 
         /// <summary>
         /// 告警條件檢查
