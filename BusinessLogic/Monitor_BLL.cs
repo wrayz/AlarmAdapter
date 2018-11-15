@@ -21,7 +21,7 @@ namespace BusinessLogic
                 TARGET_NAME = monitor.TARGET_NAME
             };
 
-            return (_dao as Monitor_DAO).GetPreviousMonitor(monitor);
+            return (_dao as Monitor_DAO).GetPreviousMonitor(condition);
         }
     }
 }

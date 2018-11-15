@@ -1,5 +1,7 @@
 ﻿using ModelLibrary;
+using SourceHelper.Core;
 using SourceHelper.Enumerate;
+using System.Collections.Generic;
 
 namespace DataAccess
 {
@@ -16,7 +18,15 @@ namespace DataAccess
         public Monitor GetPreviousMonitor(Monitor condition)
         {
             var context = QueryContextFactory.CreateInstance<Monitor>();
-            context.Main.Query(condition).OrderBy("RECORD_SN", OrderType.DESC);
+            var order = new List<UserOrder>
+            {
+                new UserOrder
+                {
+                    PropertyName = "RECORD_SN",
+                    Type = OrderType.DESC
+                }
+            };
+            context.Main.Query(condition).OrderBy(order);
 
             return context.GetEntity();
         }
