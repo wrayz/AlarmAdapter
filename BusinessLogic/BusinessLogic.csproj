@@ -78,6 +78,7 @@
     <Compile Include="Device_BLL.cs" />
     <Compile Include="Director\WorkDirector.cs" />
     <Compile Include="License\NetworkCard.cs" />
+    <Compile Include="NotificationCondition_BLL.cs" />
     <Compile Include="Payload\Payload.cs" />
     <Compile Include="Payload\RecordPayload.cs" />
     <Compile Include="Payload\SimplePayload.cs" />

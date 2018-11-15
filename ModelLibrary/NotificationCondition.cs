@@ -15,7 +15,7 @@ namespace ModelLibrary
         /// <summary>
         /// 通知類型
         /// </summary>
-        public string NOTICATION_TYPE { get; set; }
+        public string NOTIFICATION_TYPE { get; set; }
 
         /// <summary>
         /// 間隔類型

@@ -57,6 +57,7 @@ namespace BusinessLogic.Director
                 monitor.IS_EXCEPTION = _alarmer.IsException(monitor, device.ALARM_CONDITIONS);
 
                 var condition = GetNotificationCondition(device.DEVICE_SN);
+
                 //TODO: 使用靜態 Dictionary 將前次監控資訊存在 Memory（重開機要在初始化進資料庫）
                 var previousMonitor = GetPreviousMonitor(monitor);
                 var record = GetNotificationRecord(monitor, condition);
@@ -106,7 +107,8 @@ namespace BusinessLogic.Director
         /// <returns></returns>
         protected virtual NotificationCondition GetNotificationCondition(string deviceSn)
         {
-            throw new NotImplementedException();
+            var bll = GenericBusinessFactory.CreateInstance<NotificationCondition>();
+            return (bll as NotificationCondition_BLL).GetNotificationCondition(deviceSn);
         }
 
         /// <summary>

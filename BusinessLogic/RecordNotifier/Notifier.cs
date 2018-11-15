@@ -35,7 +35,7 @@ namespace BusinessLogic.RecordNotifier
         /// <returns></returns>
         private bool CheckStatusNotification(Monitor previousMonitor)
         {
-            var type = (NotificationType)Enum.Parse(typeof(NotificationType), _notificationCondition.NOTICATION_TYPE);
+            var type = (NotificationType)Enum.Parse(typeof(NotificationType), _notificationCondition.NOTIFICATION_TYPE);
             var statusNotifier = StatusNotifierFactory.CreateInstance(type);
 
             return statusNotifier.Check(_currentMonitor, previousMonitor);
