@@ -20,12 +20,12 @@ namespace BusinessLogic.RecordNotifier
         /// <param name="previousMonitor">前次監控訊息</param>
         /// <param name="notificationRecord">通知記錄</param>
         /// <returns></returns>
-        public bool IsNotification(NotificationCondition notificationCondition, Monitor currentMonitor, Monitor previousMonitor, RecordNotification notificationRecord)
+        public string IsNotification(NotificationCondition notificationCondition, Monitor currentMonitor, Monitor previousMonitor, RecordNotification notificationRecord)
         {
             _notificationCondition = notificationCondition;
             _currentMonitor = currentMonitor;
 
-            return CheckStatusNotification(previousMonitor) && CheckNotificationInterval(notificationRecord);
+            return CheckStatusNotification(previousMonitor) && CheckNotificationInterval(notificationRecord) ? "Y" : "N";
         }
 
         /// <summary>

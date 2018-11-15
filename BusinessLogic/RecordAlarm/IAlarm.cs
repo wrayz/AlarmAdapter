@@ -14,6 +14,6 @@ namespace BusinessLogic.RecordAlarm
         /// <param name="monitor">監控訊息</param>
         /// <param name="alarmConditions">告警條件清單</param>
         /// <returns></returns>
-        bool IsException(Monitor monitor, List<AlarmCondition> alarmConditions);
+        string IsException(Monitor monitor, List<AlarmCondition> alarmConditions);
     }
 }

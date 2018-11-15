@@ -15,14 +15,17 @@ namespace BusinessLogic.RecordAlarm
         /// <param name="monitor">監控訊息</param>
         /// <param name="alarmConditions">告警條件清單</param>
         /// <returns></returns>
-        public bool IsException(Monitor monitor, List<AlarmCondition> alarmConditions)
+        public string IsException(Monitor monitor, List<AlarmCondition> alarmConditions)
         {
             if (alarmConditions.Count == 0)
-                return DefaultCheck(monitor);
+                return DefaultCheck(monitor) ? "Y" : "N";
 
             var condition = alarmConditions.Find(x => x.DEVICE_SN == monitor.DEVICE_SN && x.TARGET_NAME == monitor.TARGET_NAME);
 
-            return Check(condition.TARGET_VALUE, monitor.TARGET_VALUE) ? condition.IS_EXCEPTION : !condition.IS_EXCEPTION;
+            if (condition == null)
+                return DefaultCheck(monitor) ? "Y" : "N";
+
+            return Check(condition.TARGET_VALUE, monitor.TARGET_VALUE) ? "Y" : "N";
         }
 
         /// <summary>

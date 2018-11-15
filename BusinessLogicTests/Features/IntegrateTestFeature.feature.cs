@@ -115,7 +115,7 @@ testRunner.Given("設備清單為", ((string)(null)), table1, "Given ");
                         "2018001",
                         "Traffic - Gi1/0/20 [traffic_in]",
                         "ALERT",
-                        "true"});
+                        "Y"});
 #line 11
 testRunner.Given("告警條件為", ((string)(null)), table2, "Given ");
 #line hidden
@@ -128,12 +128,12 @@ testRunner.Given("告警條件為", ((string)(null)), table2, "Given ");
                         "2018111200001",
                         "2018001",
                         "Traffic - Gi1/0/20 [traffic_in]",
-                        "false"});
+                        "N"});
             table3.AddRow(new string[] {
                         "2018111200002",
                         "2018002",
                         "Traffic - Gi1/0/20 [traffic_in]",
-                        "true"});
+                        "Y"});
 #line 14
 testRunner.Given("前次監控訊息為", ((string)(null)), table3, "Given ");
 #line hidden
@@ -208,7 +208,7 @@ this.FeatureBackground();
                         "ALERT",
                         "current value is 5630.6207",
                         "2018/11/06 18:08:34",
-                        "true"});
+                        "Y"});
 #line 31
  testRunner.Then("EF解析告警結果為", ((string)(null)), table6, "Then ");
 #line hidden
@@ -228,8 +228,8 @@ this.FeatureBackground();
                         "ALERT",
                         "current value is 5630.6207",
                         "2018/11/06 18:08:34",
-                        "true",
-                        "true"});
+                        "Y",
+                        "Y"});
 #line 34
  testRunner.And("EF通知檢查結果為", ((string)(null)), table7, "And ");
 #line hidden
@@ -273,7 +273,7 @@ this.FeatureBackground();
                         "NORMAL",
                         "current value is 5630.6207",
                         "2018/11/06 18:08:34",
-                        "false"});
+                        "N"});
 #line 43
  testRunner.Then("EF解析告警結果為", ((string)(null)), table8, "Then ");
 #line hidden
@@ -293,8 +293,8 @@ this.FeatureBackground();
                         "NORMAL",
                         "current value is 5630.6207",
                         "2018/11/06 18:08:34",
-                        "false",
-                        "true"});
+                        "N",
+                        "Y"});
 #line 46
  testRunner.And("EF通知檢查結果為", ((string)(null)), table9, "And ");
 #line hidden

@@ -45,12 +45,12 @@ namespace ModelLibrary
         /// <summary>
         /// 是否異常
         /// </summary>
-        public bool? IS_EXCEPTION { get; set; }
+        public string IS_EXCEPTION { get; set; }
 
         /// <summary>
         /// 是否通知
         /// </summary>
-        public bool? IS_NOTIFICATION { get; set; }
+        public string IS_NOTIFICATION { get; set; }
 
         /// <summary>
         /// 等於

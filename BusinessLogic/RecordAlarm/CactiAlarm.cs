@@ -28,7 +28,7 @@ namespace BusinessLogic.RecordAlarm
                 DEVICE_SN = monitor.DEVICE_SN,
                 TARGET_NAME = monitor.TARGET_NAME,
                 TARGET_VALUE = "ALERT",
-                IS_EXCEPTION = true
+                IS_EXCEPTION = "Y"
             };
 
             //AddAlarmCondition(condition);

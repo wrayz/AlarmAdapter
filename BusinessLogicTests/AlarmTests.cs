@@ -22,7 +22,7 @@ namespace BusinessLogicTests
                     DEVICE_SN = "2018001",
                     TARGET_NAME = "Traffic - Gi1/0/20 [traffic_in]",
                     TARGET_VALUE = "ALERT",
-                    IS_EXCEPTION = true
+                    IS_EXCEPTION = "Y"
                 }
             };
         }
@@ -31,7 +31,7 @@ namespace BusinessLogicTests
         public void Cacti_ALERT訊息_為異常()
         {
             //Arrange
-            var expected = true;
+            var expected = "Y";
 
             var monitor = new Monitor
             {

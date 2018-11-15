@@ -16,7 +16,7 @@ namespace BusinessLogic.RecordNotifier
         public bool Check(Monitor currentMonitor, Monitor previousMonitor)
         {
             if (previousMonitor.IS_EXCEPTION == null)
-                return currentMonitor.IS_EXCEPTION.Value;
+                return currentMonitor.IS_EXCEPTION == "Y" ? true : false;
 
             return currentMonitor.IS_EXCEPTION != previousMonitor.IS_EXCEPTION;
         }
