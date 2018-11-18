@@ -1,4 +1,4 @@
-﻿using BusinessLogic.RemoteNotification;
+﻿using BusinessLogic.PushPayload;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -26,12 +26,12 @@ namespace APIService
         /// <summary>
         /// 推播物件
         /// </summary>
-        private NotificationContent _payload;
+        private Payload _payload;
 
         /// <summary>
         /// 建構式
         /// </summary>
-        public PushService(NotificationContent payload)
+        public PushService(Payload payload)
         {
             _payload = payload;
         }

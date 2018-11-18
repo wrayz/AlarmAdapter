@@ -2,16 +2,16 @@
 using ModelLibrary.Enumerate;
 using System.Collections.Generic;
 
-namespace BusinessLogic
+namespace BusinessLogic.RemoteNotification
 {
     /// <summary>
     /// 簡易設備通知物件
     /// </summary>
-    public class SimplePayload : Payload
+    public class SimpleContent : NotificationContent
     {
         private SimpleLog _simpleLog;
 
-        public SimplePayload(SimpleLog simpleLog)
+        public SimpleContent(SimpleLog simpleLog)
         {
             _simpleLog = simpleLog;
             //資料設置

@@ -79,9 +79,9 @@
     <Compile Include="Director\WorkDirector.cs" />
     <Compile Include="License\NetworkCard.cs" />
     <Compile Include="NotificationCondition_BLL.cs" />
-    <Compile Include="Payload\Payload.cs" />
-    <Compile Include="Payload\RecordPayload.cs" />
-    <Compile Include="Payload\SimplePayload.cs" />
+    <Compile Include="RemoteNotification\NotificationContent.cs" />
+    <Compile Include="RemoteNotification\RecordContent.cs" />
+    <Compile Include="RemoteNotification\SimpleContent.cs" />
     <Compile Include="Notification\DigitalNotification.cs" />
     <Compile Include="Notification\INotification.cs" />
     <Compile Include="Notification\NetworkNotification.cs" />
@@ -93,7 +93,7 @@
     <Compile Include="RecordAlarm\IAlarm.cs" />
     <Compile Include="RecordLog_BLL.cs" />
     <Compile Include="Log_BLL.cs" />
-    <Compile Include="Payload\IMPayload.cs" />
+    <Compile Include="RemoteNotification\BobCactiContent.cs" />
     <Compile Include="Generic\GenericBusinessFactory.cs" />
     <Compile Include="Generic\GenericBusinessLogicT.cs" />
     <Compile Include="Generic\IBusinessLogicT.cs" />

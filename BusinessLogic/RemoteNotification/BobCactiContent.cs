@@ -2,12 +2,12 @@
 using ModelLibrary.Enumerate;
 using System.Collections.Generic;
 
-namespace BusinessLogic
+namespace BusinessLogic.RemoteNotification
 {
     /// <summary>
     /// 推送訊息物件
     /// </summary>
-    public class IMPayload : Payload
+    public class BobCactiContent : NotificationContent
     {
         private LogDetail _logDetail;
 
@@ -17,7 +17,7 @@ namespace BusinessLogic
         /// <param name="name">系統名稱</param>
         /// <param name="type">推送動作類型</param>
         /// <param name="logDetail">設備紀錄詳細資料</param>
-        public IMPayload(EventType type, LogDetail logDetail)
+        public BobCactiContent(EventType type, LogDetail logDetail)
         {
             //紀錄編號
             LOG_SN = logDetail.LOG_SN;

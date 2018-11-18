@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using BusinessLogic.RemoteNotification;
+using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
@@ -54,7 +55,7 @@ namespace BusinessLogic.Notification
         /// <param name="deviceSn">設備編號</param>
         /// <param name="logSn">記錄編號</param>
         /// <returns></returns>
-        public Payload GetPayload(EventType type, string deviceSn, int? logSn)
+        public NotificationContent GetPayload(EventType type, string deviceSn, int? logSn)
         {
             //紀錄詳細資料處理物件
             var dao = GenericDataAccessFactory.CreateInstance<LogDetail>();
@@ -65,7 +66,7 @@ namespace BusinessLogic.Notification
 
             var logDetail = dao.Get(option, condition);
 
-            return new IMPayload(type, logDetail);
+            return new BobCactiContent(type, logDetail);
         }
 
         /// <summary>

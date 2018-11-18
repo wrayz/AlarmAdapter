@@ -1,4 +1,5 @@
-﻿using ModelLibrary;
+﻿using BusinessLogic.RemoteNotification;
+using ModelLibrary;
 using ModelLibrary.Enumerate;
 using System.Collections.Generic;
 
@@ -25,7 +26,7 @@ namespace BusinessLogic.Notification
         /// <param name="deviceSn">設備編號</param>
         /// <param name="logSn">記錄編號</param>
         /// <returns></returns>
-        Payload GetPayload(EventType type, string deviceSn, int? logSn);
+        NotificationContent GetPayload(EventType type, string deviceSn, int? logSn);
 
         /// <summary>
         /// 通知記錄儲存

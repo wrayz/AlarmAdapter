@@ -2,12 +2,12 @@
 using ModelLibrary.Enumerate;
 using System.Collections.Generic;
 
-namespace BusinessLogic
+namespace BusinessLogic.RemoteNotification
 {
     /// <summary>
     /// 數據類型通知資料
     /// </summary>
-    public class RecordPayload : Payload
+    public class RecordContent : NotificationContent
     {
         private RecordLog _recordLog;
 
@@ -17,7 +17,7 @@ namespace BusinessLogic
         /// <param name="system">系統名稱</param>
         /// <param name="type">動作類型</param>
         /// <param name="recordLog">數據記錄</param>
-        public RecordPayload(EventType type, RecordLog recordLog)
+        public RecordContent(EventType type, RecordLog recordLog)
         {
             //紀錄編號
             LOG_SN = recordLog.LOG_SN;

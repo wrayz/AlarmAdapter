@@ -2,12 +2,12 @@
 using ModelLibrary.Enumerate;
 using System.Collections.Generic;
 
-namespace BusinessLogic
+namespace BusinessLogic.RemoteNotification
 {
     /// <summary>
     /// 通知推送內容
     /// </summary>
-    public abstract class Payload
+    public abstract class NotificationContent
     {
         /// <summary>
         /// 資料設置
