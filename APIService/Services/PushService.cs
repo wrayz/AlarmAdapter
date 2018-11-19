@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.RemoteNotification;
+using ModelLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,27 +14,48 @@ namespace APIService
     /// </summary>
     public class PushService
     {
-        /// <summary>
-        /// 手機通知服務位址
-        /// </summary>
+        // 手機通知服務位址
         private readonly string _imUrl = ConfigurationManager.AppSettings["im"];
 
-        /// <summary>
-        /// 桌機通知服務位址
-        /// </summary>
+        // 桌機通知服務位址
         private readonly string _socketUrl = ConfigurationManager.AppSettings["socket"];
 
-        /// <summary>
-        /// 推播物件
-        /// </summary>
-        private NotificationContent _payload;
+        private readonly List<Monitor> _monitors;
+
+        private NotificationContent _notificationContent;
 
         /// <summary>
         /// 建構式
         /// </summary>
-        public PushService(NotificationContent payload)
+        /// <param name="notificationContent">推送內容</param>
+        public PushService(NotificationContent notificationContent)
         {
-            _payload = payload;
+            _notificationContent = notificationContent;
+        }
+
+        /// <summary>
+        /// 建構式
+        /// </summary>
+        /// <param name="monitors">監控資訊清單</param>
+        public PushService(List<Monitor> monitors)
+        {
+            _monitors = monitors;
+        }
+
+        /// <summary>
+        /// 推播執行
+        /// </summary>
+        /// <param name="detector">偵測器</param>
+        public void Execute(string detector)
+        {
+            _monitors.ForEach(monitor =>
+            {
+                if (monitor.IS_NOTIFICATION == "Y")
+                {
+                    _notificationContent = RemoteNotificationFactory.CreateInstance(detector, monitor);
+                    PushNotification();
+                }
+            });
         }
 
         /// <summary>
@@ -59,7 +81,7 @@ namespace APIService
 
                 //內容
                 var content = new FormUrlEncodedContent(new[]{
-                    new KeyValuePair<string, string>("info", JsonConvert.SerializeObject(_payload))
+                    new KeyValuePair<string, string>("info", JsonConvert.SerializeObject(_notificationContent))
                 });
 
                 //post
@@ -79,7 +101,7 @@ namespace APIService
             using (var client = new HttpClient())
             {
                 //內容
-                var content = new StringContent(JsonConvert.SerializeObject(_payload), Encoding.UTF8, "application/json");
+                var content = new StringContent(JsonConvert.SerializeObject(_notificationContent), Encoding.UTF8, "application/json");
 
                 var response = client.PostAsync(_socketUrl, content).Result;
 

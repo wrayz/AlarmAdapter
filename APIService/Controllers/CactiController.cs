@@ -26,6 +26,9 @@ namespace APIService.Controllers
                 var director = new WorkDirector(detector, record, DeviceType.N);
                 director.Execute();
 
+                var pusher = new PushService(director.Monitors);
+                pusher.Execute(detector);
+
                 return Ok();
             }
             catch (Exception ex)

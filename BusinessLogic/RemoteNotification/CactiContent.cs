@@ -13,7 +13,7 @@ namespace BusinessLogic.RemoteNotification
         private readonly Monitor _monitor;
 
         /// <summary>
-        /// 監控式
+        /// 建構式
         /// </summary>
         /// <param name="monitor">監控資訊</param>
         public CactiContent(Monitor monitor)
@@ -29,9 +29,11 @@ namespace BusinessLogic.RemoteNotification
         /// <param name="type">事件類型</param>
         public override void Initialize(EventType type)
         {
-            LOG_SN = Convert.ToInt32(_monitor.RECORD_SN);
             DEVICE_SN = _monitor.DEVICE_SN;
-            BUTTON_STATUS = _monitor.IS_EXCEPTION;
+
+            LOG_SN = GetLogSn();
+
+            BUTTON_STATUS = GetButtonStatus();
 
             TITLE = GetTitle();
 
@@ -42,6 +44,21 @@ namespace BusinessLogic.RemoteNotification
             GROUP_LIST = GetGroups();
 
             FIELD_LIST = GetFields();
+        }
+
+        private int? GetLogSn()
+        {
+            //TODO: 未來資料庫有存原始資料，就可撤掉此方法
+
+            var bll = GenericBusinessFactory.CreateInstance<Monitor>();
+            var recordSn = (bll as Monitor_BLL).GetRecordSn(_monitor);
+
+            return Convert.ToInt32(recordSn);
+        }
+
+        private string GetButtonStatus()
+        {
+            return _monitor.IS_EXCEPTION == "Y" ? "E" : "N";
         }
 
         private string GetTitle()
