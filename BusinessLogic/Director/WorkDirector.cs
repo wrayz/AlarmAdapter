@@ -52,6 +52,7 @@ namespace BusinessLogic.Director
             Monitors.ForEach(monitor =>
             {
                 var device = GetDevice(monitor.DEVICE_ID, _deviceType);
+                monitor.DeviceName = device.DEVICE_NAME;
                 monitor.DEVICE_SN = device.DEVICE_SN;
 
                 monitor.IS_EXCEPTION = _alarmer.IsException(monitor, device.ALARM_CONDITIONS);
@@ -62,9 +63,11 @@ namespace BusinessLogic.Director
                 var previousMonitor = GetPreviousMonitor(monitor);
                 var record = GetNotificationRecord(monitor, condition);
 
-                //TODO: 之後通知層獨立於 WorkDirector 
+                //TODO: 之後通知層獨立於 WorkDirector
                 monitor.IS_NOTIFICATION = _notifier.IsNotification(condition, monitor, previousMonitor, record);
             });
+
+            Save();
         }
 
         /// <summary>
@@ -121,6 +124,14 @@ namespace BusinessLogic.Director
         {
             var bll = GenericBusinessFactory.CreateInstance<RecordNotification>();
             return (bll as RecordNotification_BLL).GetRecord(monitor, condition);
+        }
+
+        /// <summary>
+        /// 儲存
+        /// </summary>
+        protected virtual void Save()
+        {
+            throw new NotImplementedException();
         }
     }
 }
