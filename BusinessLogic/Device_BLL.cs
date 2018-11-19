@@ -1,5 +1,6 @@
 ﻿using ModelLibrary;
 using ModelLibrary.Generic;
+using System;
 
 namespace BusinessLogic
 {
@@ -19,7 +20,8 @@ namespace BusinessLogic
             var condition = new Device
             {
                 DEVICE_ID = deviceId,
-                DEVICE_TYPE = deviceType
+                DEVICE_TYPE = deviceType,
+                IS_MONITOR = "Y"
             };
 
             var query = new QueryOption
@@ -30,7 +32,12 @@ namespace BusinessLogic
                 }
             };
 
-            return _dao.Get(query, condition);
+            var device = _dao.Get(query, condition);
+
+            if (device == null)
+                throw new Exception($"檢查 { deviceId } 是否已建立設備資訊或是否開啟監控");
+
+            return device;
         }
     }
 }
