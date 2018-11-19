@@ -1,7 +1,9 @@
-﻿using BusinessLogic.Director;
+﻿using APIService.NotificationPusher;
+using BusinessLogic.Director;
 using BusinessLogic.License;
 using ModelLibrary.Enumerate;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 
@@ -26,8 +28,9 @@ namespace APIService.Controllers
                 var director = new WorkDirector(detector, record, DeviceType.N);
                 director.Execute();
 
-                var pusher = new PushService(director.Monitors);
-                pusher.Execute(detector);
+                var pusher = new PusherDirector(detector, director.Monitors);
+                var destinations = GetDestinations();
+                pusher.Execute(destinations);
 
                 return Ok();
             }
@@ -36,6 +39,14 @@ namespace APIService.Controllers
                 logger.Error(ex);
                 return Content(HttpStatusCode.InternalServerError, ex);
             }
+        }
+
+        private static List<NotificationDestination> GetDestinations()
+        {
+            return new List<NotificationDestination>
+            {
+                NotificationDestination.Mobile
+            };
         }
     }
 }

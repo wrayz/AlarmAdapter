@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.RemoteNotification;
-using ModelLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,8 +19,6 @@ namespace APIService
         // 桌機通知服務位址
         private readonly string _socketUrl = ConfigurationManager.AppSettings["socket"];
 
-        private readonly List<Monitor> _monitors;
-
         private NotificationContent _notificationContent;
 
         /// <summary>
@@ -31,31 +28,6 @@ namespace APIService
         public PushService(NotificationContent notificationContent)
         {
             _notificationContent = notificationContent;
-        }
-
-        /// <summary>
-        /// 建構式
-        /// </summary>
-        /// <param name="monitors">監控資訊清單</param>
-        public PushService(List<Monitor> monitors)
-        {
-            _monitors = monitors;
-        }
-
-        /// <summary>
-        /// 推播執行
-        /// </summary>
-        /// <param name="detector">偵測器</param>
-        public void Execute(string detector)
-        {
-            _monitors.ForEach(monitor =>
-            {
-                if (monitor.IS_NOTIFICATION == "Y")
-                {
-                    _notificationContent = RemoteNotificationFactory.CreateInstance(detector, monitor);
-                    PushNotification();
-                }
-            });
         }
 
         /// <summary>

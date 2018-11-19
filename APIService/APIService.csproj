@@ -133,6 +133,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\APIResponse.cs" />
+    <Compile Include="NotificationPusher\DesktopPusher.cs" />
+    <Compile Include="NotificationPusher\MobilePusher.cs" />
+    <Compile Include="NotificationPusher\IPusher.cs" />
+    <Compile Include="NotificationPusher\PusherDirector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PushService.cs" />
   </ItemGroup>
