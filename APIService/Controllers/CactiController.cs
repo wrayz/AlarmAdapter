@@ -3,12 +3,14 @@ using BusinessLogic.Director;
 using BusinessLogic.License;
 using ModelLibrary.Enumerate;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 
 namespace APIService.Controllers
 {
+    /// <summary>
+    /// 接收 Cacti API
+    /// </summary>
     public class CactiController : ApiController
     {
         [HttpPost]
@@ -29,8 +31,7 @@ namespace APIService.Controllers
                 director.Execute();
 
                 var pusher = new PusherDirector(detector, director.Monitors);
-                var destinations = GetDestinations();
-                pusher.Execute(destinations);
+                pusher.Execute();
 
                 return Ok();
             }
@@ -39,14 +40,6 @@ namespace APIService.Controllers
                 logger.Error(ex);
                 return Content(HttpStatusCode.InternalServerError, ex);
             }
-        }
-
-        private static List<NotificationDestination> GetDestinations()
-        {
-            return new List<NotificationDestination>
-            {
-                NotificationDestination.Mobile
-            };
         }
     }
 }

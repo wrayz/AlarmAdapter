@@ -14,6 +14,7 @@ namespace APIService.NotificationPusher
     {
         private readonly string _detector;
         private readonly List<NotificationContent> _contents;
+        private readonly List<NotificationDestination> _destinations;
         private readonly List<Monitor> _monitors;
 
         /// <summary>
@@ -28,17 +29,19 @@ namespace APIService.NotificationPusher
             _monitors = monitors.Where(x => x.IS_NOTIFICATION == "N").ToList();
 
             _contents = GetContents();
+
+            _destinations = GetDestinations();
         }
 
         /// <summary>
         /// 推播執行
         /// </summary>
         /// <param name="destinations">通知目的地清單</param>
-        public void Execute(List<NotificationDestination> destinations)
+        public void Execute()
         {
             _contents.ForEach(content =>
             {
-                destinations.ForEach(destination =>
+                _destinations.ForEach(destination =>
                 {
                     var pusher = GetPusher(destination);
                     pusher.Push(content);
@@ -61,6 +64,18 @@ namespace APIService.NotificationPusher
             });
 
             return contents;
+        }
+
+        /// <summary>
+        /// 通知目的地清單
+        /// </summary>
+        /// <returns></returns>
+        private List<NotificationDestination> GetDestinations()
+        {
+            return new List<NotificationDestination>
+            {
+                NotificationDestination.Mobile
+            };
         }
 
         /// <summary>
