@@ -32,14 +32,14 @@ namespace BusinessLogic.RemoteNotification
 
             //動作類型資料設置
             _logDetail = logDetail;
-            SetData(type);
+            Initialize(type);
         }
 
         /// <summary>
         /// 資料設置
         /// </summary>
         /// <param name="type">動作類型</param>
-        public override void SetData(EventType type)
+        public override void Initialize(EventType type)
         {
             FIELD_LIST = new List<Field>
             {

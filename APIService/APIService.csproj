@@ -134,7 +134,7 @@
     </Compile>
     <Compile Include="Model\APIResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PushService.cs" />
+    <Compile Include="Services\PushService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="File.config">

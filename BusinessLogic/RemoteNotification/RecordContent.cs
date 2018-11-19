@@ -30,14 +30,14 @@ namespace BusinessLogic.RemoteNotification
 
             _recordLog = recordLog;
             //資料設置
-            SetData(type);
+            Initialize(type);
         }
 
         /// <summary>
         /// 資料設置
         /// </summary>
         /// <param name="type">資料動作</param>
-        public override void SetData(EventType type)
+        public override void Initialize(EventType type)
         {
             FIELD_LIST = new List<Field>
             {

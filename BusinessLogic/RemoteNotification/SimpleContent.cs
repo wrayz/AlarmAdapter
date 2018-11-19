@@ -15,14 +15,14 @@ namespace BusinessLogic.RemoteNotification
         {
             _simpleLog = simpleLog;
             //資料設置
-            SetData(EventType.Error);
+            Initialize(EventType.Error);
         }
 
         /// <summary>
         /// 資料設置
         /// <paramref name="type"/>
         /// </summary>
-        public override void SetData(EventType type)
+        public override void Initialize(EventType type)
         {
             LOG_SN = _simpleLog.LOG_SN;
             LOG_TYPE = "S";

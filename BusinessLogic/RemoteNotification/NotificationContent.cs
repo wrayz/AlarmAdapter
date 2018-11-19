@@ -9,11 +9,13 @@ namespace BusinessLogic.RemoteNotification
     /// </summary>
     public abstract class NotificationContent
     {
+        //TODO: 建構式注入監控資訊
+
         /// <summary>
-        /// 資料設置
+        /// 初始化
         /// </summary>
-        /// <param name="type"></param>
-        public abstract void SetData(EventType type);
+        /// <param name="type">事件類型</param>
+        public abstract void Initialize(EventType type);
 
         /// <summary>
         /// 紀錄編號

@@ -70,5 +70,10 @@ namespace ModelLibrary
                        monitor.RECEIVE_TIME == RECEIVE_TIME;
             }
         }
+
+        /// <summary>
+        /// 設備名稱
+        /// </summary>
+        public string DeviceName { get; set; }
     }
 }
