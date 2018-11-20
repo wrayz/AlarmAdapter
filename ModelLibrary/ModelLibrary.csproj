@@ -68,6 +68,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Contact.cs" />
     <Compile Include="Enumerate\NotificationDestination.cs" />
+    <Compile Include="Repair.cs" />
     <Compile Include="Monitor.cs" />
     <Compile Include="Enumerate\AlarmType.cs" />
     <Compile Include="Enumerate\EventType.cs" />

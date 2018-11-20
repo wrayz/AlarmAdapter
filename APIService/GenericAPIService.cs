@@ -1,6 +1,4 @@
-﻿using BusinessLogic;
-using ModelLibrary;
-using ModelLibrary.Generic;
+﻿using ModelLibrary.Generic;
 using Newtonsoft.Json;
 using System.Web;
 
