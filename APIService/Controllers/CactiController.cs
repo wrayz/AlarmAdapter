@@ -1,4 +1,4 @@
-﻿using APIService.NotificationPusher;
+﻿using APIService.Strategy;
 using BusinessLogic.Director;
 using BusinessLogic.License;
 using ModelLibrary.Enumerate;
@@ -30,7 +30,7 @@ namespace APIService.Controllers
                 var director = new WorkDirector(detector, record, DeviceType.N);
                 director.Execute();
 
-                var pusher = new PusherDirector(detector, director.Monitors);
+                PushStrategy pusher = new MonitorPushStrategy(director.Monitors);
                 pusher.Execute();
 
                 return Ok();

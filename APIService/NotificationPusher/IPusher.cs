@@ -1,4 +1,4 @@
-﻿using BusinessLogic.RemoteNotification;
+﻿using BusinessLogic.NotificationStrategy;
 using System.Net.Http;
 
 namespace APIService.NotificationPusher
@@ -13,6 +13,6 @@ namespace APIService.NotificationPusher
         /// </summary>
         /// <param name="content">通知內容</param>
         /// <returns></returns>
-        HttpResponseMessage Push(NotificationContent content);
+        HttpResponseMessage Push(ContentStrategy content);
     }
 }

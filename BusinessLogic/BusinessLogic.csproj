@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NotificationStrategy\ContentStrategy.cs" />
     <Compile Include="DeviceGroup_BLL.cs" />
     <Compile Include="Repair_BLL.cs" />
     <Compile Include="Monitor_BLL.cs" />
@@ -81,10 +82,9 @@
     <Compile Include="Director\WorkDirector.cs" />
     <Compile Include="License\NetworkCard.cs" />
     <Compile Include="NotificationCondition_BLL.cs" />
-    <Compile Include="RemoteNotification\CactiContent.cs" />
+    <Compile Include="NotificationStrategy\CactiContent.cs" />
     <Compile Include="RemoteNotification\NotificationContent.cs" />
     <Compile Include="RemoteNotification\RecordContent.cs" />
-    <Compile Include="RemoteNotification\RemoteNotificationFactory.cs" />
     <Compile Include="RemoteNotification\SimpleContent.cs" />
     <Compile Include="Notification\DigitalNotification.cs" />
     <Compile Include="Notification\INotification.cs" />

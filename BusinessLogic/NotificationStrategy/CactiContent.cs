@@ -1,14 +1,12 @@
 ﻿using ModelLibrary;
-using ModelLibrary.Enumerate;
-using System;
 using System.Collections.Generic;
 
-namespace BusinessLogic.RemoteNotification
+namespace BusinessLogic.NotificationStrategy
 {
     /// <summary>
     /// Cacti 推送內容
     /// </summary>
-    public class CactiContent : NotificationContent
+    public class CactiContent : ContentStrategy
     {
         private readonly Monitor _monitor;
 
@@ -20,14 +18,14 @@ namespace BusinessLogic.RemoteNotification
         {
             _monitor = monitor;
 
-            Initialize(EventType.Error);
+            Initialize();
         }
 
         /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="type">事件類型</param>
-        public override void Initialize(EventType type)
+        protected override void Initialize()
         {
             DEVICE_SN = _monitor.DEVICE_SN;
 
@@ -46,14 +44,12 @@ namespace BusinessLogic.RemoteNotification
             FIELD_LIST = GetFields();
         }
 
-        private int? GetLogSn()
+        private string GetLogSn()
         {
             //TODO: 未來資料庫有存原始資料，就可撤掉此方法
 
             var bll = GenericBusinessFactory.CreateInstance<Monitor>();
-            var recordSn = (bll as Monitor_BLL).GetRecordSn(_monitor);
-
-            return Convert.ToInt32(recordSn);
+            return (bll as Monitor_BLL).GetRecordSn(_monitor);
         }
 
         private string GetButtonStatus()
