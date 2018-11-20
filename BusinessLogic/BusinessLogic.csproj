@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="NotificationStrategy\ContentStrategy.cs" />
     <Compile Include="DeviceGroup_BLL.cs" />
+    <Compile Include="NotificationStrategy\RepairContent.cs" />
     <Compile Include="Repair_BLL.cs" />
     <Compile Include="Monitor_BLL.cs" />
     <Compile Include="Device_BLL.cs" />

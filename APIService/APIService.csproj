@@ -142,6 +142,7 @@
     <Compile Include="NotificationPusher\PusherFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PushService.cs" />
+    <Compile Include="Strategy\RepairPushStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="File.config">

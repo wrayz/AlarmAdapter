@@ -1,4 +1,5 @@
-﻿using BusinessLogic;
+﻿using APIService.Strategy;
+using BusinessLogic;
 using BusinessLogic.License;
 using ModelLibrary;
 using System;
@@ -25,6 +26,9 @@ namespace APIService.Controllers
                 var login = GenericAPIService.GetUserInfo();
                 var bll = GenericBusinessFactory.CreateInstance<Repair>();
                 (bll as Repair_BLL).Save(repair, login);
+
+                PushStrategy pusher = new RepairPushStrategy(repair);
+                pusher.Execute();
 
                 return Ok();
             }

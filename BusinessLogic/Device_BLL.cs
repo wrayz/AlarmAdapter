@@ -41,6 +41,29 @@ namespace BusinessLogic
         }
 
         /// <summary>
+        /// 設備名稱和識別碼取得
+        /// </summary>
+        /// <param name="deviceSn">設備編號</param>
+        /// <returns></returns>
+        public Device GetNameAndId(string deviceSn)
+        {
+            var option = new QueryOption
+            {
+                Plan = new QueryPlan
+                {
+                    Select = "Info"
+                }
+            };
+
+            var condition = new Device
+            {
+                DEVICE_SN = deviceSn
+            };
+
+            return _dao.Get(option, condition);
+        }
+
+        /// <summary>
         /// 檢查狀態
         /// </summary>
         /// <param name="deviceSn">設備編號</param>

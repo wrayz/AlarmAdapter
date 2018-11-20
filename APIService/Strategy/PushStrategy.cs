@@ -16,7 +16,7 @@ namespace APIService.Strategy
         /// 建構式
         /// </summary>
         public PushStrategy()
-        {
+        { 
             _destinations = GetDestinations();
         }
 
