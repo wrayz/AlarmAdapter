@@ -1,7 +1,7 @@
 ﻿using ModelLibrary.Enumerate;
 using System;
 
-namespace BusinessLogic.Notification
+namespace BusinessLogic.AlarmNotification
 {
     public static class NotificationFactory
     {

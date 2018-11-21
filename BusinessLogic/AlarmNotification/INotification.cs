@@ -3,7 +3,7 @@ using ModelLibrary;
 using ModelLibrary.Enumerate;
 using System.Collections.Generic;
 
-namespace BusinessLogic.Notification
+namespace BusinessLogic.AlarmNotification
 {
     /// <summary>
     /// 通知介面

@@ -1,7 +1,7 @@
 ﻿using APIService.Model;
 using BusinessLogic;
+using BusinessLogic.AlarmNotification;
 using BusinessLogic.License;
-using BusinessLogic.Notification;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;

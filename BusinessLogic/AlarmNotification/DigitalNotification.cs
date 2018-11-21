@@ -6,7 +6,7 @@ using ModelLibrary.Generic;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BusinessLogic.Notification
+namespace BusinessLogic.AlarmNotification
 {
     /// <summary>
     /// 數據設備通知

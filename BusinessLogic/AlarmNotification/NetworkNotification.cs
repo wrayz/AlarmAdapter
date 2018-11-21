@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BusinessLogic.Notification
+namespace BusinessLogic.AlarmNotification
 {
     /// <summary>
     /// 一般網路設備通知

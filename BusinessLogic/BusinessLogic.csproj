@@ -87,11 +87,11 @@
     <Compile Include="RemoteNotification\NotificationContent.cs" />
     <Compile Include="RemoteNotification\RecordContent.cs" />
     <Compile Include="RemoteNotification\SimpleContent.cs" />
-    <Compile Include="Notification\DigitalNotification.cs" />
-    <Compile Include="Notification\INotification.cs" />
-    <Compile Include="Notification\NetworkNotification.cs" />
-    <Compile Include="Notification\NotificationFactory.cs" />
-    <Compile Include="Notification\SimpleNotification.cs" />
+    <Compile Include="AlarmNotification\DigitalNotification.cs" />
+    <Compile Include="AlarmNotification\INotification.cs" />
+    <Compile Include="AlarmNotification\NetworkNotification.cs" />
+    <Compile Include="AlarmNotification\NotificationFactory.cs" />
+    <Compile Include="AlarmNotification\SimpleNotification.cs" />
     <Compile Include="RecordAlarm\AlarmFactory.cs" />
     <Compile Include="RecordAlarm\Alarm.cs" />
     <Compile Include="RecordAlarm\CactiAlarm.cs" />

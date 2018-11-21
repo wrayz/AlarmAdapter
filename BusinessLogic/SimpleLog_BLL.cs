@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Notification;
+﻿using BusinessLogic.AlarmNotification;
 using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
