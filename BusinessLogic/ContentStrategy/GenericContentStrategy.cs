@@ -2,12 +2,12 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace BusinessLogic.NotificationStrategy
+namespace BusinessLogic.ContentStrategy
 {
     /// <summary>
     /// 通知內容產生策略
     /// </summary>
-    public abstract class ContentStrategy
+    public abstract class GenericContentStrategy
     {
         /// <summary>
         /// 初始化
@@ -65,5 +65,15 @@ namespace BusinessLogic.NotificationStrategy
         /// 附加欄位清單
         /// </summary>
         public List<Field> FIELD_LIST { get; set; }
+
+        /// <summary>
+        /// 監控項目名稱
+        /// </summary>
+        public string TARGET_NAME { get; set; }
+
+        /// <summary>
+        /// 監控項目訊息
+        /// </summary>
+        public string TARGET_MESSAGE { get; set; }
     }
 }

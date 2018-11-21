@@ -74,16 +74,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NotificationStrategy\ContentStrategy.cs" />
+    <Compile Include="ContentStrategy\GenericContentStrategy.cs" />
     <Compile Include="DeviceGroup_BLL.cs" />
-    <Compile Include="NotificationStrategy\RepairContent.cs" />
+    <Compile Include="ContentStrategy\RepairContent.cs" />
     <Compile Include="Repair_BLL.cs" />
     <Compile Include="Monitor_BLL.cs" />
     <Compile Include="Device_BLL.cs" />
     <Compile Include="Director\WorkDirector.cs" />
     <Compile Include="License\NetworkCard.cs" />
     <Compile Include="NotificationCondition_BLL.cs" />
-    <Compile Include="NotificationStrategy\CactiContent.cs" />
+    <Compile Include="ContentStrategy\CactiContent.cs" />
     <Compile Include="RemoteNotification\NotificationContent.cs" />
     <Compile Include="RemoteNotification\RecordContent.cs" />
     <Compile Include="RemoteNotification\SimpleContent.cs" />

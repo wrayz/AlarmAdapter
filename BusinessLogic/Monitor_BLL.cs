@@ -1,7 +1,9 @@
 ﻿using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Generic;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic
 {
@@ -24,6 +26,15 @@ namespace BusinessLogic
             };
 
             return (_dao as Monitor_DAO).GetPreviousMonitor(condition);
+        }
+
+        /// <summary>
+        /// 待檢查通知之監控清單
+        /// </summary>
+        /// <returns></returns>
+        internal List<Monitor> GetNotificationMonitors()
+        {
+            return (_dao as Monitor_DAO).GetNotificationMonitors().ToList();
         }
 
         /// <summary>

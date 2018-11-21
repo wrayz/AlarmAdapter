@@ -1,12 +1,12 @@
 ﻿using ModelLibrary;
 using System.Collections.Generic;
 
-namespace BusinessLogic.NotificationStrategy
+namespace BusinessLogic.ContentStrategy
 {
     /// <summary>
     /// Cacti 推送內容
     /// </summary>
-    public class CactiContent : ContentStrategy
+    public class CactiContent : GenericContentStrategy
     {
         private readonly Monitor _monitor;
 

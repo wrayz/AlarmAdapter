@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace BusinessLogic.NotificationStrategy
+namespace BusinessLogic.ContentStrategy
 {
     /// <summary>
     /// 維修登記推送內容
     /// </summary>
-    public class RepairContent : ContentStrategy
+    public class RepairContent : GenericContentStrategy
     {
         private Repair _repair;
 
