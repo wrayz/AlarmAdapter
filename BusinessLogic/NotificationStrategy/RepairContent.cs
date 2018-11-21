@@ -29,7 +29,7 @@ namespace BusinessLogic.NotificationStrategy
         {
             DEVICE_SN = _repair.DEVICE_SN;
 
-            LOG_SN = _repair.RECORD_SN;
+            RECORD_SN = _repair.RECORD_SN;
 
             BUTTON_STATUS = "R";
 

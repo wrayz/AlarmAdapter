@@ -1,4 +1,5 @@
 ﻿using ModelLibrary;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace BusinessLogic.NotificationStrategy
@@ -16,7 +17,8 @@ namespace BusinessLogic.NotificationStrategy
         /// <summary>
         /// 紀錄編號
         /// </summary>
-        public string LOG_SN { get; set; }
+        [JsonProperty("LOG_SN")]
+        public string RECORD_SN { get; set; }
 
         /// <summary>
         /// 紀錄類型

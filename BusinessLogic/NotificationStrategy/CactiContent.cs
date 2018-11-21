@@ -29,7 +29,7 @@ namespace BusinessLogic.NotificationStrategy
         {
             DEVICE_SN = _monitor.DEVICE_SN;
 
-            LOG_SN = GetLogSn();
+            RECORD_SN = GetLogSn();
 
             BUTTON_STATUS = GetButtonStatus();
 
