@@ -80,7 +80,7 @@
     <Compile Include="Generic\GenericFactory.cs" />
     <Compile Include="Generic\IDataAccessT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecordNotification_DAO.cs" />
+    <Compile Include="Notification_DAO.cs" />
     <Compile Include="SimpleLog_DAO.cs" />
   </ItemGroup>
   <ItemGroup>

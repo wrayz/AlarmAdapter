@@ -205,7 +205,7 @@
     <Content Include="Entity\Monitor.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Entity\RecordNotification.config" />
+    <Content Include="Entity\Notification.config" />
     <Content Include="Entity\Repair.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>

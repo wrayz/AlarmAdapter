@@ -13,14 +13,14 @@ namespace BusinessLogicTests.Fake
         private List<AlarmCondition> _alarmConditions;
         private List<Monitor> _previousMonitors;
         private List<NotificationCondition> _notificationConditions;
-        private List<RecordNotification> _notificationRecords;
+        private List<Notification> _notificationRecords;
 
         public WorkDirectorFake(string detector, string originRecord, DeviceType deviceType,
                                 List<Device> devices,
                                 List<AlarmCondition> alarmConditions,
                                 List<Monitor> previousMonitors,
                                 List<NotificationCondition> notificationConditions,
-                                List<RecordNotification> notificationRecords)
+                                List<Notification> notificationRecords)
             : base(detector, originRecord, deviceType)
         {
             _devices = devices;
@@ -52,9 +52,9 @@ namespace BusinessLogicTests.Fake
             return _notificationConditions.Find(x => x.DEVICE_SN == deviceSn);
         }
 
-        protected override RecordNotification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
+        protected override Notification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
         {
-            IEnumerable<RecordNotification> records;
+            IEnumerable<Notification> records;
             var level = (IntervalLevel)Enum.Parse(typeof(IntervalLevel), condition.INTERVAL_LEVEL);
 
             switch (level)
@@ -78,7 +78,7 @@ namespace BusinessLogicTests.Fake
                     throw new Exception($"無 { condition.INTERVAL_LEVEL } 層級定義");
             }
 
-            return records.Count() > 0 ? records.First() : new RecordNotification();
+            return records.Count() > 0 ? records.First() : new Notification();
         }
 
         protected override void Save()

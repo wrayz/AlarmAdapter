@@ -18,7 +18,7 @@ namespace BusinessLogicTests.Steps
         private WorkDirector _workDirector;
         private List<Monitor> _previousMonitors;
         private List<NotificationCondition> _notificationConditions;
-        private List<RecordNotification> _notificationRecords;
+        private List<Notification> _notificationRecords;
 
         [Given(@"設備清單為")]
         public void Given設備清單為(Table table)
@@ -58,7 +58,7 @@ namespace BusinessLogicTests.Steps
         [Given(@"通知記錄為")]
         public void Given通知記錄為(Table table)
         {
-            _notificationRecords = table.CreateSet<RecordNotification>().ToList();
+            _notificationRecords = table.CreateSet<Notification>().ToList();
         }
 
         [Given(@"偵測器""(.*)""")]

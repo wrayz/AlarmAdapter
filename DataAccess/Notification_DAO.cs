@@ -8,16 +8,16 @@ namespace DataAccess
     /// <summary>
     /// 通知記錄資料存取
     /// </summary>
-    public class RecordNotification_DAO : GenericDataAccess<RecordNotification>
+    public class Notification_DAO : GenericDataAccess<Notification>
     {
         /// <summary>
         /// 通知記錄取得
         /// </summary>
         /// <param name="condition">查詢條件</param>
         /// <returns></returns>
-        public RecordNotification GetRecord(RecordNotification condition)
+        public Notification GetRecord(Notification condition)
         {
-            var context = QueryContextFactory.CreateInstance<RecordNotification>();
+            var context = QueryContextFactory.CreateInstance<Notification>();
             var orders = new List<UserOrder>
             {
                 new UserOrder

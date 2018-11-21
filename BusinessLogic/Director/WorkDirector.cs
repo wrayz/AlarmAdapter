@@ -120,10 +120,10 @@ namespace BusinessLogic.Director
         /// <param name="monitor">監控資訊</param>
         /// <param name="condition">通知條件</param>
         /// <returns></returns>
-        protected virtual RecordNotification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
+        protected virtual Notification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
         {
-            var bll = GenericBusinessFactory.CreateInstance<RecordNotification>();
-            return (bll as RecordNotification_BLL).GetRecord(monitor, condition);
+            var bll = GenericBusinessFactory.CreateInstance<Notification>();
+            return (bll as Notification_BLL).GetRecord(monitor, condition);
         }
 
         /// <summary>

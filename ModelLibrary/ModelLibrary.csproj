@@ -76,7 +76,7 @@
     <Compile Include="Enumerate\NotificationType.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="LicenseConfig.cs" />
-    <Compile Include="RecordNotification.cs" />
+    <Compile Include="Notification.cs" />
     <Compile Include="NotificationRecord.cs" />
     <Compile Include="NotificationCondition.cs" />
     <Compile Include="DeviceRecord.cs" />

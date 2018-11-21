@@ -3,9 +3,9 @@
 namespace ModelLibrary
 {
     /// <summary>
-    /// 通知記錄資訊
+    /// 通知資訊
     /// </summary>
-    public class RecordNotification
+    public class Notification
     {
         /// <summary>
         /// 通知編號 (YYYYMMDD + 5S)

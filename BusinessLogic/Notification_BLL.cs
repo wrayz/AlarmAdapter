@@ -8,7 +8,7 @@ namespace BusinessLogic
     /// <summary>
     /// 通知記錄商業邏輯
     /// </summary>
-    public class RecordNotification_BLL : GenericBusinessLogic<RecordNotification>
+    public class Notification_BLL : GenericBusinessLogic<Notification>
     {
         /// <summary>
         /// 通知記錄取得
@@ -16,23 +16,23 @@ namespace BusinessLogic
         /// <param name="monitor">監控資訊</param>
         /// <param name="notificationCondition">通知條件</param>
         /// <returns></returns>
-        internal RecordNotification GetRecord(Monitor monitor, NotificationCondition notificationCondition)
+        internal Notification GetRecord(Monitor monitor, NotificationCondition notificationCondition)
         {
             if (notificationCondition.INTERVAL_TIME == 0)
-                return new RecordNotification();
+                return new Notification();
 
-            RecordNotification condition;
+            Notification condition;
 
             var level = (IntervalLevel)Enum.Parse(typeof(IntervalLevel), notificationCondition.INTERVAL_LEVEL);
 
             switch (level)
             {
                 case IntervalLevel.Device:
-                    condition = new RecordNotification { DEVICE_SN = monitor.DEVICE_SN };
+                    condition = new Notification { DEVICE_SN = monitor.DEVICE_SN };
                     break;
 
                 case IntervalLevel.MonitorTarget:
-                    condition = new RecordNotification
+                    condition = new Notification
                     {
                         DEVICE_SN = monitor.DEVICE_SN,
                         TARGET_NAME = monitor.TARGET_NAME
@@ -40,7 +40,7 @@ namespace BusinessLogic
                     break;
 
                 case IntervalLevel.TargetMessage:
-                    condition = new RecordNotification
+                    condition = new Notification
                     {
                         DEVICE_SN = monitor.DEVICE_SN,
                         TARGET_NAME = monitor.TARGET_NAME,
@@ -52,7 +52,7 @@ namespace BusinessLogic
                     throw new Exception("錯誤的間隔層級");
             }
 
-            return (_dao as RecordNotification_DAO).GetRecord(condition);
+            return (_dao as Notification_DAO).GetRecord(condition);
         }
     }
 }
