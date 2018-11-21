@@ -22,7 +22,7 @@ namespace DataAccess
             {
                 new UserOrder
                 {
-                    PropertyName = "NOTIFICATION_TIME",
+                    PropertyName = "NOTIFICATION_SN",
                     Type = OrderType.DESC
                 }
             };

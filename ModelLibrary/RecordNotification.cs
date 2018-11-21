@@ -8,7 +8,12 @@ namespace ModelLibrary
     public class RecordNotification
     {
         /// <summary>
-        /// 記錄編號
+        /// 通知編號 (YYYYMMDD + 5S)
+        /// </summary>
+        public string NOTIFICATION_SN { get; set; }
+
+        /// <summary>
+        /// 記錄編號 (YYYYMMDD + 5S)
         /// </summary>
         public string RECORD_SN { get; set; }
 
