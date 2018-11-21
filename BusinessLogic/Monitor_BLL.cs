@@ -1,7 +1,7 @@
-﻿using System;
-using DataAccess;
+﻿using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Generic;
+using System.Collections.Generic;
 
 namespace BusinessLogic
 {
@@ -51,6 +51,15 @@ namespace BusinessLogic
             };
 
             return _dao.Get(option, condition).RECORD_SN;
+        }
+
+        /// <summary>
+        /// 監控資訊清單儲存
+        /// </summary>
+        /// <param name="data">清單資料</param>
+        internal void SaveMonitors(List<Monitor> data)
+        {
+            _dao.ModifyList("Save", data);
         }
     }
 }
