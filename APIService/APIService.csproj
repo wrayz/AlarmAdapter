@@ -137,12 +137,12 @@
     <Compile Include="NotificationPusher\DesktopPusher.cs" />
     <Compile Include="NotificationPusher\MobilePusher.cs" />
     <Compile Include="NotificationPusher\IPusher.cs" />
-    <Compile Include="Strategy\MonitorPushStrategy.cs" />
-    <Compile Include="Strategy\PushStrategy.cs" />
+    <Compile Include="PushStrategy\MonitorPushStrategy.cs" />
+    <Compile Include="PushStrategy\GenericPushStrategy.cs" />
     <Compile Include="NotificationPusher\PusherFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PushService.cs" />
-    <Compile Include="Strategy\RepairPushStrategy.cs" />
+    <Compile Include="PushStrategy\RepairPushStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="File.config">
