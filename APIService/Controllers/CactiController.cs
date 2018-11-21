@@ -1,8 +1,7 @@
-﻿using APIService.NotificationDirector;
-using APIService.NotificationStrategy;
-using APIService.PushStrategy;
+﻿using APIService.PushStrategy;
 using BusinessLogic.Director;
 using BusinessLogic.License;
+using BusinessLogic.NotificationStrategy;
 using ModelLibrary.Enumerate;
 using NLog;
 using System;
@@ -35,7 +34,7 @@ namespace APIService.Controllers
                 workDirector.Execute();
 
                 var strategy = new GenericNotifier();
-                var notificationDirector = new NotificationStationDirector(strategy);
+                var notificationDirector = new NotificationDirector(strategy);
                 notificationDirector.Execute();
 
                 var pusher = new MonitorPushStrategy(notificationDirector.Monitors);

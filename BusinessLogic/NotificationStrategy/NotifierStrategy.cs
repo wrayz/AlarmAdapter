@@ -3,12 +3,12 @@ using ModelLibrary;
 using ModelLibrary.Enumerate;
 using System;
 
-namespace APIService.NotificationStrategy
+namespace BusinessLogic.NotificationStrategy
 {
     /// <summary>
     /// 通知器策略
     /// </summary>
-    internal abstract class NotifierStrategy
+    public abstract class NotifierStrategy
     {
         /// <summary>
         /// 是否通知

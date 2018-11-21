@@ -1,14 +1,13 @@
-﻿using APIService.NotificationStrategy;
-using BusinessLogic;
+﻿using BusinessLogic.NotificationStrategy;
 using ModelLibrary;
 using System.Collections.Generic;
 
-namespace APIService.NotificationDirector
+namespace BusinessLogic.Director
 {
     /// <summary>
-    /// 通知檢查管理站
+    /// 通知管理站
     /// </summary>
-    internal class NotificationStationDirector
+    public class NotificationDirector
     {
         private readonly NotifierStrategy _notifierStrategy;
 
@@ -18,7 +17,7 @@ namespace APIService.NotificationDirector
         /// 建構式
         /// </summary>
         /// <param name="strategy">通知策略</param>
-        public NotificationStationDirector(NotifierStrategy strategy)
+        public NotificationDirector(NotifierStrategy strategy)
         {
             _notifierStrategy = strategy;
             Monitors = GetMonitors();

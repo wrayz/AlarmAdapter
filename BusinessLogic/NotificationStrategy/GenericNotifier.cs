@@ -1,11 +1,11 @@
 ﻿using ModelLibrary;
 
-namespace APIService.NotificationStrategy
+namespace BusinessLogic.NotificationStrategy
 {
     /// <summary>
     /// 一般通知站
     /// </summary>
-    internal class GenericNotifier : NotifierStrategy
+    public class GenericNotifier : NotifierStrategy
     {
         public override string IsNotification(NotificationCondition condition, Monitor monitor, Monitor previousMonitor, Notification notification)
         {
