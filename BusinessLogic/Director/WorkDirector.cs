@@ -131,7 +131,8 @@ namespace BusinessLogic.Director
         /// </summary>
         protected virtual void Save()
         {
-            throw new NotImplementedException();
+            var bll = GenericBusinessFactory.CreateInstance<Monitor>();
+            (bll as Monitor_BLL).SaveMonitors(Monitors);
         }
     }
 }
