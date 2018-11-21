@@ -30,5 +30,11 @@ namespace DataAccess
 
             return context.GetEntity();
         }
+
+        public IEnumerable<Monitor> GetNotificationMonitors()
+        {
+            var context = QueryContextFactory.CreateInstance<Monitor>();
+            return context.GetEntitiesByProcedure("Query").Item1;
+        }
     }
 }

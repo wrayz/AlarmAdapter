@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.RecordAlarm;
-using BusinessLogic.RecordNotifier;
 using BusinessLogic.RecordParser;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
@@ -19,12 +18,11 @@ namespace BusinessLogic.Director
 
         private IParser _parser;
         private RecordAlarm.Alarm _alarmer;
-        private INotifier _notifier;
 
         /// <summary>
         /// 設備監控資訊清單
         /// </summary>
-        public List<Monitor> Monitors { get; private set; }
+        internal List<Monitor> Monitors { get; private set; }
 
         /// <summary>
         /// 建構式
@@ -56,15 +54,6 @@ namespace BusinessLogic.Director
                 monitor.DEVICE_SN = device.DEVICE_SN;
 
                 monitor.IS_EXCEPTION = _alarmer.IsException(monitor, device.ALARM_CONDITIONS);
-
-                var condition = GetNotificationCondition(device.DEVICE_SN);
-
-                //TODO: 使用靜態 Dictionary 將前次監控資訊存在 Memory（重開機要在初始化進資料庫）
-                var previousMonitor = GetPreviousMonitor(monitor);
-                var record = GetNotificationRecord(monitor, condition);
-
-                //TODO: 之後通知層獨立於 WorkDirector
-                monitor.IS_NOTIFICATION = _notifier.IsNotification(condition, monitor, previousMonitor, record);
             });
 
             Save();
@@ -77,7 +66,6 @@ namespace BusinessLogic.Director
         {
             _parser = ParserFactory.CreateInstance(_detector);
             _alarmer = AlarmFactory.CreateInstance(_detector);
-            _notifier = new Notifier();
         }
 
         /// <summary>
@@ -90,40 +78,6 @@ namespace BusinessLogic.Director
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
             return (bll as Device_BLL).GetDevice(deviceId, deviceType);
-        }
-
-        /// <summary>
-        /// 前次監控訊息取得
-        /// </summary>
-        /// <param name="monitor">當前監控訊息</param>
-        /// <returns></returns>
-        protected virtual Monitor GetPreviousMonitor(Monitor monitor)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<Monitor>();
-            return (bll as Monitor_BLL).GetPreviousMonitor(monitor);
-        }
-
-        /// <summary>
-        /// 通知條件取得
-        /// </summary>
-        /// <param name="deviceSn">設備編號</param>
-        /// <returns></returns>
-        protected virtual NotificationCondition GetNotificationCondition(string deviceSn)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<NotificationCondition>();
-            return (bll as NotificationCondition_BLL).GetNotificationCondition(deviceSn);
-        }
-
-        /// <summary>
-        /// 通知記錄取得
-        /// </summary>
-        /// <param name="monitor">監控資訊</param>
-        /// <param name="condition">通知條件</param>
-        /// <returns></returns>
-        protected virtual Notification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<Notification>();
-            return (bll as Notification_BLL).GetRecord(monitor, condition);
         }
 
         /// <summary>

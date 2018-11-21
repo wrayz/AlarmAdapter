@@ -6,7 +6,7 @@ namespace BusinessLogic.RecordNotifier
     /// <summary>
     /// 狀態通知器產生工程
     /// </summary>
-    internal static class StatusNotifierFactory
+    public static class StatusNotifierFactory
     {
         /// <summary>
         /// 狀態通知器實體建立

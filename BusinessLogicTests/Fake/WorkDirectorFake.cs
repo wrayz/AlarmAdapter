@@ -40,19 +40,19 @@ namespace BusinessLogicTests.Fake
             return device;
         }
 
-        protected override Monitor GetPreviousMonitor(Monitor monitor)
+        protected Monitor GetPreviousMonitor(Monitor monitor)
         {
             return _previousMonitors.Where(x => x.DEVICE_SN == monitor.DEVICE_SN)
                                     .OrderByDescending(y => y.RECORD_SN)
                                     .First();
         }
 
-        protected override NotificationCondition GetNotificationCondition(string deviceSn)
+        protected NotificationCondition GetNotificationCondition(string deviceSn)
         {
             return _notificationConditions.Find(x => x.DEVICE_SN == deviceSn);
         }
 
-        protected override Notification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
+        protected Notification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
         {
             IEnumerable<Notification> records;
             var level = (IntervalLevel)Enum.Parse(typeof(IntervalLevel), condition.INTERVAL_LEVEL);

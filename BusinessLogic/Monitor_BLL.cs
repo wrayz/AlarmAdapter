@@ -32,7 +32,7 @@ namespace BusinessLogic
         /// 待檢查通知之監控清單
         /// </summary>
         /// <returns></returns>
-        internal List<Monitor> GetNotificationMonitors()
+        public List<Monitor> GetNotificationMonitors()
         {
             return (_dao as Monitor_DAO).GetNotificationMonitors().ToList();
         }
@@ -71,6 +71,15 @@ namespace BusinessLogic
         internal void SaveMonitors(List<Monitor> data)
         {
             _dao.ModifyList("Save", data);
+        }
+
+        /// <summary>
+        /// 監控資訊通知結果儲存
+        /// </summary>
+        /// <param name="monitor"></param>
+        public void SaveMonitorNotification(Monitor monitor)
+        {
+            throw new NotImplementedException();
         }
     }
 }

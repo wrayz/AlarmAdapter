@@ -137,6 +137,9 @@
     <Compile Include="NotificationPusher\DesktopPusher.cs" />
     <Compile Include="NotificationPusher\MobilePusher.cs" />
     <Compile Include="NotificationPusher\IPusher.cs" />
+    <Compile Include="NotificationDirector\NotificationStationDirector.cs" />
+    <Compile Include="NotificationStrategy\GenericNotifier.cs" />
+    <Compile Include="NotificationStrategy\NotifierStrategy.cs" />
     <Compile Include="PushStrategy\MonitorPushStrategy.cs" />
     <Compile Include="PushStrategy\GenericPushStrategy.cs" />
     <Compile Include="NotificationPusher\PusherFactory.cs" />

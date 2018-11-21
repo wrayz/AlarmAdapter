@@ -16,7 +16,7 @@ namespace BusinessLogic
         /// <param name="monitor">監控資訊</param>
         /// <param name="notificationCondition">通知條件</param>
         /// <returns></returns>
-        internal Notification GetRecord(Monitor monitor, NotificationCondition notificationCondition)
+        public Notification GetRecord(Monitor monitor, NotificationCondition notificationCondition)
         {
             if (notificationCondition.INTERVAL_TIME == 0)
                 return new Notification();
