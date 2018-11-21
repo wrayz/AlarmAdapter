@@ -17,23 +17,25 @@ namespace BusinessLogic.RecordAlarm
         /// <returns></returns>
         public string IsException(Monitor monitor, List<AlarmCondition> alarmConditions)
         {
-            if (alarmConditions.Count == 0)
-                return DefaultCheck(monitor) ? "Y" : "N";
+            AlarmCondition condition;
 
-            var condition = alarmConditions.Find(x => x.DEVICE_SN == monitor.DEVICE_SN && x.TARGET_NAME == monitor.TARGET_NAME);
+            if (alarmConditions.Count == 0)
+                condition = GetDefaultCondition(monitor);
+
+            condition = alarmConditions.Find(x => x.DEVICE_SN == monitor.DEVICE_SN && x.TARGET_NAME == monitor.TARGET_NAME);
 
             if (condition == null)
-                return DefaultCheck(monitor) ? "Y" : "N";
+                condition = GetDefaultCondition(monitor);
 
             return Check(condition.TARGET_VALUE, monitor.TARGET_VALUE) ? "Y" : "N";
         }
 
         /// <summary>
-        /// 告警條件檢查
+        /// 預設告警條件取得
         /// </summary>
         /// <param name="monitor">監控資訊</param>
         /// <returns></returns>
-        protected abstract bool DefaultCheck(Monitor monitor);
+        protected abstract AlarmCondition GetDefaultCondition(Monitor monitor);
         
         //TODO: DefaultCheck，待前端做出監控項目新增後再拿掉。
 

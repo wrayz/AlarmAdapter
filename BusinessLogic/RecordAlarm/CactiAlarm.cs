@@ -20,11 +20,11 @@ namespace BusinessLogic.RecordAlarm
         }
 
         /// <summary>
-        /// 告警條件預設檢查
+        /// 預設告警條件取得
         /// </summary>
         /// <param name="monitor">監控訊息</param>
         /// <returns></returns>
-        protected override bool DefaultCheck(Monitor monitor)
+        protected override AlarmCondition GetDefaultCondition(Monitor monitor)
         {
             var value = monitor.TARGET_NAME == "Ping" ? "DOWN" : "ALERT";
             var condition = new AlarmCondition
@@ -37,7 +37,7 @@ namespace BusinessLogic.RecordAlarm
 
             Save(condition);
 
-            return condition.TARGET_VALUE == monitor.TARGET_VALUE;
+            return condition;
         }
 
         /// <summary>
