@@ -56,7 +56,7 @@ namespace BusinessLogic.Director
                 monitor.IS_EXCEPTION = _alarmer.IsException(monitor, device.ALARM_CONDITIONS);
             });
 
-            Save();
+            SaveList();
         }
 
         /// <summary>
@@ -81,12 +81,12 @@ namespace BusinessLogic.Director
         }
 
         /// <summary>
-        /// 儲存
+        /// 多筆儲存
         /// </summary>
-        protected virtual void Save()
+        protected virtual void SaveList()
         {
             var bll = GenericBusinessFactory.CreateInstance<Monitor>();
-            (bll as Monitor_BLL).SaveMonitors(Monitors);
+            (bll as Monitor_BLL).SaveList(Monitors);
         }
     }
 }
