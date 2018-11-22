@@ -74,6 +74,6 @@ namespace ModelLibrary
         /// <summary>
         /// 設備名稱
         /// </summary>
-        public string DeviceName { get; set; }
+        public string DEVICE_NAME { get; set; }
     }
 }

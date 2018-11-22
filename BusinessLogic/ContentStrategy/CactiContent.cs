@@ -82,7 +82,7 @@ namespace BusinessLogic.ContentStrategy
         {
             return new List<Field>
             {
-                new Field("設備名稱", _monitor.DeviceName, true),
+                new Field("設備名稱", _monitor.DEVICE_NAME, true),
                 new Field("設備位址", _monitor.DEVICE_ID, true),
                 new Field("監控項目", _monitor.TARGET_NAME, true),
                 new Field("發生時間", _monitor.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
