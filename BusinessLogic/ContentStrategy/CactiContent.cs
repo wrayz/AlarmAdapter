@@ -29,7 +29,7 @@ namespace BusinessLogic.ContentStrategy
         {
             DEVICE_SN = _monitor.DEVICE_SN;
 
-            RECORD_SN = GetLogSn();
+            RECORD_SN = _monitor.RECORD_SN;
 
             BUTTON_STATUS = GetButtonStatus();
 
@@ -42,14 +42,6 @@ namespace BusinessLogic.ContentStrategy
             GROUP_LIST = GetGroups();
 
             FIELD_LIST = GetFields();
-        }
-
-        private string GetLogSn()
-        {
-            //TODO: 未來資料庫有存原始資料，就可撤掉此方法
-
-            var bll = GenericBusinessFactory.CreateInstance<Monitor>();
-            return (bll as Monitor_BLL).GetRecordSn(_monitor);
         }
 
         private string GetButtonStatus()
