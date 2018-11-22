@@ -11,7 +11,7 @@ namespace BusinessLogic.Director
     {
         private readonly NotifierStrategy _notifierStrategy;
 
-        public List<Monitor> Monitors { get; private set; }
+        protected List<Monitor> Monitors { get; private set; }
 
         /// <summary>
         /// 建構式
@@ -20,6 +20,7 @@ namespace BusinessLogic.Director
         public NotificationDirector(NotifierStrategy strategy)
         {
             _notifierStrategy = strategy;
+
             Monitors = GetMonitors();
         }
 

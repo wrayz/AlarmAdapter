@@ -19,13 +19,7 @@ namespace BusinessLogic
         /// <returns></returns>
         public Monitor GetPreviousMonitor(Monitor monitor)
         {
-            var condition = new Monitor
-            {
-                DEVICE_SN = monitor.DEVICE_SN,
-                TARGET_NAME = monitor.TARGET_NAME
-            };
-
-            return (_dao as Monitor_DAO).GetPreviousMonitor(condition);
+            return (_dao as Monitor_DAO).GetPreviousMonitor(monitor);
         }
 
         /// <summary>
