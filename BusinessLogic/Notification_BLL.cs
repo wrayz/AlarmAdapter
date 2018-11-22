@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using BusinessLogic.ContentStrategy;
+using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
@@ -56,6 +57,23 @@ namespace BusinessLogic
             }
 
             return (_dao as Notification_DAO).GetRecord(condition);
+        }
+
+        /// <summary>
+        /// 通知資訊更新
+        /// </summary>
+        /// <param name="content">通知內容</param>
+        public void Update(GenericContentStrategy content)
+        {
+            var data = new Notification
+            {
+                NOTIFICATION_SN = content.NOTIFICATION_SN,
+                RECORD_SN = content.RECORD_SN,
+                IS_PENDING = "N",
+                NOTIFICATION_TIME = DateTime.Now
+            };
+
+            _dao.Modify("Update", data);
         }
 
         /// <summary>

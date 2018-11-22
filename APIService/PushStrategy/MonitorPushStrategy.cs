@@ -1,6 +1,7 @@
 ﻿using BusinessLogic;
 using BusinessLogic.ContentStrategy;
 using ModelLibrary;
+using System;
 using System.Collections.Generic;
 
 namespace APIService.PushStrategy
@@ -31,8 +32,24 @@ namespace APIService.PushStrategy
 
             _contents.ForEach(content =>
             {
-                PushDestination(content);
+                //PushDestination(content);
+
+                Save(content);
             });
+        }
+
+        /// <summary>
+        /// 通知內容初始化
+        /// </summary>
+        protected override void InitContent()
+        {
+            _contents = new List<GenericContentStrategy>();
+
+            _notifications.ForEach(notification =>
+             {
+                 GenericContentStrategy content = new CactiContent(notification);
+                 _contents.Add(content);
+             });
         }
 
         /// <summary>
@@ -46,17 +63,13 @@ namespace APIService.PushStrategy
         }
 
         /// <summary>
-        /// 通知內容初始化
+        /// 通知儲存
         /// </summary>
-        protected override void InitContent()
+        /// <param name="content">通知內容</param>
+        private void Save(GenericContentStrategy content)
         {
-            _contents = new List<GenericContentStrategy>();
-
-            _notifications.ForEach(notification =>
-             {
-                 GenericContentStrategy content = new CactiContent(notification.MONITOR);
-                 _contents.Add(content);
-             });
+            var bll = GenericBusinessFactory.CreateInstance<Notification>();
+            (bll as Notification_BLL).Update(content);
         }
     }
 }

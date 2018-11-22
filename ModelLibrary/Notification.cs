@@ -46,5 +46,10 @@ namespace ModelLibrary
         /// 監控資訊
         /// </summary>
         public Monitor MONITOR { get; set; }
+
+        /// <summary>
+        /// 設備資訊
+        /// </summary>
+        public Device DEVICE { get; set; }
     }
 }

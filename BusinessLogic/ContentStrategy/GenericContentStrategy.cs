@@ -75,5 +75,10 @@ namespace BusinessLogic.ContentStrategy
         /// 監控項目訊息
         /// </summary>
         public string TARGET_MESSAGE { get; set; }
+
+        /// <summary>
+        /// 通知編號
+        /// </summary>
+        public string NOTIFICATION_SN { get; internal set; }
     }
 }

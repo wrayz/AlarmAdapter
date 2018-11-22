@@ -8,15 +8,15 @@ namespace BusinessLogic.ContentStrategy
     /// </summary>
     public class CactiContent : GenericContentStrategy
     {
-        private readonly Monitor _monitor;
+        private readonly Notification _notification;
 
         /// <summary>
         /// 建構式
         /// </summary>
-        /// <param name="monitor">監控資訊</param>
-        public CactiContent(Monitor monitor)
+        /// <param name="notification">通知資訊</param>
+        public CactiContent(Notification notification)
         {
-            _monitor = monitor;
+            _notification = notification;
 
             Initialize();
         }
@@ -24,12 +24,13 @@ namespace BusinessLogic.ContentStrategy
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="type">事件類型</param>
         protected override void Initialize()
         {
-            DEVICE_SN = _monitor.DEVICE_SN;
+            NOTIFICATION_SN = _notification.NOTIFICATION_SN;
 
-            RECORD_SN = _monitor.RECORD_SN;
+            DEVICE_SN = _notification.DEVICE_SN;
+
+            RECORD_SN = _notification.RECORD_SN;
 
             BUTTON_STATUS = GetButtonStatus();
 
@@ -46,39 +47,40 @@ namespace BusinessLogic.ContentStrategy
 
         private string GetButtonStatus()
         {
-            return _monitor.IS_EXCEPTION == "Y" ? "E" : "N";
+            return _notification.MONITOR.IS_EXCEPTION == "Y" ? "E" : "N";
         }
 
         private string GetTitle()
         {
-            return _monitor.IS_EXCEPTION == "Y" ? "設備異常資訊" : "異常設備恢復資訊";
+            return _notification.MONITOR.IS_EXCEPTION == "Y" ? "設備異常資訊" : "異常設備恢復資訊";
         }
 
         private string GetColor()
         {
-            return _monitor.IS_EXCEPTION == "Y" ? "danger" : "good";
+            return _notification.MONITOR.IS_EXCEPTION == "Y" ? "danger" : "good";
         }
 
         private string GetLogType()
         {
-            return _monitor.IS_EXCEPTION == "N" || _monitor.TARGET_NAME == "Ping" ? "N" : "S";
+            return _notification.MONITOR.IS_EXCEPTION == "N" || 
+                   _notification.TARGET_NAME == "Ping" ? "N" : "S";
         }
 
         private List<DeviceGroup> GetGroups()
         {
             var bll = GenericBusinessFactory.CreateInstance<DeviceGroup>();
-            return (bll as DeviceGroup_BLL).GetGroups(_monitor.DEVICE_SN);
+            return (bll as DeviceGroup_BLL).GetGroups(_notification.DEVICE_SN);
         }
 
         private List<Field> GetFields()
         {
             return new List<Field>
             {
-                new Field("設備名稱", _monitor.DEVICE_NAME, true),
-                new Field("設備位址", _monitor.DEVICE_ID, true),
-                new Field("監控項目", _monitor.TARGET_NAME, true),
-                new Field("發生時間", _monitor.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
-                new Field("監控資訊", _monitor.TARGET_MESSAGE, true)
+                new Field("設備名稱", _notification.DEVICE.DEVICE_NAME, true),
+                new Field("設備位址", _notification.DEVICE.DEVICE_ID, true),
+                new Field("監控項目", _notification.TARGET_NAME, true),
+                new Field("發生時間", _notification.MONITOR.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
+                new Field("監控資訊", _notification.TARGET_MESSAGE, true)
             };
         }
     }

@@ -50,7 +50,6 @@ namespace BusinessLogic.Director
             Monitors.ForEach(monitor =>
             {
                 var device = GetDevice(monitor.DEVICE_ID, _deviceType);
-                monitor.DEVICE_NAME = device.DEVICE_NAME;
                 monitor.DEVICE_SN = device.DEVICE_SN;
 
                 monitor.IS_EXCEPTION = _alarmer.IsException(monitor, device.ALARM_CONDITIONS);
