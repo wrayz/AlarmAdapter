@@ -37,7 +37,7 @@ namespace APIService.Controllers
                 var notificationDirector = new NotificationDirector(strategy);
                 notificationDirector.Execute();
 
-                var pusher = new MonitorPushStrategy(notificationDirector.Monitors);
+                var pusher = new MonitorPushStrategy();
                 pusher.Execute();
 
                 return Ok();

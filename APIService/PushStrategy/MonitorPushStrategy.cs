@@ -1,7 +1,7 @@
-﻿using BusinessLogic.ContentStrategy;
+﻿using BusinessLogic;
+using BusinessLogic.ContentStrategy;
 using ModelLibrary;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace APIService.PushStrategy
 {
@@ -10,16 +10,16 @@ namespace APIService.PushStrategy
     /// </summary>
     internal class MonitorPushStrategy : GenericPushStrategy
     {
-        private readonly List<Monitor> _monitors;
+        private readonly List<Notification> _notifications;
         private List<GenericContentStrategy> _contents;
 
         /// <summary>
         /// 建構式
         /// </summary>
         /// <param name="monitors">監控資訊清單</param>
-        public MonitorPushStrategy(List<Monitor> monitors)
+        public MonitorPushStrategy()
         {
-            _monitors = monitors;
+            _notifications = GetNotifications();
         }
 
         /// <summary>
@@ -33,8 +33,16 @@ namespace APIService.PushStrategy
             {
                 PushDestination(content);
             });
+        }
 
-            Save();
+        /// <summary>
+        /// 待通知清單取得
+        /// </summary>
+        /// <returns></returns>
+        private List<Notification> GetNotifications()
+        {
+            var bll = GenericBusinessFactory.CreateInstance<Notification>();
+            return (bll as Notification_BLL).GetPendingNotifications();
         }
 
         /// <summary>
@@ -44,24 +52,11 @@ namespace APIService.PushStrategy
         {
             _contents = new List<GenericContentStrategy>();
 
-            _monitors.Where(x => x.IS_NOTIFICATION == "Y")
-                     .ToList()
-                     .ForEach(monitor =>
-                     {
-                         GenericContentStrategy content = new CactiContent(monitor);
-                         _contents.Add(content);
-                     });
-        }
-
-        /// <summary>
-        /// 通知記錄儲存
-        /// </summary>
-        private void Save()
-        {
-            //TODO: 通知層獨立後，方法改用更新通知記錄
-
-            //var bll = GenericBusinessFactory.CreateInstance<Notification>();
-            //(bll as Notification_BLL).SaveMonitorNotifications(_monitors);
+            _notifications.ForEach(notification =>
+             {
+                 GenericContentStrategy content = new CactiContent(notification.MONITOR);
+                 _contents.Add(content);
+             });
         }
     }
 }

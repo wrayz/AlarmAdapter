@@ -1,7 +1,10 @@
 ﻿using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
+using ModelLibrary.Generic;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic
 {
@@ -53,6 +56,25 @@ namespace BusinessLogic
             }
 
             return (_dao as Notification_DAO).GetRecord(condition);
+        }
+
+        /// <summary>
+        /// 待通知清單取得
+        /// </summary>
+        /// <returns></returns>
+        public List<Notification> GetPendingNotifications()
+        {
+            var query = new QueryOption
+            {
+                Relation = true
+            };
+
+            var condition = new Notification
+            {
+                IS_PENDING = "Y"
+            };
+
+            return _dao.GetList(query, condition).ToList();
         }
     }
 }

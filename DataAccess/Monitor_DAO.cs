@@ -50,6 +50,10 @@ namespace DataAccess
             return context.GetEntity();
         }
 
+        /// <summary>
+        /// 待通知檢查監控資訊清單取得
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Monitor> GetNotificationMonitors()
         {
             var context = QueryContextFactory.CreateInstance<Monitor>();

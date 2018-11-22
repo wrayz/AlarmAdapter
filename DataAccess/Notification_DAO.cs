@@ -27,7 +27,9 @@ namespace DataAccess
                 }
             };
 
-            context.Main.Query(condition).OrderBy(orders);
+            context.Main.Query(condition)
+                        .OrderBy(orders)
+                        .Pager(1, 1);
 
             return context.GetEntity();
         }

@@ -30,11 +30,21 @@ namespace ModelLibrary
         /// <summary>
         /// 監控項目訊息
         /// </summary>
-        public string TARGET_MESSAGE{ get; set; }
+        public string TARGET_MESSAGE { get; set; }
+
+        /// <summary>
+        /// 是否等待中（Y - 是, N - 否）
+        /// </summary>
+        public string IS_PENDING { get; set; }
 
         /// <summary>
         /// 通知時間
         /// </summary>
         public DateTime? NOTIFICATION_TIME { get; set; }
+
+        /// <summary>
+        /// 監控資訊
+        /// </summary>
+        public Monitor MONITOR { get; set; }
     }
 }
