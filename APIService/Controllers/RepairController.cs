@@ -18,14 +18,14 @@ namespace APIService.Controllers
             var name = "Repair";
             var logger = NLog.LogManager.GetLogger(name);
 
+            repair.REGISTER_TIME = DateTime.Now;
+
             try
             {
                 var license = new LicenseBusinessLogic();
                 license.Verify(DateTime.Now);
 
-                var login = GenericAPIService.GetUserInfo();
-                var bll = GenericBusinessFactory.CreateInstance<Repair>();
-                (bll as Repair_BLL).Save(repair, login);
+                Save(repair);
 
                 GenericPushStrategy pusher = new RepairPushStrategy(repair);
                 pusher.Execute();
@@ -37,6 +37,17 @@ namespace APIService.Controllers
                 logger.Error(ex);
                 return Content(HttpStatusCode.InternalServerError, ex);
             }
+        }
+
+        /// <summary>
+        /// 儲存
+        /// </summary>
+        /// <param name="repair">維修資訊</param>
+        private void Save(Repair repair)
+        {
+            var login = GenericAPIService.GetUserInfo();
+            var bll = GenericBusinessFactory.CreateInstance<Repair>();
+            (bll as Repair_BLL).Save(repair, login);
         }
     }
 }

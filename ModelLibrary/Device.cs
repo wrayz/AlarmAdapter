@@ -56,5 +56,10 @@ namespace ModelLibrary
         /// 通知記錄
         /// </summary>
         public List<NotificationRecord> NOTIFICATION_RECORDS { get; set; }
+
+        /// <summary>
+        /// 設備群組清單
+        /// </summary>
+        public List<DeviceGroup> GROUPS { get; set; }
     }
 }

@@ -41,24 +41,17 @@ namespace BusinessLogic
         }
 
         /// <summary>
-        /// 設備名稱和識別碼取得
+        /// 設備資訊取得
         /// </summary>
         /// <param name="deviceSn">設備編號</param>
         /// <returns></returns>
-        public Device GetNameAndId(string deviceSn)
+        public Device GetDevice(string deviceSn)
         {
             var option = new QueryOption
             {
-                Plan = new QueryPlan
-                {
-                    Select = "Info"
-                }
+                Plan = new QueryPlan { Join = "Groups" }
             };
-
-            var condition = new Device
-            {
-                DEVICE_SN = deviceSn
-            };
+            var condition = new Device { DEVICE_SN = deviceSn };
 
             return _dao.Get(option, condition);
         }
@@ -80,21 +73,6 @@ namespace BusinessLogic
 
             if (count == 0)
                 throw new Exception($"設備編號 { deviceSn } 並非異常狀態");
-        }
-
-        /// <summary>
-        /// 更新設備狀態為維修狀態
-        /// </summary>
-        /// <param name="deviceSn">設備編號</param>
-        internal void UpdateRepairStatus(string deviceSn)
-        {
-            var data = new Device
-            {
-                DEVICE_SN = deviceSn,
-                DEVICE_STATUS = "R"
-            };
-
-            _dao.Modify("Update", data);
         }
     }
 }

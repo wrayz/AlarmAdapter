@@ -9,7 +9,8 @@ namespace BusinessLogic.ContentStrategy
     /// </summary>
     public class RepairContent : GenericContentStrategy
     {
-        private Repair _repair;
+        private readonly Repair _repair;
+        private Device _device;
 
         /// <summary>
         /// 建構式
@@ -27,6 +28,8 @@ namespace BusinessLogic.ContentStrategy
         /// </summary>
         protected override void Initialize()
         {
+            _device = GetDevice();
+
             DEVICE_SN = _repair.DEVICE_SN;
 
             RECORD_SN = _repair.RECORD_SN;
@@ -39,26 +42,19 @@ namespace BusinessLogic.ContentStrategy
 
             LOG_TYPE = "R";
 
-            GROUP_LIST = GetGroups();
+            GROUP_LIST = _device.GROUPS;
 
             FIELD_LIST = GetFields();
         }
 
-        private List<DeviceGroup> GetGroups()
-        {
-            var bll = GenericBusinessFactory.CreateInstance<DeviceGroup>();
-            return (bll as DeviceGroup_BLL).GetGroups(_repair.DEVICE_SN);
-        }
-
         private List<Field> GetFields()
         {
-            var device = GetDevice();
 
             return new List<Field>
             {
-                new Field("設備名稱", device.DEVICE_NAME, true),
-                new Field("設備識別碼", device.DEVICE_ID, true),
-                new Field("登記時間", DateTime.Now.ToString(@"MM\/dd\/yyyy HH:mm"), true),
+                new Field("設備名稱", _device.DEVICE_NAME, true),
+                new Field("設備識別碼", _device.DEVICE_ID, true),
+                new Field("登記時間", _repair.REGISTER_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
                 new Field("處理人員", _repair.USERID, true)
             };
         }
@@ -66,7 +62,7 @@ namespace BusinessLogic.ContentStrategy
         private Device GetDevice()
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
-            return (bll as Device_BLL).GetNameAndId(_repair.DEVICE_SN);
+            return (bll as Device_BLL).GetDevice(_repair.DEVICE_SN);
         }
     }
 }

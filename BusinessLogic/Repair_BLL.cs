@@ -18,20 +18,12 @@ namespace BusinessLogic
             CheckDeviceStatus(repair.DEVICE_SN);
 
             Modify("Insert", login, repair, null, false, true);
-
-            ModifyDeviceStatus(repair.DEVICE_SN);
         }
 
         private void CheckDeviceStatus(string deviceSn)
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
             (bll as Device_BLL).CheckStatus(deviceSn);
-        }
-
-        private void ModifyDeviceStatus(string deviceSn)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<Device>();
-            (bll as Device_BLL).UpdateRepairStatus(deviceSn);
         }
     }
 }

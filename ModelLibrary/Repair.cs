@@ -9,6 +9,11 @@ namespace ModelLibrary
     public class Repair
     {
         /// <summary>
+        /// 維修編號
+        /// </summary>
+        public string REPAIR_SN { get; set; }
+
+        /// <summary>
         /// 記錄編號
         /// </summary>
         public string RECORD_SN { get; set; }
@@ -25,8 +30,8 @@ namespace ModelLibrary
         public string USERID { get; set; }
 
         /// <summary>
-        /// 建立時間
+        /// 登記時間
         /// </summary>
-        public DateTime? CREATE_TIME { get; set; }
+        public DateTime? REGISTER_TIME { get; set; }
     }
 }
