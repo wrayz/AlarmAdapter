@@ -81,7 +81,7 @@ namespace BusinessLogicTests.Fake
             return records.Count() > 0 ? records.First() : new Notification();
         }
 
-        protected override void Save()
+        protected override void SaveList()
         {
             //假資料不實作
         }

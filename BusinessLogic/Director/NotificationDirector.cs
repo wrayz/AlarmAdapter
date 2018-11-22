@@ -36,9 +36,9 @@ namespace BusinessLogic.Director
                 var notification = GetNotificationRecord(monitor, condition);
 
                 monitor.IS_NOTIFICATION = _notifierStrategy.IsNotification(condition, monitor, previousMonitor, notification);
-
-                Save(monitor);
             });
+
+            Save();
         }
 
         /// <summary>
@@ -88,10 +88,10 @@ namespace BusinessLogic.Director
         /// <summary>
         /// 儲存
         /// </summary>
-        private void Save(Monitor monitor)
+        private void Save()
         {
             var bll = GenericBusinessFactory.CreateInstance<Monitor>();
-            (bll as Monitor_BLL).SaveMonitorNotification(monitor);
+            (bll as Monitor_BLL).UpdateList(Monitors);
         }
     }
 }

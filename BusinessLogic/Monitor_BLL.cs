@@ -68,18 +68,18 @@ namespace BusinessLogic
         /// 監控資訊清單儲存
         /// </summary>
         /// <param name="data">清單資料</param>
-        internal void SaveMonitors(List<Monitor> data)
+        internal void SaveList(List<Monitor> data)
         {
-            _dao.ModifyList("Save", data);
+            _dao.ModifyList("InsertList", data);
         }
 
         /// <summary>
-        /// 監控資訊通知結果儲存
+        /// 監控資訊清單更新
         /// </summary>
-        /// <param name="monitor"></param>
-        public void SaveMonitorNotification(Monitor monitor)
+        /// <param name="data">清單資料</param>
+        internal void UpdateList(List<Monitor> data)
         {
-            throw new NotImplementedException();
+            _dao.ModifyList("UpdateList", data);
         }
     }
 }
