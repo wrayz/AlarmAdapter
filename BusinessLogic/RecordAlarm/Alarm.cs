@@ -1,5 +1,4 @@
 ﻿using ModelLibrary;
-using System;
 using System.Collections.Generic;
 
 namespace BusinessLogic.RecordAlarm
@@ -21,8 +20,8 @@ namespace BusinessLogic.RecordAlarm
 
             if (alarmConditions.Count == 0)
                 condition = GetDefaultCondition(monitor);
-
-            condition = alarmConditions.Find(x => x.DEVICE_SN == monitor.DEVICE_SN && x.TARGET_NAME == monitor.TARGET_NAME);
+            else
+                condition = alarmConditions.Find(x => x.DEVICE_SN == monitor.DEVICE_SN && x.TARGET_NAME == monitor.TARGET_NAME);
 
             if (condition == null)
                 condition = GetDefaultCondition(monitor);
@@ -36,7 +35,7 @@ namespace BusinessLogic.RecordAlarm
         /// <param name="monitor">監控資訊</param>
         /// <returns></returns>
         protected abstract AlarmCondition GetDefaultCondition(Monitor monitor);
-        
+
         //TODO: DefaultCheck，待前端做出監控項目新增後再拿掉。
 
         /// <summary>
