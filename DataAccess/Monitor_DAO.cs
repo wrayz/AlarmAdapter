@@ -57,7 +57,15 @@ namespace DataAccess
         public IEnumerable<Monitor> GetNotificationMonitors()
         {
             var context = QueryContextFactory.CreateInstance<Monitor>();
-            return context.GetEntitiesByProcedure("Query").Item1;
+            var condition = new QueryCondition
+            {
+                PropertyName = "IS_NOTIFICATION",
+                Type = OperatorType.ISNULL
+            };
+
+            context.Main.Query("IS_NOTIFICATION", OperatorType.ISNULL, new List<object>());
+
+            return context.GetEntities();
         }
     }
 }
