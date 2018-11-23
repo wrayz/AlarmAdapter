@@ -55,24 +55,5 @@ namespace BusinessLogic
 
             return _dao.Get(option, condition);
         }
-
-        /// <summary>
-        /// 檢查狀態
-        /// </summary>
-        /// <param name="deviceSn">設備編號</param>
-        /// <returns></returns>
-        internal void CheckStatus(string deviceSn)
-        {
-            var condition = new Device
-            {
-                DEVICE_SN = deviceSn,
-                DEVICE_STATUS = "E",
-            };
-
-            var count = _dao.GetCount(new QueryOption(), condition);
-
-            if (count == 0)
-                throw new Exception($"設備編號 { deviceSn } 並非異常狀態");
-        }
     }
 }

@@ -13,19 +13,17 @@ namespace APIService.Controllers
     /// </summary>
     public class RepairController : ApiController
     {
-        public IHttpActionResult Post(Repair repair)
+        public IHttpActionResult Post(Repair data)
         {
             var name = "Repair";
             var logger = NLog.LogManager.GetLogger(name);
-
-            repair.REGISTER_TIME = DateTime.Now;
 
             try
             {
                 var license = new LicenseBusinessLogic();
                 license.Verify(DateTime.Now);
 
-                Save(repair);
+                var repair = Save(data);
 
                 GenericPushStrategy pusher = new RepairPushStrategy(repair);
                 pusher.Execute();
@@ -43,11 +41,11 @@ namespace APIService.Controllers
         /// 儲存
         /// </summary>
         /// <param name="repair">維修資訊</param>
-        private void Save(Repair repair)
+        private Repair Save(Repair repair)
         {
             var login = GenericAPIService.GetUserInfo();
             var bll = GenericBusinessFactory.CreateInstance<Repair>();
-            (bll as Repair_BLL).Save(repair, login);
+            return (bll as Repair_BLL).Save(repair, login);
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using ModelLibrary;
+﻿using DataAccess;
+using ModelLibrary;
 using ModelLibrary.Generic;
+using System;
 
 namespace BusinessLogic
 {
@@ -13,17 +15,11 @@ namespace BusinessLogic
         /// </summary>
         /// <param name="repair">維修資訊</param>
         /// <param name="login">使用者登入</param>
-        public void Save(Repair repair, UserLogin login)
+        public Repair Save(Repair repair, UserLogin login)
         {
-            CheckDeviceStatus(repair.DEVICE_SN);
+            repair.USERID = login.USERID;
 
-            Modify("Insert", login, repair, null, false, true);
-        }
-
-        private void CheckDeviceStatus(string deviceSn)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<Device>();
-            (bll as Device_BLL).CheckStatus(deviceSn);
+            return (_dao as Repair_DAO).Save(repair);
         }
     }
 }
