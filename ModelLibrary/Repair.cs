@@ -33,5 +33,10 @@ namespace ModelLibrary
         /// 登記時間
         /// </summary>
         public DateTime? REGISTER_TIME { get; set; }
+		
+		/// <summary>
+        /// 設備資訊
+        /// </summary>
+        public Device DEVICE { get; set; }
     }
 }
