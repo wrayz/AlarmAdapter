@@ -11,8 +11,10 @@ namespace APIService.Controllers
     /// <summary>
     /// 維修登記 API
     /// </summary>
+    [RoutePrefix("api/Devices")]
     public class RepairController : ApiController
     {
+        [Route("")]
         public IHttpActionResult Post(Repair data)
         {
             var name = "Repair";
