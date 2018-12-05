@@ -1,5 +1,7 @@
 ﻿using ModelLibrary;
 using ModelLibrary.Generic;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic.RecordAlarm
 {
@@ -11,12 +13,12 @@ namespace BusinessLogic.RecordAlarm
         /// <summary>
         /// 告警條件檢查
         /// </summary>
-        /// <param name="condition">告警條件</param>
         /// <param name="record">監控訊息條件值</param>
+        /// <param name="conditions">告警條件清單</param>
         /// <returns></returns>
-        protected override bool Check(string condition, string record)
+        protected override bool Check(string record, List<AlarmCondition> conditions)
         {
-            return condition == record;
+            return conditions.First().TARGET_VALUE == record;
         }
 
         /// <summary>
@@ -24,15 +26,25 @@ namespace BusinessLogic.RecordAlarm
         /// </summary>
         /// <param name="monitor">監控訊息</param>
         /// <returns></returns>
-        protected override AlarmCondition GetDefaultCondition(Monitor monitor)
+        protected override Target GetDefaultCondition(Monitor monitor)
         {
             var value = monitor.TARGET_NAME == "Ping" ? "DOWN" : "ALERT";
-            var condition = new AlarmCondition
+            var condition = new Target
             {
                 DEVICE_SN = monitor.DEVICE_SN,
                 TARGET_NAME = monitor.TARGET_NAME,
-                TARGET_VALUE = value,
-                IS_EXCEPTION = "Y"
+                TARGET_STATUS = "0",
+                ALARM_OPERATOR = "=",
+                IS_EXCEPTION = "Y",
+                ALARM_CONDITIONS = new List<AlarmCondition>
+                {
+                    new AlarmCondition
+                    {
+                        DEVICE_SN = monitor.DEVICE_SN,
+                        TARGET_NAME = monitor.TARGET_NAME,
+                        TARGET_VALUE = monitor.TARGET_VALUE
+                    }
+                }
             };
 
             Save(condition);
@@ -44,9 +56,9 @@ namespace BusinessLogic.RecordAlarm
         /// 告警條件儲存
         /// </summary>
         /// <param name="data">實體資料</param>
-        private void Save(AlarmCondition data)
+        private void Save(Target data)
         {
-            var bll = GenericBusinessFactory.CreateInstance<AlarmCondition>();
+            var bll = GenericBusinessFactory.CreateInstance<Target>();
 
             bll.Modify("Insert", new UserLogin(), data);
         }

@@ -84,30 +84,6 @@ namespace APIService.Controllers
         }
 
         /// <summary>
-        /// 告警類型取得
-        /// </summary>
-        /// <param name="action">動作類型</param>
-        /// <returns></returns>
-        private Log GetLogData(Log log)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<AlarmCondition>();
-            var alarmCondition = bll.Get(new QueryOption(), new UserLogin(), new AlarmCondition { TARGET_NAME = log.ACTION_TYPE });
-
-            if (string.IsNullOrEmpty(alarmCondition.TARGET_VALUE))
-                throw new HttpRequestException($"無 { log.ACTION_TYPE } 告警類型");
-
-            var data = new Log
-            {
-                DEVICE_ID = log.DEVICE_ID,
-                ACTION_TYPE = alarmCondition.TARGET_VALUE,
-                LOG_INFO = log.LOG_INFO,
-                LOG_TIME = log.LOG_TIME
-            };
-
-            return data;
-        }
-
-        /// <summary>
         /// 異常處理
         /// </summary>
         /// <param name="data">記錄資料</param>

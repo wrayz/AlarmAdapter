@@ -43,11 +43,6 @@ namespace ModelLibrary
         public string RECORD_STATUS { get; set; }
 
         /// <summary>
-        /// 告警條件清單
-        /// </summary>
-        public List<AlarmCondition> ALARM_CONDITIONS { get; set; }
-
-        /// <summary>
         /// 通知設定
         /// </summary>
         public NotificationCondition NOTIFICATION_CONDITION { get; set; }

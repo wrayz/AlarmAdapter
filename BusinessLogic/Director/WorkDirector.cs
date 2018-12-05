@@ -52,10 +52,23 @@ namespace BusinessLogic.Director
                 var device = GetDevice(monitor.DEVICE_ID, _deviceType);
                 monitor.DEVICE_SN = device.DEVICE_SN;
 
-                monitor.IS_EXCEPTION = _alarmer.IsException(monitor, device.ALARM_CONDITIONS);
+                Target target = GetTarget(device.DEVICE_SN, monitor.TARGET_NAME);
+                monitor.IS_EXCEPTION = _alarmer.IsException(monitor, target);
             });
 
             SaveList();
+        }
+
+        /// <summary>
+        /// 監控項目資訊取得
+        /// </summary>
+        /// <param name="deviceSn">設備編號</param>
+        /// <param name="targetName">監控項目名稱</param>
+        /// <returns></returns>
+        protected virtual Target GetTarget(string deviceSn, string targetName)
+        {
+            var bll = GenericBusinessFactory.CreateInstance<Target>();
+            return (bll as Target_BLL).GetTarget(deviceSn, targetName);
         }
 
         /// <summary>

@@ -10,19 +10,25 @@ namespace BusinessLogicTests
     [TestClass]
     public class AlarmTests
     {
-        private static List<AlarmCondition> _alarmConditions;
+        private static Target _target;
 
         [ClassInitialize]
         public static void TestInitialize(TestContext testContext)
         {
-            _alarmConditions = new List<AlarmCondition>
+            _target = new Target
             {
-                new AlarmCondition
+                DEVICE_SN = "2018001",
+                TARGET_NAME = "Traffic - Gi1/0/20 [traffic_in]",
+                TARGET_STATUS = "0",
+                ALARM_OPERATOR = "=",
+                ALARM_CONDITIONS = new List<AlarmCondition>
                 {
-                    DEVICE_SN = "2018001",
-                    TARGET_NAME = "Traffic - Gi1/0/20 [traffic_in]",
-                    TARGET_VALUE = "ALERT",
-                    IS_EXCEPTION = "Y"
+                    new AlarmCondition
+                    {
+                        DEVICE_SN = "2018001",
+                        TARGET_NAME = "Traffic - Gi1/0/20 [traffic_in]",
+                        TARGET_VALUE = "ALERT",
+                    }
                 }
             };
         }
@@ -47,7 +53,7 @@ namespace BusinessLogicTests
             var alarm = AlarmFactory.CreateInstance(type);
 
             //Act
-            var actual = alarm.IsException(monitor, _alarmConditions);
+            var actual = alarm.IsException(monitor, _target);
 
             //Assert
             Assert.AreEqual(expected, actual);

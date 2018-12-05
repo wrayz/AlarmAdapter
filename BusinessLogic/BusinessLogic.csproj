@@ -116,6 +116,7 @@
     <Compile Include="RecordParser\IParser.cs" />
     <Compile Include="RecordParser\ParserFactory.cs" />
     <Compile Include="SimpleLog_BLL.cs" />
+    <Compile Include="Target_BLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

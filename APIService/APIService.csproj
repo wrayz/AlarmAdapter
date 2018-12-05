@@ -197,7 +197,7 @@
     <Content Include="Entity\AbuseIpDbSetting.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Entity\AlarmCondition.config" />
+    <Content Include="Entity\Target.config" />
     <Content Include="Entity\BlockHole.config">
       <SubType>Designer</SubType>
     </Content>
@@ -206,6 +206,7 @@
     </Content>
     <Content Include="Entity\Notification.config" />
     <Content Include="Entity\Repair.config" />
+    <Content Include="Entity\AlarmCondition.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>

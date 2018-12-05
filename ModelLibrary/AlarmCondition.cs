@@ -19,10 +19,5 @@
         /// 監控項目值
         /// </summary>
         public string TARGET_VALUE { get; set; }
-
-        /// <summary>
-        /// 是否異常（Y - 是，N - 否）
-        /// </summary>
-        public string IS_EXCEPTION { get; set; }
     }
 }

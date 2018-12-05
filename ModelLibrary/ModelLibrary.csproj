@@ -107,6 +107,7 @@
     <Compile Include="ReportedIP.cs" />
     <Compile Include="SimpleLog.cs" />
     <Compile Include="Supplier.cs" />
+    <Compile Include="Target.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Voice.cs" />
   </ItemGroup>

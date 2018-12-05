@@ -34,9 +34,6 @@ namespace BusinessLogicTests.Fake
         {
             var device = _devices.Find(x => x.DEVICE_ID == deviceId && x.DEVICE_TYPE == deviceType);
 
-            device.ALARM_CONDITIONS = _alarmConditions.Where(x => x.DEVICE_SN == device.DEVICE_SN)
-                                                      .ToList();
-
             return device;
         }
 
