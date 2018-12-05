@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ModelLibrary
 {
@@ -8,6 +9,12 @@ namespace ModelLibrary
         /// 群組編號
         /// </summary>
         public string GROUP_SN { get; set; }
+
+        /// <summary>
+        /// 紀錄編號
+        /// </summary>
+        [JsonProperty("LOG_SN")]
+        public string RECORD_SN { get; set; }
 
         /// <summary>
         /// 設備編號
@@ -33,16 +40,6 @@ namespace ModelLibrary
         /// 服務狀態 N - 正常, E - 異常, R - 修復中
         /// </summary>
         public string SERVICE_STATUS { get; set; }
-
-        /// <summary>
-        /// 紀錄編號
-        /// </summary>
-        public int? LOG_SN { get; set; }
-
-        /// <summary>
-        /// 異常資訊
-        /// </summary>
-        public string ERROR_INFO { get; set; }
 
         /// <summary>
         /// 修復人員帳號
