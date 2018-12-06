@@ -22,7 +22,7 @@ namespace ModelLibrary
         /// <summary>
         /// 告警運算子
         /// </summary>
-        public string ALARM_OPERATOR { get; set; }
+        public string OPERATOR_TYPE { get; set; }
 
         /// <summary>
         /// 是否異常（Y - 是，N - 否）

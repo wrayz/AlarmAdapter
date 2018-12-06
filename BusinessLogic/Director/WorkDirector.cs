@@ -17,7 +17,7 @@ namespace BusinessLogic.Director
         private readonly string _deviceType;
 
         private IParser _parser;
-        private RecordAlarm.Alarm _alarmer;
+        private RecordAlarm.Alarmer _alarmer;
 
         /// <summary>
         /// 設備監控資訊清單
@@ -60,24 +60,12 @@ namespace BusinessLogic.Director
         }
 
         /// <summary>
-        /// 監控項目資訊取得
-        /// </summary>
-        /// <param name="deviceSn">設備編號</param>
-        /// <param name="targetName">監控項目名稱</param>
-        /// <returns></returns>
-        protected virtual Target GetTarget(string deviceSn, string targetName)
-        {
-            var bll = GenericBusinessFactory.CreateInstance<Target>();
-            return (bll as Target_BLL).GetTarget(deviceSn, targetName);
-        }
-
-        /// <summary>
         /// 初始工作站
         /// </summary>
         private void InitWorkStation()
         {
             _parser = ParserFactory.CreateInstance(_detector);
-            _alarmer = AlarmFactory.CreateInstance(_detector);
+            _alarmer = new Alarmer();
         }
 
         /// <summary>
@@ -90,6 +78,18 @@ namespace BusinessLogic.Director
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
             return (bll as Device_BLL).GetDevice(deviceId, deviceType);
+        }
+
+        /// <summary>
+        /// 監控項目資訊取得
+        /// </summary>
+        /// <param name="deviceSn">設備編號</param>
+        /// <param name="targetName">監控項目名稱</param>
+        /// <returns></returns>
+        protected virtual Target GetTarget(string deviceSn, string targetName)
+        {
+            var bll = GenericBusinessFactory.CreateInstance<Target>();
+            return (bll as Target_BLL).GetTarget(_detector, deviceSn, targetName);
         }
 
         /// <summary>

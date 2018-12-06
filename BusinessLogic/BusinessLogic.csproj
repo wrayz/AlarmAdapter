@@ -74,6 +74,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StateOperator\EqualOperator.cs" />
+    <Compile Include="StateOperator\IOperator.cs" />
     <Compile Include="ContentStrategy\GenericContentStrategy.cs" />
     <Compile Include="DeviceGroup_BLL.cs" />
     <Compile Include="ContentStrategy\RepairContent.cs" />
@@ -95,9 +97,7 @@
     <Compile Include="AlarmNotification\NetworkNotification.cs" />
     <Compile Include="AlarmNotification\NotificationFactory.cs" />
     <Compile Include="AlarmNotification\SimpleNotification.cs" />
-    <Compile Include="RecordAlarm\AlarmFactory.cs" />
-    <Compile Include="RecordAlarm\Alarm.cs" />
-    <Compile Include="RecordAlarm\CactiAlarm.cs" />
+    <Compile Include="RecordAlarm\Alarmer.cs" />
     <Compile Include="RecordAlarm\IAlarm.cs" />
     <Compile Include="RecordLog_BLL.cs" />
     <Compile Include="Log_BLL.cs" />
@@ -116,6 +116,7 @@
     <Compile Include="RecordParser\IParser.cs" />
     <Compile Include="RecordParser\ParserFactory.cs" />
     <Compile Include="SimpleLog_BLL.cs" />
+    <Compile Include="StateOperator\OperatorFactory.cs" />
     <Compile Include="Target_BLL.cs" />
   </ItemGroup>
   <ItemGroup>

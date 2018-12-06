@@ -19,12 +19,20 @@ namespace BusinessLogicTests.Steps
         private List<Monitor> _previousMonitors;
         private List<NotificationCondition> _notificationConditions;
         private List<Notification> _notificationRecords;
+        private List<Target> _targets;
 
         [Given(@"設備清單為")]
         public void Given設備清單為(Table table)
         {
             _devices = table.CreateSet<Device>().ToList();
         }
+
+        [Given(@"監控項目資訊")]
+        public void Given監控項目資訊(Table table)
+        {
+            _targets = table.CreateSet<Target>().ToList();
+        }
+
 
         [Given(@"告警條件為")]
         public void Given告警條件為(Table table)
@@ -85,7 +93,7 @@ namespace BusinessLogicTests.Steps
             var detector= ScenarioContext.Current.Get<string>("detector");
             var originRecord = ScenarioContext.Current.Get<string>("originRecord");
             var deviceType = ScenarioContext.Current.Get<DeviceType>("deviceType");
-            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _alarmConditions, _previousMonitors, _notificationConditions, _notificationRecords);
+            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _targets, _alarmConditions, _previousMonitors, _notificationConditions, _notificationRecords);
 
             _workDirector.Execute();
         }

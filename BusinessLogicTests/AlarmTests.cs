@@ -20,7 +20,7 @@ namespace BusinessLogicTests
                 DEVICE_SN = "2018001",
                 TARGET_NAME = "Traffic - Gi1/0/20 [traffic_in]",
                 TARGET_STATUS = "0",
-                ALARM_OPERATOR = "=",
+                OPERATOR_TYPE = "Equal",
                 ALARM_CONDITIONS = new List<AlarmCondition>
                 {
                     new AlarmCondition
@@ -49,8 +49,7 @@ namespace BusinessLogicTests
                 RECEIVE_TIME = DateTime.Parse("2018/11/06 18:08:34", CultureInfo.InvariantCulture)
             };
 
-            var type = "Cacti";
-            var alarm = AlarmFactory.CreateInstance(type);
+            var alarm = new Alarmer();
 
             //Act
             var actual = alarm.IsException(monitor, _target);
