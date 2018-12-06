@@ -42,12 +42,12 @@ namespace ModelLibrary
         public string SERVICE_STATUS { get; set; }
 
         /// <summary>
-        /// 修復人員帳號
+        /// 維修人員帳號
         /// </summary>
-        public string REPAIRMAN_ID { get; set; }
+        public string USERID { get; set; }
 
         /// <summary>
-        /// 修復人員資訊
+        /// 維修人員資訊
         /// </summary>
         public User REPAIRMAN_INFO { get; set; }
 
@@ -59,7 +59,8 @@ namespace ModelLibrary
         /// <summary>
         /// 類型描述
         /// </summary>
-        public string TYPE_DESC {
+        public string TYPE_DESC
+        {
             get
             {
                 return DEVICE_TYPE == "N" ? "設備網路狀態" : "設備數據狀態";
