@@ -9,7 +9,6 @@ namespace APIService.PushStrategy
     internal class RepairPushStrategy : GenericPushStrategy
     {
         private readonly Repair _repair;
-        private GenericContentStrategy _content;
 
         /// <summary>
         /// 建構式
@@ -25,17 +24,8 @@ namespace APIService.PushStrategy
         /// </summary>
         public override void Execute()
         {
-            InitContent();
-
-            PushDestination(_content);
-        }
-
-        /// <summary>
-        /// 通知內容初始化
-        /// </summary>
-        protected override void InitContent()
-        {
-            _content = new RepairContent(_repair);
+            var content = new RepairContent(_repair);
+            PushDestination(content);
         }
     }
 }

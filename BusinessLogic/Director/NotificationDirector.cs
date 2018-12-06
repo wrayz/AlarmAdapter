@@ -11,7 +11,7 @@ namespace BusinessLogic.Director
     {
         private readonly NotifierStrategy _notifierStrategy;
 
-        protected List<Monitor> Monitors { get; private set; }
+        protected internal List<Monitor> Monitors { get; private set; }
 
         /// <summary>
         /// 建構式
@@ -46,7 +46,7 @@ namespace BusinessLogic.Director
         /// 通知待檢查監控資訊清單
         /// </summary>
         /// <returns></returns>
-        private List<Monitor> GetMonitors()
+        protected virtual List<Monitor> GetMonitors()
         {
             var bll = GenericBusinessFactory.CreateInstance<Monitor>();
             return (bll as Monitor_BLL).GetNotificationMonitors();
@@ -57,7 +57,7 @@ namespace BusinessLogic.Director
         /// </summary>
         /// <param name="monitor">當前監控訊息</param>
         /// <returns></returns>
-        private Monitor GetPreviousMonitor(Monitor monitor)
+        protected virtual Monitor GetPreviousMonitor(Monitor monitor)
         {
             var bll = GenericBusinessFactory.CreateInstance<Monitor>();
             return (bll as Monitor_BLL).GetPreviousMonitor(monitor);
@@ -68,7 +68,7 @@ namespace BusinessLogic.Director
         /// </summary>
         /// <param name="deviceSn">設備編號</param>
         /// <returns></returns>
-        private NotificationCondition GetNotificationCondition(string deviceSn)
+        protected virtual NotificationCondition GetNotificationCondition(string deviceSn)
         {
             var bll = GenericBusinessFactory.CreateInstance<NotificationCondition>();
             return (bll as NotificationCondition_BLL).GetNotificationCondition(deviceSn);
@@ -80,7 +80,7 @@ namespace BusinessLogic.Director
         /// <param name="monitor">監控資訊</param>
         /// <param name="condition">通知條件</param>
         /// <returns></returns>
-        private Notification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
+        protected virtual Notification GetNotificationRecord(Monitor monitor, NotificationCondition condition)
         {
             var bll = GenericBusinessFactory.CreateInstance<Notification>();
             return (bll as Notification_BLL).GetRecord(monitor, condition);
@@ -89,7 +89,7 @@ namespace BusinessLogic.Director
         /// <summary>
         /// 儲存
         /// </summary>
-        private void Save()
+        protected virtual void Save()
         {
             var bll = GenericBusinessFactory.CreateInstance<Monitor>();
             (bll as Monitor_BLL).UpdateList(Monitors);

@@ -62,13 +62,12 @@ namespace BusinessLogic
         /// <summary>
         /// 通知資訊更新
         /// </summary>
-        /// <param name="content">通知內容</param>
-        public void Update(GenericContentStrategy content)
+        /// <param name="notification">通知資訊</param>
+        public void Update(Notification notification)
         {
             var data = new Notification
             {
-                NOTIFICATION_SN = content.NOTIFICATION_SN,
-                RECORD_SN = content.RECORD_SN,
+                NOTIFICATION_SN = notification.NOTIFICATION_SN,
                 IS_PENDING = "N",
                 NOTIFICATION_TIME = DateTime.Now
             };

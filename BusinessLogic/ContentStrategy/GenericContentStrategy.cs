@@ -65,20 +65,5 @@ namespace BusinessLogic.ContentStrategy
         /// 附加欄位清單
         /// </summary>
         public List<Field> FIELD_LIST { get; set; }
-
-        /// <summary>
-        /// 監控項目名稱
-        /// </summary>
-        public string TARGET_NAME { get; set; }
-
-        /// <summary>
-        /// 監控項目訊息
-        /// </summary>
-        public string TARGET_MESSAGE { get; set; }
-
-        /// <summary>
-        /// 通知編號
-        /// </summary>
-        public string NOTIFICATION_SN { get; internal set; }
     }
 }

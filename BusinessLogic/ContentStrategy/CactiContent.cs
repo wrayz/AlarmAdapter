@@ -26,8 +26,6 @@ namespace BusinessLogic.ContentStrategy
         /// </summary>
         protected override void Initialize()
         {
-            NOTIFICATION_SN = _notification.NOTIFICATION_SN;
-
             DEVICE_SN = _notification.DEVICE_SN;
 
             RECORD_SN = _notification.RECORD_SN;

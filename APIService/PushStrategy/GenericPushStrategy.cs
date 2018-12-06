@@ -26,11 +26,6 @@ namespace APIService.PushStrategy
         public abstract void Execute();
 
         /// <summary>
-        /// 通知內容初始化
-        /// </summary>
-        protected abstract void InitContent();
-
-        /// <summary>
         /// 推播通知目的地
         /// </summary>
         /// <param name="content">通知內容</param>

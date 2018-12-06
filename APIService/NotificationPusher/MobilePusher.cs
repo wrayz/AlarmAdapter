@@ -25,12 +25,14 @@ namespace APIService.NotificationPusher
             {
                 client.BaseAddress = new Uri(_url);
 
-                var formContent = new FormUrlEncodedContent(new[]
+                var data = JsonConvert.SerializeObject(content);
+
+                var payload = new FormUrlEncodedContent(new[]
                 {
-                    new KeyValuePair<string, string>("info", JsonConvert.SerializeObject(content))
+                    new KeyValuePair<string, string>("info", data)
                 });
 
-                var response = client.PostAsync("im/eyesFreeLog", formContent).Result;
+                var response = client.PostAsync("im/eyesFreeLog", payload).Result;
 
                 return response.EnsureSuccessStatusCode();
             }
