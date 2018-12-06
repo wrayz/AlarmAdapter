@@ -1,7 +1,6 @@
 ﻿using BusinessLogic;
 using BusinessLogic.ContentStrategy;
 using ModelLibrary;
-using System;
 using System.Collections.Generic;
 
 namespace APIService.PushStrategy
@@ -32,7 +31,7 @@ namespace APIService.PushStrategy
 
             _contents.ForEach(content =>
             {
-                //PushDestination(content);
+                PushDestination(content);
 
                 Save(content);
             });
