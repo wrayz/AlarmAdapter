@@ -1,4 +1,5 @@
 ﻿using DataExpansion;
+using Newtonsoft.Json;
 using System;
 
 namespace ModelLibrary
@@ -17,6 +18,11 @@ namespace ModelLibrary
 		/// 記錄編號
 		/// </summary>
 		public string RECORD_SN { get; set; }
+
+		/// <summary>
+		/// 記錄編號（ TODO: 等 IM 改完拿掉）
+		/// </summary>
+		public string LOG_SN { get; set; }
 
 		/// <summary>
 		/// 設備編號

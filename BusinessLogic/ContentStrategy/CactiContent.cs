@@ -36,7 +36,7 @@ namespace BusinessLogic.ContentStrategy
 
             COLOR = GetColor();
 
-            LOG_TYPE = GetLogType();
+            LOG_TYPE = _notification.DEVICE.DEVICE_TYPE;
 
             GROUP_LIST = GetGroups();
 
@@ -56,12 +56,6 @@ namespace BusinessLogic.ContentStrategy
         private string GetColor()
         {
             return _notification.MONITOR.IS_EXCEPTION == "Y" ? "danger" : "good";
-        }
-
-        private string GetLogType()
-        {
-            return _notification.MONITOR.IS_EXCEPTION == "N" || 
-                   _notification.TARGET_NAME == "Ping" ? "N" : "S";
         }
 
         private List<DeviceGroup> GetGroups()

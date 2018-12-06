@@ -15,7 +15,7 @@ namespace APIService.Controllers
     public class RepairController : ApiController
     {
         [Route("")]
-        public IHttpActionResult Post(Repair data)
+        public IHttpActionResult Post(Repair repair)
         {
             var name = "Repair";
             var logger = NLog.LogManager.GetLogger(name);
@@ -25,9 +25,9 @@ namespace APIService.Controllers
                 var license = new LicenseBusinessLogic();
                 license.Verify(DateTime.Now);
 
-                var repair = Save(data);
+                var output = Save(repair);
 
-                GenericPushStrategy pusher = new RepairPushStrategy(repair);
+                GenericPushStrategy pusher = new RepairPushStrategy(output);
                 pusher.Execute();
 
                 return Ok();
@@ -42,7 +42,7 @@ namespace APIService.Controllers
         /// <summary>
         /// 儲存
         /// </summary>
-        /// <param name="repair">維修資訊</param>
+        /// <param name="repair">維修登記資訊</param>
         private Repair Save(Repair repair)
         {
             var login = GenericAPIService.GetUserInfo();

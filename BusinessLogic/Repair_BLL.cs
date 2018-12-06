@@ -17,9 +17,14 @@ namespace BusinessLogic
         /// <param name="login">使用者登入</param>
         public Repair Save(Repair repair, UserLogin login)
         {
-            repair.USERID = login.USERID;
+            var data = new Repair
+            {
+                RECORD_SN = repair.LOG_SN,
+                DEVICE_SN = repair.DEVICE_SN,
+                USERID = login.USERID
+            };
 
-            return (_dao as Repair_DAO).Save(repair);
+            return (_dao as Repair_DAO).Save(data);
         }
     }
 }
