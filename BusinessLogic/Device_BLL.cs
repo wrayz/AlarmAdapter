@@ -26,7 +26,7 @@ namespace BusinessLogic
 
             var device = _dao.Get(new QueryOption(), condition);
 
-            if (device == null)
+            if (device.DEVICE_SN == null)
                 throw new Exception($"檢查 { deviceId } 是否已建立設備資訊或是否開啟監控");
 
             return device;

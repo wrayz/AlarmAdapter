@@ -40,7 +40,7 @@ namespace BusinessLogic.ContentStrategy
 
             COLOR = "warning";
 
-            LOG_TYPE = "R";
+            LOG_TYPE = _device.DEVICE_TYPE;
 
             GROUP_LIST = _device.GROUPS;
 
