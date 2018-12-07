@@ -1,7 +1,6 @@
 ﻿using DataAccess;
 using ModelLibrary;
 using ModelLibrary.Generic;
-using System;
 
 namespace BusinessLogic
 {
@@ -19,7 +18,7 @@ namespace BusinessLogic
         {
             var data = new Repair
             {
-                RECORD_SN = repair.LOG_SN,
+                RECORD_SN = repair.RECORD_SN == null ? repair.LOG_SN : repair.RECORD_SN,
                 DEVICE_SN = repair.DEVICE_SN,
                 USERID = login.USERID
             };
