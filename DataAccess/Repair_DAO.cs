@@ -18,7 +18,7 @@ namespace DataAccess
             var context = ModifyContextFactory.CreateInstance<Repair>();
             var output = context.Modify("Insert", data);
 
-            if (output.Item2.ContainsValue(null))
+            if (string.IsNullOrWhiteSpace(output.Item2["REGISTER_TIME"]))
                 throw new Exception($"設備 {data.DEVICE_SN } 並非異常狀態");
 
             var result = output.Item1;
