@@ -117,6 +117,7 @@
     <Compile Include="AbuseIpDbService.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BobCactiController.cs" />
     <Compile Include="Controllers\CactiController.cs" />
     <Compile Include="Controllers\DeviceLogsController.cs" />
     <Compile Include="Controllers\RepairController.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Controllers\SimpleLogsController.cs" />
     <Compile Include="Controllers\SystemLogsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Director\GenericRecordDirector.cs" />
     <Compile Include="GenericAPIService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

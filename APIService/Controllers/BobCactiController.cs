@@ -1,6 +1,7 @@
 ﻿using APIService.Director;
+using ModelLibrary;
 using ModelLibrary.Enumerate;
-using NLog;
+using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Web.Http;
@@ -8,19 +9,24 @@ using System.Web.Http;
 namespace APIService.Controllers
 {
     /// <summary>
-    /// Cacti 接收 API
+    /// Bob Cacti 接收 API
     /// </summary>
-    public class CactiController : ApiController
+    public class BobCactiController : ApiController
     {
+        /// <summary>
+        /// 告警 API
+        /// </summary>
+        /// <param name="raw">原始記錄</param>
+        /// <returns></returns>
         [HttpPost]
-        public IHttpActionResult Post()
+        public IHttpActionResult Post(BobCactiRecord raw)
         {
             var detector = "Cacti";
-            var logger = LogManager.GetLogger(detector);
+            var logger = NLog.LogManager.GetLogger(detector);
 
             try
             {
-                var record = Request.Content.ReadAsStringAsync().Result;
+                var record = JsonConvert.SerializeObject(raw);
                 logger.Info(record);
 
                 var director = new GenericRecordDirector(detector, record, DeviceType.N);
