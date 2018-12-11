@@ -15,9 +15,9 @@ namespace BusinessLogic.StateOperator
         /// <param name="record">監控項目的值</param>
         /// <param name="conditions">告警條件</param>
         /// <returns></returns>
-        public bool Check(string record, List<AlarmCondition> conditions)
+        public bool Check(string record, List<string> conditions)
         {
-            return record == conditions.First().TARGET_VALUE;
+            return record == conditions.First();
         }
     }
 }

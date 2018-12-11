@@ -14,6 +14,11 @@ namespace ModelLibrary.Enumerate
         /// <summary>
         /// 等於
         /// </summary>
-        Equal
+        Equal,
+
+        /// <summary>
+        /// 包含
+        /// </summary>
+        In,
     }
 }

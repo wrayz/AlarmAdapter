@@ -15,6 +15,10 @@ namespace BusinessLogic.StateOperator
                     alarmOperator = new EqualOperator();
                     break;
 
+                case AlarmOperatorType.In:
+                    alarmOperator = new InOperator();
+                    break;
+
                 default:
                     throw new Exception($"尚未實作 { type } 運算子判斷");
             }

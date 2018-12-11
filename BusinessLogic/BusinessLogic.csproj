@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="StateOperator\EqualOperator.cs" />
+    <Compile Include="StateOperator\InOperator.cs" />
     <Compile Include="StateOperator\IOperator.cs" />
     <Compile Include="ContentStrategy\GenericContentStrategy.cs" />
     <Compile Include="DeviceGroup_BLL.cs" />

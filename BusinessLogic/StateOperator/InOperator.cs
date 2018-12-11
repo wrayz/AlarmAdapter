@@ -3,9 +3,9 @@
 namespace BusinessLogic.StateOperator
 {
     /// <summary>
-    /// 狀態運算子判斷介面
+    /// 包含運算子
     /// </summary>
-    public interface IOperator
+    internal class InOperator : IOperator
     {
         /// <summary>
         /// 檢查
@@ -13,6 +13,9 @@ namespace BusinessLogic.StateOperator
         /// <param name="record">記錄值</param>
         /// <param name="conditions">條件清單</param>
         /// <returns></returns>
-        bool Check(string record, List<string> conditions);
+        public bool Check(string record, List<string> conditions)
+        {
+            return conditions.Contains(record);
+        }
     }
 }

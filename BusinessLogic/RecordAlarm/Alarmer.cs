@@ -2,6 +2,7 @@
 using ModelLibrary;
 using ModelLibrary.Enumerate;
 using System;
+using System.Linq;
 
 namespace BusinessLogic.RecordAlarm
 {
@@ -20,8 +21,9 @@ namespace BusinessLogic.RecordAlarm
         {
             var type = (AlarmOperatorType)Enum.Parse(typeof(AlarmOperatorType), target.OPERATOR_TYPE);
             var alarmOperator = OperatorFactory.CreateInstance(type);
+            var conditions = target.ALARM_CONDITIONS.Select(x => x.TARGET_VALUE).ToList();
 
-            return alarmOperator.Check(monitor.TARGET_VALUE, target.ALARM_CONDITIONS) ? "Y" : "N";
+            return alarmOperator.Check(monitor.TARGET_VALUE, conditions) ? "Y" : "N";
         }
     }
 }
