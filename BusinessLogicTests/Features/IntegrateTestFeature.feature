@@ -11,9 +11,12 @@ Given 設備清單為
 Given 監控項目資訊
 	| DEVICE_SN | TARGET_NAME                     | TARGET_STATUS | OPERATOR_TYPE | IS_EXCEPTION |
 	| 2018001   | Traffic - Gi1/0/20 [traffic_in] | 0             | Equal         | Y            |
+	| 2018001   | Ping                            | 0             | In            | Y            |
 Given 告警條件為
 	| DEVICE_SN | TARGET_NAME                     | TARGET_VALUE |
 	| 2018001   | Traffic - Gi1/0/20 [traffic_in] | ALERT        |
+	| 2018001   | Ping                            | ERROR        |
+	| 2018001   | Ping                            | DOWN         |
 Given 前次監控訊息為
 	| RECORD_SN     | DEVICE_SN | TARGET_NAME                     | IS_EXCEPTION |
 	| 2018111200001 | 2018001   | Traffic - Gi1/0/20 [traffic_in] | N            |
@@ -51,3 +54,16 @@ Scenario: Cacti_NORMAL訊息
 	Then EF通知檢查結果為
 	| DEVICE_SN | DEVICE_ID     | TARGET_NAME                     | TARGET_VALUE | TARGET_MESSAGE             | RECEIVE_TIME        | IS_EXCEPTION | IS_NOTIFICATION |
 	| 2018002   | 192.168.10.98 | Traffic - Gi1/0/20 [traffic_in] | NORMAL       | current value is 5630.6207 | 2018/11/06 18:08:34 | N            | Y               |
+
+Scenario: BobCacti_ERROR訊息
+	Given 偵測器"Cacti" 
+	And 設備類型為"N"
+	And 原始訊息為"{ "id":"192.168.10.99", "target": "Ping", "action":"ERROR", "info":"ping down","time":"2018-09-13T13:21:30" }"
+	When 執行EF告警作業
+	Then EF解析告警結果為
+	| DEVICE_SN | DEVICE_ID     | TARGET_NAME | TARGET_VALUE | TARGET_MESSAGE | RECEIVE_TIME        | IS_EXCEPTION |
+	| 2018001   | 192.168.10.99 | Ping        | ERROR        | ping down      | 2018/09/13 13:21:30 | Y            |
+	When 執行EF通知檢查作業
+	Then EF通知檢查結果為
+	| DEVICE_SN | DEVICE_ID     | TARGET_NAME | TARGET_VALUE | TARGET_MESSAGE | RECEIVE_TIME        | IS_EXCEPTION | IS_NOTIFICATION |
+	| 2018001   | 192.168.10.99 | Ping        | ERROR        | ping down      | 2018/09/13 13:21:30 | Y            | Y               |
