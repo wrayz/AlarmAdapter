@@ -11,6 +11,7 @@ namespace APIService.Controllers
     /// <summary>
     /// Bob Cacti 接收 API
     /// </summary>
+    [RoutePrefix("api/devicelogs")]
     public class BobCactiController : ApiController
     {
         /// <summary>
@@ -18,6 +19,7 @@ namespace APIService.Controllers
         /// </summary>
         /// <param name="raw">原始記錄</param>
         /// <returns></returns>
+        [Route("")]
         [HttpPost]
         public IHttpActionResult Post(BobCactiRecord raw)
         {

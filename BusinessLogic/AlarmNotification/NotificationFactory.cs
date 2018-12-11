@@ -11,10 +11,6 @@ namespace BusinessLogic.AlarmNotification
 
             switch (type)
             {
-                case DeviceType.N:
-                    notification = new NetworkNotification();
-                    break;
-
                 case DeviceType.D:
                     notification = new DigitalNotification();
                     break;

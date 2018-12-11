@@ -86,14 +86,10 @@
     <Compile Include="GroupDevice.cs" />
     <Compile Include="GroupService.cs" />
     <Compile Include="Record.cs" />
-    <Compile Include="DeviceReport.cs" />
-    <Compile Include="Log.cs" />
     <Compile Include="Device.cs" />
     <Compile Include="DeviceGroup.cs" />
-    <Compile Include="DeviceLog.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="GroupMember.cs" />
-    <Compile Include="LogDetail.cs" />
     <Compile Include="DeviceMaintainer.cs" />
     <Compile Include="Generic\DataPager.cs" />
     <Compile Include="Generic\GenericExtand.cs" />

@@ -119,9 +119,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BobCactiController.cs" />
     <Compile Include="Controllers\CactiController.cs" />
-    <Compile Include="Controllers\DeviceLogsController.cs" />
     <Compile Include="Controllers\RepairController.cs" />
-    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\RecordLogsController.cs" />
     <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
@@ -156,20 +154,13 @@
     <Content Include="Entity\Device.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Entity\Log.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Entity\Supplier.config" />
     <Content Include="Entity\User.config" />
-    <Content Include="Entity\LogDetail.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Entity\Group.config" />
     <Content Include="Entity\Common.config" />
     <Content Include="Entity\DeviceMaintainer.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Entity\DeviceLog.config" />
     <Content Include="Entity\DeviceGroup.config" />
     <Content Include="Entity\GroupMember.config" />
     <None Include="ConnectionsString.Debug.config">
@@ -186,7 +177,6 @@
     </None>
     <Content Include="Entity\MemberDevice.config" />
     <Content Include="Entity\LicenseConfig.config" />
-    <Content Include="Entity\DeviceReport.config" />
     <Content Include="Entity\Record.config" />
     <Content Include="Entity\DeviceRecord.config" />
     <Content Include="Entity\RecordLog.config" />
