@@ -79,6 +79,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Fake\NotificationDirectorFake.cs" />
     <Compile Include="Fake\WorkDirectorFake.cs" />
     <Compile Include="Features\IntegrateTestFeature.feature.cs">
       <AutoGen>True</AutoGen>

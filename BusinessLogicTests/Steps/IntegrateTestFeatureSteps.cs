@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Director;
+using BusinessLogic.NotificationStrategy;
 using BusinessLogicTests.Fake;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
@@ -18,8 +19,9 @@ namespace BusinessLogicTests.Steps
         private WorkDirector _workDirector;
         private List<Monitor> _previousMonitors;
         private List<NotificationCondition> _notificationConditions;
-        private List<Notification> _notificationRecords;
+        private List<Notification> _notifications;
         private List<Target> _targets;
+        private NotificationDirector _notificationDirector;
 
         [Given(@"設備清單為")]
         public void Given設備清單為(Table table)
@@ -32,7 +34,6 @@ namespace BusinessLogicTests.Steps
         {
             _targets = table.CreateSet<Target>().ToList();
         }
-
 
         [Given(@"告警條件為")]
         public void Given告警條件為(Table table)
@@ -49,7 +50,7 @@ namespace BusinessLogicTests.Steps
         [Given(@"通知條件為")]
         public void Given通知條件為(Table table)
         {
-            _notificationConditions = table.Rows.Select(x => 
+            _notificationConditions = table.Rows.Select(x =>
             {
                 var condition = new NotificationCondition
                 {
@@ -66,7 +67,7 @@ namespace BusinessLogicTests.Steps
         [Given(@"通知記錄為")]
         public void Given通知記錄為(Table table)
         {
-            _notificationRecords = table.CreateSet<Notification>().ToList();
+            _notifications = table.CreateSet<Notification>().ToList();
         }
 
         [Given(@"偵測器""(.*)""")]
@@ -87,13 +88,13 @@ namespace BusinessLogicTests.Steps
             ScenarioContext.Current.Set(originRecord, "originRecord");
         }
 
-        [When(@"執行EF作業")]
-        public void When執行EF作業()
+        [When(@"執行EF告警作業")]
+        public void When執行EF告警作業()
         {
-            var detector= ScenarioContext.Current.Get<string>("detector");
+            var detector = ScenarioContext.Current.Get<string>("detector");
             var originRecord = ScenarioContext.Current.Get<string>("originRecord");
             var deviceType = ScenarioContext.Current.Get<DeviceType>("deviceType");
-            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _targets, _alarmConditions, _previousMonitors, _notificationConditions, _notificationRecords);
+            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _targets, _alarmConditions);
 
             _workDirector.Execute();
         }
@@ -104,10 +105,18 @@ namespace BusinessLogicTests.Steps
             table.CompareToSet(_workDirector.Monitors);
         }
 
+        [When(@"執行EF通知檢查作業")]
+        public void When執行EF通知檢查作業()
+        {
+            var strategy = new GenericNotifier();
+            _notificationDirector = new NotificationDirectorFake(strategy, _workDirector.Monitors, _previousMonitors, _notificationConditions, _notifications);
+            _notificationDirector.Execute();
+        }
+
         [Then(@"EF通知檢查結果為")]
         public void ThenEF通知檢查結果為(Table table)
         {
-            table.CompareToSet(_workDirector.Monitors);
+            table.CompareToSet(_notificationDirector.Monitors);
         }
     }
 }

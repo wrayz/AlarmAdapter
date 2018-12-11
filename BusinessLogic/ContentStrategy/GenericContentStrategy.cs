@@ -31,6 +31,11 @@ namespace BusinessLogic.ContentStrategy
         public string DEVICE_SN { get; set; }
 
         /// <summary>
+        /// 監控項目
+        /// </summary>
+        public string TARGET_NAME { get; set; }
+
+        /// <summary>
         /// 推送名稱
         /// </summary>
         public string SYSTEM_NAME

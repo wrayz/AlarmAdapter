@@ -28,6 +28,8 @@ namespace BusinessLogic.ContentStrategy
         {
             DEVICE_SN = _notification.DEVICE_SN;
 
+            TARGET_NAME = _notification.TARGET_NAME;
+
             RECORD_SN = _notification.RECORD_SN;
 
             BUTTON_STATUS = GetButtonStatus();

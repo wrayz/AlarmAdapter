@@ -20,8 +20,6 @@ namespace BusinessLogic.Director
         public NotificationDirector(NotifierStrategy strategy)
         {
             _notifierStrategy = strategy;
-
-            Monitors = GetMonitors();
         }
 
         /// <summary>
@@ -29,6 +27,8 @@ namespace BusinessLogic.Director
         /// </summary>
         public void Execute()
         {
+            Monitors = GetMonitors();
+
             Monitors.ForEach(monitor =>
             {
                 //TODO: 使用靜態 Dictionary 將前次監控資訊存在 Memory（重開機要在初始化進資料庫）
