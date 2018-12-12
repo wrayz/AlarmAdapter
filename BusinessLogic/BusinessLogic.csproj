@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NotificationContent\NotificationContentFactory.cs" />
     <Compile Include="RecordNotifier\ContinuityAbnormalityNotifier.cs" />
     <Compile Include="RecordParser\CameraParser.cs" />
     <Compile Include="StateOperator\AlwaysOperator.cs" />

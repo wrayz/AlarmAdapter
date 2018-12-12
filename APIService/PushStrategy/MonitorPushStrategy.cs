@@ -15,7 +15,6 @@ namespace APIService.PushStrategy
         /// <summary>
         /// 建構式
         /// </summary>
-        /// <param name="monitors">監控資訊清單</param>
         public MonitorPushStrategy()
         {
             _notifications = GetNotifications();
@@ -28,7 +27,7 @@ namespace APIService.PushStrategy
         {
             _notifications.ForEach(notification =>
              {
-                 GenericContent content = new CactiContent(notification);
+                 var content = NotificationContentFactory.CreateInstance(notification);
                  PushDestination(content);
                  Save(notification);
              });
