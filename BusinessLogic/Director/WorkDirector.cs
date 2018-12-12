@@ -12,7 +12,7 @@ namespace BusinessLogic.Director
     /// </summary>
     public class WorkDirector
     {
-        private readonly string _detector;
+        private readonly Detector _detector;
         private readonly string _originRecord;
         private readonly string _deviceType;
         private readonly string _sourceIp;
@@ -31,7 +31,7 @@ namespace BusinessLogic.Director
         /// <param name="detector">偵測器</param>
         /// <param name="originRecord">原始訊息</param>
         /// <param name="deviceType">設備類型</param>
-        public WorkDirector(string detector, string originRecord, DeviceType deviceType, string sourceIp)
+        public WorkDirector(Detector detector, string originRecord, DeviceType deviceType, string sourceIp)
         {
             _detector = detector;
             _originRecord = originRecord;

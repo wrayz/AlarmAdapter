@@ -23,15 +23,14 @@ namespace APIService.Controllers
         [HttpPost]
         public IHttpActionResult Post(BobCactiRecord raw)
         {
-            var detector = "Cacti";
-            var logger = NLog.LogManager.GetLogger(detector);
+            var logger = NLog.LogManager.GetLogger("Cacti");
 
             try
             {
                 var record = JsonConvert.SerializeObject(raw);
                 logger.Info(record);
 
-                var director = new GenericRecordDirector(detector, record, DeviceType.N);
+                var director = new GenericRecordDirector(Detector.Cacti, record, DeviceType.N);
                 director.Execute();
 
                 return Ok();

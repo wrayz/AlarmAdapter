@@ -71,8 +71,9 @@ namespace BusinessLogicTests.Steps
         }
 
         [Given(@"偵測器""(.*)""")]
-        public void Given偵測器(string detector)
+        public void Given偵測器(string type)
         {
+            var detector = Enum.Parse(typeof(Detector), type);
             ScenarioContext.Current.Set(detector, "detector");
         }
 
@@ -98,7 +99,7 @@ namespace BusinessLogicTests.Steps
         [When(@"執行EF告警作業")]
         public void When執行EF告警作業()
         {
-            var detector = ScenarioContext.Current.Get<string>("detector");
+            var detector = ScenarioContext.Current.Get<Detector>("detector");
             var originRecord = ScenarioContext.Current.Get<string>("originRecord");
             var deviceType = ScenarioContext.Current.Get<DeviceType>("deviceType");
             var sourceIp = ScenarioContext.Current.Get<string>("sourceIp");

@@ -1,4 +1,5 @@
 ﻿using ModelLibrary;
+using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System.Collections.Generic;
 
@@ -16,7 +17,7 @@ namespace BusinessLogic
         /// <param name="deviceSn">設備編號</param>
         /// <param name="targetName">監控項目名稱</param>
         /// <returns></returns>
-        public Target GetTarget(string detector, string deviceSn, string targetName)
+        public Target GetTarget(Detector detector, string deviceSn, string targetName)
         {
             var option = new QueryOption
             {
@@ -32,7 +33,7 @@ namespace BusinessLogic
 
             var target = _dao.Get(option, condition);
 
-            if (detector == "Cacti" && target.OPERATOR_TYPE == null)
+            if (detector == Detector.Cacti && target.OPERATOR_TYPE == null)
                 return GetDefaultCactiTarget(condition);
 
             return target;

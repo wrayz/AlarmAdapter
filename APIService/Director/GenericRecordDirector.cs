@@ -24,7 +24,7 @@ namespace APIService.Director
         /// <param name="record">接收記錄訊息</param>
         /// <param name="deviceType">設備類型</param>
         /// <param name="sourceIp">來源 IP</param>
-        public GenericRecordDirector(string detector, string record, DeviceType deviceType, string sourceIp = null)
+        public GenericRecordDirector(Detector detector, string record, DeviceType deviceType, string sourceIp = null)
         {
             _license = new LicenseBusinessLogic();
             _workDirector = new WorkDirector(detector, record, deviceType, sourceIp);

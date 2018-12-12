@@ -13,8 +13,7 @@ namespace APIService.Controllers
     {
         public IHttpActionResult POST()
         {
-            var detector = "Camera";
-            var logger = NLog.LogManager.GetLogger(detector);
+            var logger = NLog.LogManager.GetLogger("Camera");
 
             try
             {
@@ -22,7 +21,7 @@ namespace APIService.Controllers
                 var sourceIp = GetSourceIP();
                 logger.Info(sourceIp + "|" + record);
 
-                var director = new GenericRecordDirector(detector, record, DeviceType.S, sourceIp);
+                var director = new GenericRecordDirector(Detector.Camera, record, DeviceType.S, sourceIp);
                 director.Execute();
 
                 return Ok();
