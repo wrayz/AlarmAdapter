@@ -111,7 +111,9 @@
   <ItemGroup>
     <Content Include="App_Data\XmlDocument.xml" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbuseIpDbService.cs" />
@@ -183,7 +185,6 @@
     <Content Include="Entity\RecordLimit.config" />
     <Content Include="Entity\SimpleLog.config" />
     <Content Include="Entity\GroupService.config" />
-    <Content Include="Entity\GroupDevice.config" />
     <Content Include="Entity\NotificationCondition.config" />
     <Content Include="Entity\NotificationRecord.config" />
     <Content Include="Entity\AbuseIpDbSetting.config">

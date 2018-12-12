@@ -83,7 +83,6 @@
     <Compile Include="NotificationCondition.cs" />
     <Compile Include="DeviceRecord.cs" />
     <Compile Include="Enumerate\DeviceType.cs" />
-    <Compile Include="GroupDevice.cs" />
     <Compile Include="GroupService.cs" />
     <Compile Include="Record.cs" />
     <Compile Include="Device.cs" />
