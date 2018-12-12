@@ -74,6 +74,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RecordNotifier\ContinuityAbnormalityNotifier.cs" />
+    <Compile Include="RecordParser\CameraParser.cs" />
+    <Compile Include="StateOperator\AlwaysOperator.cs" />
     <Compile Include="StateOperator\EqualOperator.cs" />
     <Compile Include="StateOperator\InOperator.cs" />
     <Compile Include="StateOperator\IOperator.cs" />

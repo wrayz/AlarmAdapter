@@ -12,11 +12,11 @@ namespace BusinessLogicTests.Fake
         private List<Target> _targets;
         private List<AlarmCondition> _alarmConditions;
 
-        public WorkDirectorFake(string detector, string originRecord, DeviceType deviceType,
+        public WorkDirectorFake(string detector, string originRecord, DeviceType deviceType, string sourceIp,
                                 List<Device> devices,
                                 List<Target> targets,
                                 List<AlarmCondition> alarmConditions)
-            : base(detector, originRecord, deviceType)
+            : base(detector, originRecord, deviceType, sourceIp)
         {
             _devices = devices;
             _targets = targets;

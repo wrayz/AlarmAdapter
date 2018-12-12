@@ -16,7 +16,7 @@ namespace BusinessLogic.RecordParser
         /// </summary>
         /// <param name="raw">原始訊息</param>
         /// <returns></returns>
-        public List<Monitor> ParseRecord(string raw)
+        public List<Monitor> ParseRecord(string raw, string sourceIp = null)
         {
             var monitors = new List<Monitor>();
             var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(raw);
@@ -30,8 +30,8 @@ namespace BusinessLogic.RecordParser
                     TARGET_VALUE = data["action"],
                     TARGET_MESSAGE = data["info"],
                     RECEIVE_TIME = DateTime.Parse(data["time"], CultureInfo.InvariantCulture)
-        }
-    };
+                }
+            };
         }
     }
 }

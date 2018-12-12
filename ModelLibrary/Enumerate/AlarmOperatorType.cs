@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ModelLibrary.Enumerate
+﻿namespace ModelLibrary.Enumerate
 {
     /// <summary>
     /// 告警運算子類型
@@ -20,5 +14,10 @@ namespace ModelLibrary.Enumerate
         /// 包含
         /// </summary>
         In,
+
+        /// <summary>
+        /// 持續
+        /// </summary>
+        Always,
     }
 }

@@ -8,8 +8,9 @@ namespace BusinessLogic.RecordParser
         /// <summary>
         /// 原始記錄解析
         /// </summary>
-        /// <param name="record">原始記錄</param>
+        /// <param name="raw">原始記錄</param>
+        /// <param name="sourceIp">來源 IP</param>
         /// <returns></returns>
-        List<Monitor> ParseRecord(string record);
+        List<Monitor> ParseRecord(string raw, string sourceIp = null);
     }
 }

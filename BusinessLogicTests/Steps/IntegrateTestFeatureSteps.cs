@@ -88,13 +88,21 @@ namespace BusinessLogicTests.Steps
             ScenarioContext.Current.Set(originRecord, "originRecord");
         }
 
+        [Given(@"來源IP為""(.*)""")]
+        public void Given來源IP為(string sourceIp)
+        {
+            ScenarioContext.Current.Set(sourceIp, "sourceIp");
+        }
+
+
         [When(@"執行EF告警作業")]
         public void When執行EF告警作業()
         {
             var detector = ScenarioContext.Current.Get<string>("detector");
             var originRecord = ScenarioContext.Current.Get<string>("originRecord");
             var deviceType = ScenarioContext.Current.Get<DeviceType>("deviceType");
-            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, _devices, _targets, _alarmConditions);
+            var sourceIp = ScenarioContext.Current.Get<string>("sourceIp");
+            _workDirector = new WorkDirectorFake(detector, originRecord, deviceType, sourceIp, _devices, _targets, _alarmConditions);
 
             _workDirector.Execute();
         }

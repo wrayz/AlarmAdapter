@@ -15,9 +15,10 @@ namespace BusinessLogic.Director
         private readonly string _detector;
         private readonly string _originRecord;
         private readonly string _deviceType;
+        private readonly string _sourceIp;
 
         private IParser _parser;
-        private RecordAlarm.Alarmer _alarmer;
+        private Alarmer _alarmer;
 
         /// <summary>
         /// 設備監控資訊清單
@@ -30,11 +31,12 @@ namespace BusinessLogic.Director
         /// <param name="detector">偵測器</param>
         /// <param name="originRecord">原始訊息</param>
         /// <param name="deviceType">設備類型</param>
-        public WorkDirector(string detector, string originRecord, DeviceType deviceType)
+        public WorkDirector(string detector, string originRecord, DeviceType deviceType, string sourceIp)
         {
             _detector = detector;
             _originRecord = originRecord;
             _deviceType = Enum.GetName(typeof(DeviceType), deviceType);
+            _sourceIp = sourceIp;
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace BusinessLogic.Director
         {
             InitWorkStation();
 
-            Monitors = _parser.ParseRecord(_originRecord);
+            Monitors = _parser.ParseRecord(_originRecord, _sourceIp);
 
             //TODO: ForEach 想辦法調掉
             Monitors.ForEach(monitor =>

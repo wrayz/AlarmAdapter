@@ -22,6 +22,10 @@ namespace BusinessLogic.RecordParser
                     parser = new CactiParser();
                     break;
 
+                case "Camera":
+                    parser = new CameraParser();
+                    break;
+
                 default:
                     throw new NotImplementedException($"尚未實作 { type } 解析器");
             }
