@@ -19,13 +19,13 @@ namespace APIService
         // 桌機通知服務位址
         private readonly string _socketUrl = ConfigurationManager.AppSettings["socket"];
 
-        private NotificationContent _notificationContent;
+        private GenericRemoteContent _notificationContent;
 
         /// <summary>
         /// 建構式
         /// </summary>
         /// <param name="notificationContent">推送內容</param>
-        public PushService(NotificationContent notificationContent)
+        public PushService(GenericRemoteContent notificationContent)
         {
             _notificationContent = notificationContent;
         }

@@ -1,4 +1,4 @@
-﻿using BusinessLogic.ContentStrategy;
+﻿using BusinessLogic.NotificationContent;
 using ModelLibrary;
 
 namespace APIService.PushStrategy

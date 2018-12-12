@@ -1,24 +1,26 @@
 ﻿using ModelLibrary;
-using Newtonsoft.Json;
+using ModelLibrary.Enumerate;
 using System.Collections.Generic;
 
-namespace BusinessLogic.ContentStrategy
+namespace BusinessLogic.RemoteNotification
 {
     /// <summary>
-    /// 通知內容產生策略
+    /// 通知推送內容
     /// </summary>
-    public abstract class GenericContentStrategy
+    public abstract class GenericRemoteContent
     {
+        //TODO: 建構式注入監控資訊
+
         /// <summary>
         /// 初始化
         /// </summary>
-        protected abstract void Initialize();
+        /// <param name="type">事件類型</param>
+        public abstract void Initialize(EventType type);
 
         /// <summary>
         /// 紀錄編號
         /// </summary>
-        [JsonProperty("LOG_SN")]
-        public string RECORD_SN { get; set; }
+        public int? LOG_SN { get; set; }
 
         /// <summary>
         /// 紀錄類型
@@ -29,11 +31,6 @@ namespace BusinessLogic.ContentStrategy
         /// 設備編號
         /// </summary>
         public string DEVICE_SN { get; set; }
-
-        /// <summary>
-        /// 監控項目
-        /// </summary>
-        public string TARGET_NAME { get; set; }
 
         /// <summary>
         /// 推送名稱

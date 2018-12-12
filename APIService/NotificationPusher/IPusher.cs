@@ -1,4 +1,4 @@
-﻿using BusinessLogic.ContentStrategy;
+﻿using BusinessLogic.NotificationContent;
 using System.Net.Http;
 
 namespace APIService.NotificationPusher
@@ -13,6 +13,6 @@ namespace APIService.NotificationPusher
         /// </summary>
         /// <param name="content">通知內容</param>
         /// <returns></returns>
-        HttpResponseMessage Push(GenericContentStrategy content);
+        HttpResponseMessage Push(GenericContent content);
     }
 }

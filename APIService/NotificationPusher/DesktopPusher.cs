@@ -1,4 +1,4 @@
-﻿using BusinessLogic.ContentStrategy;
+﻿using BusinessLogic.NotificationContent;
 using Newtonsoft.Json;
 using System.Configuration;
 using System.Net.Http;
@@ -15,7 +15,7 @@ namespace APIService.NotificationPusher
             _url = ConfigurationManager.AppSettings["socket"];
         }
 
-        public HttpResponseMessage Push(GenericContentStrategy content)
+        public HttpResponseMessage Push(GenericContent content)
         {
             using (var client = new HttpClient())
             {

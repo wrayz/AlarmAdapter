@@ -7,7 +7,7 @@ namespace BusinessLogic.RemoteNotification
     /// <summary>
     /// 簡易設備通知物件
     /// </summary>
-    public class SimpleContent : NotificationContent
+    public class SimpleContent : GenericRemoteContent
     {
         private SimpleLog _simpleLog;
 

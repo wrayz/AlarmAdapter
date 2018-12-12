@@ -1,5 +1,5 @@
 ﻿using APIService.NotificationPusher;
-using BusinessLogic.ContentStrategy;
+using BusinessLogic.NotificationContent;
 using ModelLibrary.Enumerate;
 using System.Collections.Generic;
 
@@ -29,7 +29,7 @@ namespace APIService.PushStrategy
         /// 推播通知目的地
         /// </summary>
         /// <param name="content">通知內容</param>
-        protected void PushDestination(GenericContentStrategy content)
+        protected void PushDestination(GenericContent content)
         {
             _destinations.ForEach(destination =>
             {

@@ -7,7 +7,7 @@ namespace BusinessLogic.RemoteNotification
     /// <summary>
     /// 數據類型通知資料
     /// </summary>
-    public class RecordContent : NotificationContent
+    public class RecordContent : GenericRemoteContent
     {
         private RecordLog _recordLog;
 

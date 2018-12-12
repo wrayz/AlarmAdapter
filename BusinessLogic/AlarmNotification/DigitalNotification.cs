@@ -20,7 +20,7 @@ namespace BusinessLogic.AlarmNotification
         /// <param name="deviceSn">設備編號</param>
         /// <param name="logSn">記錄編號</param>
         /// <returns></returns>
-        public NotificationContent GetPayload(EventType type, string deviceSn, int? logSn)
+        public GenericRemoteContent GetPayload(EventType type, string deviceSn, int? logSn)
         {
             //紀錄詳細資料處理物件
             var dao = GenericDataAccessFactory.CreateInstance<RecordLog>();

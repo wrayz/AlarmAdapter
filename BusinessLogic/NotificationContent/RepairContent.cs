@@ -1,13 +1,12 @@
 ﻿using ModelLibrary;
-using System;
 using System.Collections.Generic;
 
-namespace BusinessLogic.ContentStrategy
+namespace BusinessLogic.NotificationContent
 {
     /// <summary>
     /// 維修登記推送內容
     /// </summary>
-    public class RepairContent : GenericContentStrategy
+    public class RepairContent : GenericContent
     {
         private readonly Repair _repair;
         private Device _device;
@@ -49,7 +48,6 @@ namespace BusinessLogic.ContentStrategy
 
         private List<Field> GetFields()
         {
-
             return new List<Field>
             {
                 new Field("設備名稱", _device.DEVICE_NAME, true),

@@ -80,9 +80,9 @@
     <Compile Include="StateOperator\EqualOperator.cs" />
     <Compile Include="StateOperator\InOperator.cs" />
     <Compile Include="StateOperator\IOperator.cs" />
-    <Compile Include="ContentStrategy\GenericContentStrategy.cs" />
+    <Compile Include="NotificationContent\GenericContent.cs" />
     <Compile Include="DeviceGroup_BLL.cs" />
-    <Compile Include="ContentStrategy\RepairContent.cs" />
+    <Compile Include="NotificationContent\RepairContent.cs" />
     <Compile Include="Director\NotificationDirector.cs" />
     <Compile Include="NotificationStrategy\GenericNotifier.cs" />
     <Compile Include="NotificationStrategy\NotifierStrategy.cs" />
@@ -92,8 +92,8 @@
     <Compile Include="Director\WorkDirector.cs" />
     <Compile Include="License\NetworkCard.cs" />
     <Compile Include="NotificationCondition_BLL.cs" />
-    <Compile Include="ContentStrategy\CactiContent.cs" />
-    <Compile Include="RemoteNotification\NotificationContent.cs" />
+    <Compile Include="NotificationContent\CactiContent.cs" />
+    <Compile Include="RemoteNotification\GenericRemoteContent.cs" />
     <Compile Include="RemoteNotification\RecordContent.cs" />
     <Compile Include="RemoteNotification\SimpleContent.cs" />
     <Compile Include="AlarmNotification\DigitalNotification.cs" />

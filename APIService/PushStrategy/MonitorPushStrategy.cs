@@ -1,5 +1,5 @@
 ﻿using BusinessLogic;
-using BusinessLogic.ContentStrategy;
+using BusinessLogic.NotificationContent;
 using ModelLibrary;
 using System.Collections.Generic;
 
@@ -28,7 +28,7 @@ namespace APIService.PushStrategy
         {
             _notifications.ForEach(notification =>
              {
-                 GenericContentStrategy content = new CactiContent(notification);
+                 GenericContent content = new CactiContent(notification);
                  PushDestination(content);
                  Save(notification);
              });

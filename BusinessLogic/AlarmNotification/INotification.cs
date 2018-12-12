@@ -26,7 +26,7 @@ namespace BusinessLogic.AlarmNotification
         /// <param name="deviceSn">設備編號</param>
         /// <param name="logSn">記錄編號</param>
         /// <returns></returns>
-        NotificationContent GetPayload(EventType type, string deviceSn, int? logSn);
+        GenericRemoteContent GetPayload(EventType type, string deviceSn, int? logSn);
 
         /// <summary>
         /// 通知記錄儲存
