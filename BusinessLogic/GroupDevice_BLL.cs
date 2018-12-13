@@ -8,16 +8,16 @@ namespace BusinessLogic
     /// <summary>
     /// 設備群組商業邏輯
     /// </summary>
-    public class DeviceGroup_BLL : GenericBusinessLogic<DeviceGroup>
+    public class GroupDevice_BLL : GenericBusinessLogic<GroupDevice>
     {
         /// <summary>
         /// 群組清單取得
         /// </summary>
         /// <param name="deviceSn">設備編號</param>
         /// <returns></returns>
-        internal List<DeviceGroup> GetGroups(string deviceSn)
+        internal List<GroupDevice> GetGroups(string deviceSn)
         {
-            var condition = new DeviceGroup
+            var condition = new GroupDevice
             {
                 DEVICE_SN = deviceSn
             };

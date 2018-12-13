@@ -36,6 +36,6 @@ namespace ModelLibrary
         /// <summary>
         /// 設備群組清單
         /// </summary>
-        public List<DeviceGroup> GROUP_LIST { get; set; }
+        public List<GroupDevice> GROUP_LIST { get; set; }
     }
 }

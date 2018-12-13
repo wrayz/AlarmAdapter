@@ -68,10 +68,10 @@ namespace BusinessLogic.NotificationContent
             return Notification.MONITOR.IS_EXCEPTION == "Y" ? "danger" : "good";
         }
 
-        private List<DeviceGroup> GetGroups()
+        private List<GroupDevice> GetGroups()
         {
-            var bll = GenericBusinessFactory.CreateInstance<DeviceGroup>();
-            return (bll as DeviceGroup_BLL).GetGroups(Notification.DEVICE_SN);
+            var bll = GenericBusinessFactory.CreateInstance<GroupDevice>();
+            return (bll as GroupDevice_BLL).GetGroups(Notification.DEVICE_SN);
         }
 
         private List<Field> GetFields()

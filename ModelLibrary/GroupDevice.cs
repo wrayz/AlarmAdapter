@@ -3,21 +3,16 @@
     /// <summary>
     /// 設備群組資料
     /// </summary>
-    public class DeviceGroup
+    public class GroupDevice
     {
-        /// <summary>
-        /// 設備編號
-        /// </summary>
-        public string DEVICE_SN { get; set; }
-
         /// <summary>
         /// 群組編號
         /// </summary>
         public string GROUP_SN { get; set; }
 
         /// <summary>
-        /// 群組名稱
+        /// 設備編號
         /// </summary>
-        public string GROUP_NAME { get; set; }
+        public string DEVICE_SN { get; set; }
     }
 }

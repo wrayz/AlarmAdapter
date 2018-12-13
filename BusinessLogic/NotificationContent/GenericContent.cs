@@ -64,7 +64,7 @@ namespace BusinessLogic.NotificationContent
         /// <summary>
         /// 設備群組清單
         /// </summary>
-        public List<DeviceGroup> GROUP_LIST { get; protected set; }
+        public List<GroupDevice> GROUP_LIST { get; protected set; }
 
         /// <summary>
         /// 附加欄位清單

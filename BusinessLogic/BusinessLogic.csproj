@@ -85,7 +85,7 @@
     <Compile Include="StateOperator\InOperator.cs" />
     <Compile Include="StateOperator\IOperator.cs" />
     <Compile Include="NotificationContent\GenericContent.cs" />
-    <Compile Include="DeviceGroup_BLL.cs" />
+    <Compile Include="GroupDevice_BLL.cs" />
     <Compile Include="NotificationContent\RepairContent.cs" />
     <Compile Include="Director\NotificationDirector.cs" />
     <Compile Include="NotificationStrategy\GenericNotifier.cs" />

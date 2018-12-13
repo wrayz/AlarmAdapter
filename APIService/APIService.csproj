@@ -164,7 +164,7 @@
     <Content Include="Entity\DeviceMaintainer.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Entity\DeviceGroup.config" />
+    <Content Include="Entity\GroupDevice.config" />
     <Content Include="Entity\GroupMember.config" />
     <None Include="ConnectionsString.Debug.config">
       <DependentUpon>ConnectionsString.config</DependentUpon>

@@ -87,7 +87,7 @@
     <Compile Include="GroupService.cs" />
     <Compile Include="Record.cs" />
     <Compile Include="Device.cs" />
-    <Compile Include="DeviceGroup.cs" />
+    <Compile Include="GroupDevice.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="GroupMember.cs" />
     <Compile Include="DeviceMaintainer.cs" />
