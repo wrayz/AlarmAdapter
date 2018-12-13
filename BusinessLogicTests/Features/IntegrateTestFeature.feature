@@ -30,7 +30,7 @@ Given 通知條件為
 	| 2018001   | 0                 | 0              | 2             |
 	| 2018002   | 0                 | 1              | 0             |
 	| 2018003   | 1                 | 1              | 0             |
-	| 2018004   | 1                 | 2              | 0             |
+	| 2018004   | 1                 | 2              | 1             |
 Given 通知記錄為
 	| RECORD_SN     | DEVICE_SN | TARGET_NAME                     | TARGET_MESSAGE                                  | NOTIFICATION_TIME   |
 	| 2018111200001 | 2018002   | Traffic - Gi1/0/20 [traffic_in] | current value is 5630.6207                      | 2018/11/06 17:08:30 |
@@ -96,21 +96,21 @@ Scenario: Camera發送告警
 Scenario: Logmaster黑名單告警_通知
 	Given 偵測器"Logmaster" 
 	And 設備類型為"S"
-	And 原始訊息為"{ "DEVICE_ID": "10.2.253.5", "LOG_INFO": "From 10.2.253.5 detect block ip 103.210.135.136", "LOG_TIME": "2018/8/8 16:14:10" }"
+	And 原始訊息為"{ "DEVICE_ID": "10.2.253.5", "LOG_INFO": "From 10.2.253.5 detect block ip 103.210.135.136", "LOG_TIME": "2018/8/8 16:20:10" }"
 	And 來源IP為"10.2.253.5"
 	When 執行EF告警作業
 	Then EF解析告警結果為
 	| DEVICE_SN | DEVICE_ID  | TARGET_NAME | TARGET_VALUE    | TARGET_MESSAGE                                  | RECEIVE_TIME      | IS_EXCEPTION |
-	| 2018004   | 10.2.253.5 | block ip    | detect block ip | From 10.2.253.5 detect block ip 103.210.135.136 | 2018/8/8 16:14:10 | Y            |
+	| 2018004   | 10.2.253.5 | block ip    | detect block ip | From 10.2.253.5 detect block ip 103.210.135.136 | 2018/8/8 16:20:10 | Y            |
 	When 執行EF通知檢查作業
 	Then EF通知檢查結果為
 	| DEVICE_SN | DEVICE_ID  | TARGET_NAME | TARGET_VALUE    | TARGET_MESSAGE                                  | RECEIVE_TIME      | IS_EXCEPTION | IS_NOTIFICATION |
-	| 2018004   | 10.2.253.5 | block ip    | detect block ip | From 10.2.253.5 detect block ip 103.210.135.136 | 2018/8/8 16:14:10 | Y            | Y               |
+	| 2018004   | 10.2.253.5 | block ip    | detect block ip | From 10.2.253.5 detect block ip 103.210.135.136 | 2018/8/8 16:20:10 | Y            | Y               |
 
 Scenario: Logmaster黑名單告警_不通知
 	Given 偵測器"Logmaster" 
 	And 設備類型為"S"
-	And 原始訊息為"{ "DEVICE_ID": "10.2.253.5", "LOG_INFO": "From 10.2.253.5 detect block ip 103.210.135.136", "LOG_TIME": "2018/8/8 16:14:10" }"
+	And 原始訊息為"{ "DEVICE_ID": "10.2.253.5", "LOG_INFO": "From 10.2.253.5 detect block ip 103.210.135.136", "LOG_TIME": "2018/8/8 16:14:30" }"
 	And 來源IP為"10.2.253.5"
 	When 執行EF告警作業
 	Then EF解析告警結果為

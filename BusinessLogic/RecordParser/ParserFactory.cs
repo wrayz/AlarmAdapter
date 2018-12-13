@@ -27,6 +27,10 @@ namespace BusinessLogic.RecordParser
                     parser = new CameraParser();
                     break;
 
+                case Detector.Logmaster:
+                    parser = new LogmasterParser();
+                    break;
+
                 default:
                     throw new NotImplementedException($"尚未實作 { detector } 解析器");
             }

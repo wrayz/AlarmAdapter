@@ -7,6 +7,8 @@
     {
         Cacti,
 
-        Camera
+        Camera,
+
+        Logmaster
     }
 }

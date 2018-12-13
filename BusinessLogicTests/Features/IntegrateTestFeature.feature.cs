@@ -208,7 +208,7 @@ testRunner.Given("前次監控訊息為", ((string)(null)), table4, "Given ");
                         "2018004",
                         "1",
                         "2",
-                        "0"});
+                        "1"});
 #line 28
 testRunner.Given("通知條件為", ((string)(null)), table5, "Given ");
 #line hidden
@@ -520,7 +520,7 @@ this.FeatureBackground();
  testRunner.And("設備類型為\"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
  testRunner.And("原始訊息為\"{ \"DEVICE_ID\": \"10.2.253.5\", \"LOG_INFO\": \"From 10.2.253.5 detect block ip 1" +
-                    "03.210.135.136\", \"LOG_TIME\": \"2018/8/8 16:14:10\" }\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "03.210.135.136\", \"LOG_TIME\": \"2018/8/8 16:20:10\" }\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 100
  testRunner.And("來源IP為\"10.2.253.5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 101
@@ -540,7 +540,7 @@ this.FeatureBackground();
                         "block ip",
                         "detect block ip",
                         "From 10.2.253.5 detect block ip 103.210.135.136",
-                        "2018/8/8 16:14:10",
+                        "2018/8/8 16:20:10",
                         "Y"});
 #line 102
  testRunner.Then("EF解析告警結果為", ((string)(null)), table15, "Then ");
@@ -562,7 +562,7 @@ this.FeatureBackground();
                         "block ip",
                         "detect block ip",
                         "From 10.2.253.5 detect block ip 103.210.135.136",
-                        "2018/8/8 16:14:10",
+                        "2018/8/8 16:20:10",
                         "Y",
                         "Y"});
 #line 106
@@ -588,7 +588,7 @@ this.FeatureBackground();
  testRunner.And("設備類型為\"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
  testRunner.And("原始訊息為\"{ \"DEVICE_ID\": \"10.2.253.5\", \"LOG_INFO\": \"From 10.2.253.5 detect block ip 1" +
-                    "03.210.135.136\", \"LOG_TIME\": \"2018/8/8 16:14:10\" }\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                    "03.210.135.136\", \"LOG_TIME\": \"2018/8/8 16:14:30\" }\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
  testRunner.And("來源IP為\"10.2.253.5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 115
