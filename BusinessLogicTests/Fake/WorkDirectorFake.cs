@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Director;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,9 +24,10 @@ namespace BusinessLogicTests.Fake
             _alarmConditions = alarmConditions;
         }
 
-        protected override Device GetDevice(string deviceId, string deviceType)
+        protected override Device GetDevice(string deviceId)
         {
-            var device = _devices.Find(x => x.DEVICE_ID == deviceId && x.DEVICE_TYPE == deviceType);
+            var type = Enum.GetName(typeof(DeviceType), _deviceType);
+            var device = _devices.Find(x => x.DEVICE_ID == deviceId && x.DEVICE_TYPE == type);
 
             return device;
         }

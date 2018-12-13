@@ -1,4 +1,5 @@
 ﻿using ModelLibrary;
+using ModelLibrary.Enumerate;
 using ModelLibrary.Generic;
 using System;
 
@@ -15,12 +16,12 @@ namespace BusinessLogic
         /// <param name="deviceId">設備識別碼</param>
         /// <param name="deviceType">設備類型</param>
         /// <returns></returns>
-        public Device GetDevice(string deviceId, string deviceType)
+        public Device GetDevice(string deviceId, DeviceType deviceType)
         {
             var condition = new Device
             {
                 DEVICE_ID = deviceId,
-                DEVICE_TYPE = deviceType,
+                DEVICE_TYPE = Enum.GetName(typeof(DeviceType), deviceType),
                 IS_MONITOR = "Y"
             };
 

@@ -14,8 +14,9 @@ namespace BusinessLogic.Director
     {
         private readonly Detector _detector;
         private readonly string _originRecord;
-        private readonly string _deviceType;
         private readonly string _sourceIp;
+
+        protected readonly DeviceType _deviceType;
 
         private IParser _parser;
         private Alarmer _alarmer;
@@ -35,7 +36,7 @@ namespace BusinessLogic.Director
         {
             _detector = detector;
             _originRecord = originRecord;
-            _deviceType = Enum.GetName(typeof(DeviceType), deviceType);
+            _deviceType = deviceType;
             _sourceIp = sourceIp;
         }
 
@@ -51,7 +52,7 @@ namespace BusinessLogic.Director
             //TODO: ForEach 想辦法調掉
             Monitors.ForEach(monitor =>
             {
-                var device = GetDevice(monitor.DEVICE_ID, _deviceType);
+                var device = GetDevice(monitor.DEVICE_ID);
                 monitor.DEVICE_SN = device.DEVICE_SN;
 
                 Target target = GetTarget(device.DEVICE_SN, monitor.TARGET_NAME);
@@ -76,10 +77,10 @@ namespace BusinessLogic.Director
         /// <param name="deviceId">設備識別碼</param>
         /// <param name="deviceType">設備類型</param>
         /// <returns></returns>
-        protected virtual Device GetDevice(string deviceId, string deviceType)
+        protected virtual Device GetDevice(string deviceId)
         {
             var bll = GenericBusinessFactory.CreateInstance<Device>();
-            return (bll as Device_BLL).GetDevice(deviceId, deviceType);
+            return (bll as Device_BLL).GetDevice(deviceId, _deviceType);
         }
 
         /// <summary>
