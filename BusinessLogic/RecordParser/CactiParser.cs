@@ -18,7 +18,6 @@ namespace BusinessLogic.RecordParser
         /// <returns></returns>
         public List<Monitor> ParseRecord(string raw, string sourceIp = null)
         {
-            var monitors = new List<Monitor>();
             var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(raw);
 
             return new List<Monitor>

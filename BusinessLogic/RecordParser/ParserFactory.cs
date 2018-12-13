@@ -23,6 +23,10 @@ namespace BusinessLogic.RecordParser
                     parser = new CactiParser();
                     break;
 
+                case Detector.BobCacti:
+                    parser = new BobCactiParser();
+                    break;
+
                 case Detector.Camera:
                     parser = new CameraParser();
                     break;

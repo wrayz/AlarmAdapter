@@ -77,6 +77,7 @@
     <Compile Include="NotificationContent\CameraContent.cs" />
     <Compile Include="NotificationContent\NotificationContentFactory.cs" />
     <Compile Include="RecordNotifier\ContinuityAbnormalityNotifier.cs" />
+    <Compile Include="RecordParser\BobCactiParser.cs" />
     <Compile Include="RecordParser\CameraParser.cs" />
     <Compile Include="RecordParser\LogmasterParser.cs" />
     <Compile Include="StateOperator\AlwaysOperator.cs" />

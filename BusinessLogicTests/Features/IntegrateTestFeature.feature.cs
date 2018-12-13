@@ -373,23 +373,23 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("BobCacti_ERROR訊息")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("BobCacti_Error訊息")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "IntegrateTestFeature")]
-        public virtual void BobCacti_ERROR訊息()
+        public virtual void BobCacti_Error訊息()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("BobCacti_ERROR訊息", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("BobCacti_Error訊息", null, ((string[])(null)));
 #line 67
 this.ScenarioInitialize(scenarioInfo);
             this.ScenarioStart();
 #line 6
 this.FeatureBackground();
 #line 68
- testRunner.Given("偵測器\"Cacti\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("偵測器\"BobCacti\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 69
  testRunner.And("設備類型為\"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
- testRunner.And("原始訊息為\"{ \"id\":\"192.168.10.99\", \"target\": \"Ping\", \"action\":\"ERROR\", \"info\":\"ping do" +
-                    "wn\",\"time\":\"2018-09-13T13:21:30\" }\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("原始訊息為\"{ \"DEVICE_ID\":\"192.168.10.99\", \"ACTION_TYPE\":\"ERROR\", \"LOG_INFO\":\"ping down" +
+                    "\",\"LOG_TIME\":\"2018-09-13T13:21:30\" }\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 71
  testRunner.And("來源IP為\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72

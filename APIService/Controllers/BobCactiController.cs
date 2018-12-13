@@ -21,7 +21,7 @@ namespace APIService.Controllers
         /// <returns></returns>
         [Route("")]
         [HttpPost]
-        public IHttpActionResult Post(BobCactiRecord raw)
+        public IHttpActionResult Post(ReceiveFormUrlEncoded raw)
         {
             var logger = NLog.LogManager.GetLogger("Cacti");
 
@@ -30,7 +30,7 @@ namespace APIService.Controllers
                 var record = JsonConvert.SerializeObject(raw);
                 logger.Info(record);
 
-                var director = new GenericRecordDirector(Detector.Cacti, record, DeviceType.N);
+                var director = new GenericRecordDirector(Detector.BobCacti, record, DeviceType.N);
                 director.Execute();
 
                 return Ok();

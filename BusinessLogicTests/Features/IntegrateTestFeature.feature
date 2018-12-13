@@ -64,10 +64,10 @@ Scenario: Cacti_NORMAL訊息
 	| DEVICE_SN | DEVICE_ID     | TARGET_NAME                     | TARGET_VALUE | TARGET_MESSAGE             | RECEIVE_TIME        | IS_EXCEPTION | IS_NOTIFICATION |
 	| 2018002   | 192.168.10.98 | Traffic - Gi1/0/20 [traffic_in] | NORMAL       | current value is 5630.6207 | 2018/11/06 18:08:34 | N            | Y               |
 
-Scenario: BobCacti_ERROR訊息
-	Given 偵測器"Cacti" 
+Scenario: BobCacti_Error訊息
+	Given 偵測器"BobCacti" 
 	And 設備類型為"N"
-	And 原始訊息為"{ "id":"192.168.10.99", "target": "Ping", "action":"ERROR", "info":"ping down","time":"2018-09-13T13:21:30" }"
+	And 原始訊息為"{ "DEVICE_ID":"192.168.10.99", "ACTION_TYPE":"ERROR", "LOG_INFO":"ping down","LOG_TIME":"2018-09-13T13:21:30" }"
 	And 來源IP為""
 	When 執行EF告警作業
 	Then EF解析告警結果為
