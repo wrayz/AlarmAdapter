@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace BusinessLogic.RecordParser
 {
@@ -20,14 +21,16 @@ namespace BusinessLogic.RecordParser
         public List<Monitor> ParseRecord(string raw, string sourceIp = null)
         {
             var data = JsonConvert.DeserializeObject<ReceiveFormUrlEncoded>(raw);
+            var target = "detect block ip";
+            var value = Regex.Split(data.LOG_INFO, target)[1].Trim();
 
             return new List<Monitor>
             {
                 new Monitor
                 {
                     DEVICE_ID = data.DEVICE_ID,
-                    TARGET_NAME = "block ip",
-                    TARGET_VALUE = "detect block ip",
+                    TARGET_NAME = target,
+                    TARGET_VALUE = value,
                     TARGET_MESSAGE = data.LOG_INFO,
                     RECEIVE_TIME = data.LOG_TIME
                 }

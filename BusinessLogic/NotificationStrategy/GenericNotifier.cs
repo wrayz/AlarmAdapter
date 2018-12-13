@@ -3,7 +3,7 @@
 namespace BusinessLogic.NotificationStrategy
 {
     /// <summary>
-    /// 一般通知站
+    /// 一般通知站策略
     /// </summary>
     public class GenericNotifier : NotifierStrategy
     {

@@ -140,7 +140,7 @@ testRunner.Given("設備清單為", ((string)(null)), table1, "Given ");
                         "Y"});
             table2.AddRow(new string[] {
                         "2018004",
-                        "block ip",
+                        "detect block ip",
                         "0",
                         "Always",
                         "Y"});
@@ -227,7 +227,7 @@ testRunner.Given("通知條件為", ((string)(null)), table5, "Given ");
             table6.AddRow(new string[] {
                         "2018111200001",
                         "2018004",
-                        "block ip",
+                        "detect block ip",
                         "From 10.2.253.5 detect block ip 103.210.135.136",
                         "2018/8/8 16:14:20"});
 #line 34
@@ -537,8 +537,8 @@ this.FeatureBackground();
             table15.AddRow(new string[] {
                         "2018004",
                         "10.2.253.5",
-                        "block ip",
                         "detect block ip",
+                        "103.210.135.136",
                         "From 10.2.253.5 detect block ip 103.210.135.136",
                         "2018/8/8 16:20:10",
                         "Y"});
@@ -559,8 +559,8 @@ this.FeatureBackground();
             table16.AddRow(new string[] {
                         "2018004",
                         "10.2.253.5",
-                        "block ip",
                         "detect block ip",
+                        "103.210.135.136",
                         "From 10.2.253.5 detect block ip 103.210.135.136",
                         "2018/8/8 16:20:10",
                         "Y",
@@ -605,8 +605,8 @@ this.FeatureBackground();
             table17.AddRow(new string[] {
                         "2018004",
                         "10.2.253.5",
-                        "block ip",
                         "detect block ip",
+                        "103.210.135.136",
                         "From 10.2.253.5 detect block ip 103.210.135.136",
                         "2018/8/8 16:14:30",
                         "Y"});
@@ -627,8 +627,8 @@ this.FeatureBackground();
             table18.AddRow(new string[] {
                         "2018004",
                         "10.2.253.5",
-                        "block ip",
                         "detect block ip",
+                        "103.210.135.136",
                         "From 10.2.253.5 detect block ip 103.210.135.136",
                         "2018/8/8 16:14:30",
                         "Y",
