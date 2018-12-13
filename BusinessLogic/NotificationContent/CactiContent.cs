@@ -8,7 +8,7 @@ namespace BusinessLogic.NotificationContent
     /// </summary>
     public class CactiContent : GenericContent
     {
-        private readonly Notification _notification;
+        protected Notification Notification { get; private set; }
 
         /// <summary>
         /// 建構式
@@ -16,65 +16,73 @@ namespace BusinessLogic.NotificationContent
         /// <param name="notification">通知資訊</param>
         public CactiContent(Notification notification)
         {
-            _notification = notification;
+            Notification = notification;
+
+            GenericInitialize();
+        }
+
+        /// <summary>
+        /// 共用初始化
+        /// </summary>
+        private void GenericInitialize()
+        {
+            DEVICE_SN = Notification.DEVICE_SN;
+
+            TARGET_NAME = Notification.TARGET_NAME;
+
+            RECORD_SN = Notification.RECORD_SN;
+
+            LOG_TYPE = Notification.DEVICE.DEVICE_TYPE;
+
+            GROUP_LIST = GetGroups();
+
+            FIELD_LIST = GetFields();
 
             Initialize();
         }
 
         /// <summary>
-        /// 初始化
+        /// 客製初始化
         /// </summary>
         protected override void Initialize()
         {
-            DEVICE_SN = _notification.DEVICE_SN;
-
-            TARGET_NAME = _notification.TARGET_NAME;
-
-            RECORD_SN = _notification.RECORD_SN;
-
             BUTTON_STATUS = GetButtonStatus();
 
             TITLE = GetTitle();
 
             COLOR = GetColor();
-
-            LOG_TYPE = _notification.DEVICE.DEVICE_TYPE;
-
-            GROUP_LIST = GetGroups();
-
-            FIELD_LIST = GetFields();
         }
 
         private string GetButtonStatus()
         {
-            return _notification.MONITOR.IS_EXCEPTION == "Y" ? "E" : "N";
+            return Notification.MONITOR.IS_EXCEPTION == "Y" ? "E" : "N";
         }
 
         private string GetTitle()
         {
-            return _notification.MONITOR.IS_EXCEPTION == "Y" ? "設備異常資訊" : "異常設備恢復資訊";
+            return Notification.MONITOR.IS_EXCEPTION == "Y" ? "設備異常資訊" : "異常設備恢復資訊";
         }
 
         private string GetColor()
         {
-            return _notification.MONITOR.IS_EXCEPTION == "Y" ? "danger" : "good";
+            return Notification.MONITOR.IS_EXCEPTION == "Y" ? "danger" : "good";
         }
 
         private List<DeviceGroup> GetGroups()
         {
             var bll = GenericBusinessFactory.CreateInstance<DeviceGroup>();
-            return (bll as DeviceGroup_BLL).GetGroups(_notification.DEVICE_SN);
+            return (bll as DeviceGroup_BLL).GetGroups(Notification.DEVICE_SN);
         }
 
         private List<Field> GetFields()
         {
             return new List<Field>
             {
-                new Field("設備名稱", _notification.DEVICE.DEVICE_NAME, true),
-                new Field("設備位址", _notification.DEVICE.DEVICE_ID, true),
-                new Field("監控項目", _notification.TARGET_NAME, true),
-                new Field("發生時間", _notification.MONITOR.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
-                new Field("監控資訊", _notification.TARGET_MESSAGE, true)
+                new Field("設備名稱", Notification.DEVICE.DEVICE_NAME, true),
+                new Field("設備位址", Notification.DEVICE.DEVICE_ID, true),
+                new Field("監控項目", Notification.TARGET_NAME, true),
+                new Field("發生時間", Notification.MONITOR.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
+                new Field("監控資訊", Notification.TARGET_MESSAGE, true)
             };
         }
     }

@@ -16,13 +16,18 @@ namespace BusinessLogic.NotificationContent
         /// <returns></returns>
         public static GenericContent CreateInstance(Notification notification)
         {
-            var type = Enum.Parse(typeof(DeviceType), notification.DEVICE.DEVICE_TYPE);
             GenericContent content;
+
+            var type = Enum.Parse(typeof(DeviceType), notification.DEVICE.DEVICE_TYPE);
 
             switch (type)
             {
                 case DeviceType.N:
                     content = new CactiContent(notification);
+                    break;
+
+                case DeviceType.S:
+                    content = new CameraContent(notification);
                     break;
 
                 default:
