@@ -122,6 +122,7 @@
     <Compile Include="Controllers\BobCactiController.cs" />
     <Compile Include="Controllers\CactiController.cs" />
     <Compile Include="Controllers\CameraController.cs" />
+    <Compile Include="Controllers\LogmasterController.cs" />
     <Compile Include="Controllers\RepairController.cs" />
     <Compile Include="Controllers\RecordLogsController.cs" />
     <Compile Include="Controllers\RecordsController.cs" />

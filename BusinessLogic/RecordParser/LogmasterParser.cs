@@ -19,17 +19,17 @@ namespace BusinessLogic.RecordParser
         /// <returns></returns>
         public List<Monitor> ParseRecord(string raw, string sourceIp = null)
         {
-            var data = JsonConvert.DeserializeObject<Dictionary<string, string>>(raw);
+            var data = JsonConvert.DeserializeObject<ReceiveFormUrlEncoded>(raw);
 
             return new List<Monitor>
             {
                 new Monitor
                 {
-                    DEVICE_ID = data["DEVICE_ID"],
+                    DEVICE_ID = data.DEVICE_ID,
                     TARGET_NAME = "block ip",
                     TARGET_VALUE = "detect block ip",
-                    TARGET_MESSAGE = data["LOG_INFO"],
-                    RECEIVE_TIME = DateTime.Parse(data["LOG_TIME"], CultureInfo.InvariantCulture)
+                    TARGET_MESSAGE = data.LOG_INFO,
+                    RECEIVE_TIME = data.LOG_TIME
                 }
             };
         }
