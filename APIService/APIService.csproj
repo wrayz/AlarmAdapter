@@ -128,7 +128,6 @@
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\LanguagesController.cs" />
     <Compile Include="Controllers\SimpleLogsController.cs" />
-    <Compile Include="Controllers\SystemLogsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Director\GenericRecordDirector.cs" />
     <Compile Include="GenericAPIService.cs" />
