@@ -102,11 +102,9 @@
     <Compile Include="NotificationContent\CactiContent.cs" />
     <Compile Include="RemoteNotification\GenericRemoteContent.cs" />
     <Compile Include="RemoteNotification\RecordContent.cs" />
-    <Compile Include="RemoteNotification\SimpleContent.cs" />
     <Compile Include="AlarmNotification\DigitalNotification.cs" />
     <Compile Include="AlarmNotification\INotification.cs" />
     <Compile Include="AlarmNotification\NotificationFactory.cs" />
-    <Compile Include="AlarmNotification\SimpleNotification.cs" />
     <Compile Include="RecordAlarm\Alarmer.cs" />
     <Compile Include="RecordAlarm\IAlarm.cs" />
     <Compile Include="RecordLog_BLL.cs" />
@@ -122,7 +120,6 @@
     <Compile Include="RecordParser\CactiParser.cs" />
     <Compile Include="RecordParser\IParser.cs" />
     <Compile Include="RecordParser\ParserFactory.cs" />
-    <Compile Include="SimpleLog_BLL.cs" />
     <Compile Include="StateOperator\OperatorFactory.cs" />
     <Compile Include="Target_BLL.cs" />
   </ItemGroup>

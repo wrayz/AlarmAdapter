@@ -116,7 +116,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbuseIpDbService.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BobCactiController.cs" />
@@ -128,7 +127,6 @@
     <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\LanguagesController.cs" />
-    <Compile Include="Controllers\SimpleLogsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Director\GenericRecordDirector.cs" />
     <Compile Include="GenericAPIService.cs" />
@@ -184,7 +182,6 @@
     <Content Include="Entity\DeviceRecord.config" />
     <Content Include="Entity\RecordLog.config" />
     <Content Include="Entity\RecordLimit.config" />
-    <Content Include="Entity\SimpleLog.config" />
     <Content Include="Entity\GroupService.config" />
     <Content Include="Entity\NotificationCondition.config" />
     <Content Include="Entity\NotificationRecord.config" />

@@ -15,10 +15,6 @@ namespace BusinessLogic.AlarmNotification
                     notification = new DigitalNotification();
                     break;
 
-                case DeviceType.S:
-                    notification = new SimpleNotification();
-                    break;
-
                 default:
                     throw new Exception("無此設備");
             }

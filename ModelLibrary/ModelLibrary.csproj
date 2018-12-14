@@ -63,7 +63,6 @@
     <Compile Include="AbuseIpDbSetting.cs" />
     <Compile Include="Alarm.cs" />
     <Compile Include="AlarmCondition.cs" />
-    <Compile Include="APILog.cs" />
     <Compile Include="BlockHole.cs" />
     <Compile Include="BlockResult.cs" />
     <Compile Include="ReceiveFormUrlEncoded.cs" />
@@ -104,7 +103,6 @@
     <Compile Include="RecordLimit.cs" />
     <Compile Include="RecordLog.cs" />
     <Compile Include="ReportedIP.cs" />
-    <Compile Include="SimpleLog.cs" />
     <Compile Include="Supplier.cs" />
     <Compile Include="SystemFile.cs" />
     <Compile Include="Target.cs" />
