@@ -47,6 +47,7 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -105,6 +106,7 @@
     <Compile Include="ReportedIP.cs" />
     <Compile Include="SimpleLog.cs" />
     <Compile Include="Supplier.cs" />
+    <Compile Include="SystemFile.cs" />
     <Compile Include="Target.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Voice.cs" />
