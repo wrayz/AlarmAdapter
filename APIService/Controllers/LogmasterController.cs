@@ -1,5 +1,8 @@
 ﻿using APIService.Director;
+using BusinessLogic.NotificationStrategy;
+using ModelLibrary;
 using ModelLibrary.Enumerate;
+using Newtonsoft.Json;
 using System;
 using System.Web.Http;
 
@@ -10,15 +13,15 @@ namespace APIService.Controllers
     /// </summary>
     public class LogmasterController : ApiController
     {
-        public IHttpActionResult Post()
+        public IHttpActionResult Post(ReceiveFormUrlEncoded raw)
         {
             var logger = NLog.LogManager.GetLogger("Logmaster");
             try
             {
-                var record = Request.Content.ReadAsStringAsync().Result;
+                var record = JsonConvert.SerializeObject(raw);
                 logger.Info(record);
 
-                var director = new GenericRecordDirector(Detector.Logmaster, record, DeviceType.S);
+                var director = new GenericRecordDirector(Detector.Logmaster, record, DeviceType.S, new LogmasterNotifierStrategy());
                 director.Execute();
 
                 return Ok();

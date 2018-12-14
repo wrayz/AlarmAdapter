@@ -10,22 +10,14 @@ namespace APIService.PushStrategy
     /// </summary>
     internal class MonitorPushStrategy : GenericPushStrategy
     {
-        private readonly List<Notification> _notifications;
-
-        /// <summary>
-        /// 建構式
-        /// </summary>
-        public MonitorPushStrategy()
-        {
-            _notifications = GetNotifications();
-        }
-
         /// <summary>
         /// 推播執行
         /// </summary>
         public override void Execute()
         {
-            _notifications.ForEach(notification =>
+            var notifications = GetNotifications();
+
+            notifications.ForEach(notification =>
              {
                  var content = NotificationContentFactory.CreateInstance(notification);
                  PushDestination(content);

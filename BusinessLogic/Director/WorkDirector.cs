@@ -32,7 +32,7 @@ namespace BusinessLogic.Director
         /// <param name="detector">偵測器</param>
         /// <param name="originRecord">原始訊息</param>
         /// <param name="deviceType">設備類型</param>
-        public WorkDirector(Detector detector, string originRecord, DeviceType deviceType, string sourceIp)
+        public WorkDirector(Detector detector, string originRecord, DeviceType deviceType, string sourceIp = null)
         {
             _detector = detector;
             _originRecord = originRecord;

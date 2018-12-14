@@ -74,8 +74,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbuseIpDbBusinessLogic.cs" />
+    <Compile Include="BlockHole_BLL.cs" />
     <Compile Include="NotificationContent\CameraContent.cs" />
     <Compile Include="NotificationContent\NotificationContentFactory.cs" />
+    <Compile Include="NotificationStrategy\LogmasterNotifierStrategy.cs" />
     <Compile Include="RecordNotifier\ContinuityAbnormalityNotifier.cs" />
     <Compile Include="RecordParser\BobCactiParser.cs" />
     <Compile Include="RecordParser\CameraParser.cs" />

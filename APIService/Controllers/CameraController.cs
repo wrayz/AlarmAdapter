@@ -1,4 +1,5 @@
 ﻿using APIService.Director;
+using BusinessLogic.NotificationStrategy;
 using ModelLibrary.Enumerate;
 using System;
 using System.Web;
@@ -21,7 +22,7 @@ namespace APIService.Controllers
                 var sourceIp = GetSourceIP();
                 logger.Info(sourceIp + "|" + record);
 
-                var director = new GenericRecordDirector(Detector.Camera, record, DeviceType.S, sourceIp);
+                var director = new GenericRecordDirector(Detector.Camera, record, DeviceType.S, new GenericNotifier(), sourceIp);
                 director.Execute();
 
                 return Ok();

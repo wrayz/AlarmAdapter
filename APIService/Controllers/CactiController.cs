@@ -1,4 +1,5 @@
 ﻿using APIService.Director;
+using BusinessLogic.NotificationStrategy;
 using ModelLibrary.Enumerate;
 using NLog;
 using System;
@@ -22,7 +23,7 @@ namespace APIService.Controllers
                 var record = Request.Content.ReadAsStringAsync().Result;
                 logger.Info(record);
 
-                var director = new GenericRecordDirector(Detector.Cacti, record, DeviceType.N);
+                var director = new GenericRecordDirector(Detector.Cacti, record, DeviceType.N, new GenericNotifier());
                 director.Execute();
 
                 return Ok();

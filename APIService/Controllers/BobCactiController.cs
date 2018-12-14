@@ -1,4 +1,5 @@
 ﻿using APIService.Director;
+using BusinessLogic.NotificationStrategy;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
 using Newtonsoft.Json;
@@ -30,7 +31,7 @@ namespace APIService.Controllers
                 var record = JsonConvert.SerializeObject(raw);
                 logger.Info(record);
 
-                var director = new GenericRecordDirector(Detector.BobCacti, record, DeviceType.N);
+                var director = new GenericRecordDirector(Detector.BobCacti, record, DeviceType.N, new GenericNotifier());
                 director.Execute();
 
                 return Ok();
