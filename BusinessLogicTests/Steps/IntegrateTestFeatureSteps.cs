@@ -117,7 +117,7 @@ namespace BusinessLogicTests.Steps
         [When(@"執行EF通知檢查作業")]
         public void When執行EF通知檢查作業()
         {
-            var strategy = new GenericNotifier();
+            var strategy = new GenericNotifierStrategy();
             _notificationDirector = new NotificationDirectorFake(strategy, _workDirector.Monitors, _previousMonitors, _notificationConditions, _notifications);
             _notificationDirector.Execute();
         }

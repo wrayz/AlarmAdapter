@@ -22,7 +22,7 @@ namespace APIService.Controllers
                 var sourceIp = GetSourceIP();
                 logger.Info(sourceIp + "|" + record);
 
-                var director = new GenericRecordDirector(Detector.Camera, record, DeviceType.S, new GenericNotifier(), sourceIp);
+                var director = new GenericRecordDirector(Detector.Camera, record, DeviceType.S, new GenericNotifierStrategy(), sourceIp);
                 director.Execute();
 
                 return Ok();

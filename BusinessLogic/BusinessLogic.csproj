@@ -91,7 +91,7 @@
     <Compile Include="GroupDevice_BLL.cs" />
     <Compile Include="NotificationContent\RepairContent.cs" />
     <Compile Include="Director\NotificationDirector.cs" />
-    <Compile Include="NotificationStrategy\GenericNotifier.cs" />
+    <Compile Include="NotificationStrategy\GenericNotifierStrategy.cs" />
     <Compile Include="NotificationStrategy\NotifierStrategy.cs" />
     <Compile Include="Repair_BLL.cs" />
     <Compile Include="Monitor_BLL.cs" />

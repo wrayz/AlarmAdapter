@@ -31,7 +31,7 @@ namespace APIService.Controllers
                 var record = JsonConvert.SerializeObject(raw);
                 logger.Info(record);
 
-                var director = new GenericRecordDirector(Detector.BobCacti, record, DeviceType.N, new GenericNotifier());
+                var director = new GenericRecordDirector(Detector.BobCacti, record, DeviceType.N, new GenericNotifierStrategy());
                 director.Execute();
 
                 return Ok();

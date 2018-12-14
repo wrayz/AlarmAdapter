@@ -5,7 +5,7 @@ namespace BusinessLogic.NotificationStrategy
     /// <summary>
     /// 一般通知站策略
     /// </summary>
-    public class GenericNotifier : NotifierStrategy
+    public class GenericNotifierStrategy : NotifierStrategy
     {
         public override string IsNotification(NotificationCondition condition, Monitor monitor, Monitor previousMonitor, Notification notification)
         {
