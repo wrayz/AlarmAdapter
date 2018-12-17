@@ -15,6 +15,7 @@ Given 監控項目資訊
 	| 2018001   | Traffic - Gi1/0/20 [traffic_in] | 0             | Equal         | Y            |
 	| 2018001   | Ping                            | 0             | In            | Y            |
 	| 2018003   | EVENT_TYPE                      | 0             | Always        | Y            |
+	| 2018003   | VIDEO		                      | 0             | Always        | Y            |
 	| 2018004   | detect block ip                 | 0             | Always        | Y            |
 Given 告警條件為
 	| DEVICE_SN | TARGET_NAME                     | TARGET_VALUE |
@@ -81,16 +82,18 @@ Scenario: BobCacti_Error訊息
 Scenario: Camera發送告警
 	Given 偵測器"Camera" 
 	And 設備類型為"S"
-	And 原始訊息為"EVENT_TYPE=Camera tampering detection"
+	And 原始訊息為"EVENT_TYPE=Camera tampering detection&VIDEO=123"
 	And 來源IP為"192.168.60.87"
 	When 執行EF告警作業
 	Then EF解析告警結果為
 	| DEVICE_SN | DEVICE_ID     | TARGET_NAME | TARGET_VALUE               | TARGET_MESSAGE             | IS_EXCEPTION |
 	| 2018003   | 192.168.60.87 | EVENT_TYPE  | Camera tampering detection | Camera tampering detection | Y            |
+	| 2018003   | 192.168.60.87 | VIDEO       | 123                        | 123                        | Y            |
 	When 執行EF通知檢查作業
 	Then EF通知檢查結果為
 	| DEVICE_SN | DEVICE_ID     | TARGET_NAME | TARGET_VALUE               | TARGET_MESSAGE             | IS_EXCEPTION | IS_NOTIFICATION |
 	| 2018003   | 192.168.60.87 | EVENT_TYPE  | Camera tampering detection | Camera tampering detection | Y            | Y               |
+	| 2018003   | 192.168.60.87 | VIDEO       | 123                        | 123                        | Y            | Y               |
 
 
 Scenario: Logmaster黑名單告警_通知

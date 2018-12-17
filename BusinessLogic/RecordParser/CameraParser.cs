@@ -11,20 +11,30 @@ namespace BusinessLogic.RecordParser
         /// </summary>
         /// <param name="raw">原始記錄</param>
         /// <returns></returns>
-        public List<Monitor> ParseRecord(string raw, string souceIp = null)
+        public List<Monitor> ParseRecord(string raw, string sourceIp = null)
         {
-            var data = raw.Split('=');
+            var monitors = new List<Monitor>();
+            var data = raw.Split('&');
 
-            return new List<Monitor>
+            foreach (var item in data)
             {
-                new Monitor
-                {
-                    DEVICE_ID = souceIp,
-                    TARGET_NAME = data[0],
-                    TARGET_VALUE = data[1],
-                    TARGET_MESSAGE = data[1],
-                    RECEIVE_TIME = DateTime.Now
-                }
+                Monitor monitor = Parsing(item, sourceIp);
+                monitors.Add(monitor);
+            }
+
+            return monitors;
+        }
+
+        private Monitor Parsing(string item, string sourceIp)
+        {
+            var result = item.Split('=');
+            return new Monitor
+            {
+                DEVICE_ID = sourceIp,
+                TARGET_NAME = result[0],
+                TARGET_VALUE = result[1],
+                TARGET_MESSAGE = result[1],
+                RECEIVE_TIME = DateTime.Now
             };
         }
     }
