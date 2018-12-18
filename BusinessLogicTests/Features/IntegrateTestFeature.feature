@@ -10,18 +10,25 @@ Given 設備清單為
 	| 2018002   | 192.168.10.98 | N           |
 	| 2018003   | 192.168.60.87 | S           |
 	| 2018004   | 10.2.253.5    | S           |
+	| 2018005   | 10.1.10.9     | D           |
 Given 監控項目資訊
 	| DEVICE_SN | TARGET_NAME                     | TARGET_STATUS | OPERATOR_TYPE | IS_EXCEPTION |
 	| 2018001   | Traffic - Gi1/0/20 [traffic_in] | 0             | Equal         | Y            |
 	| 2018001   | Ping                            | 0             | In            | Y            |
 	| 2018003   | EVENT_TYPE                      | 0             | Always        | Y            |
-	| 2018003   | VIDEO		                      | 0             | Always        | Y            |
+	| 2018003   | VIDEO                           | 0             | Always        | Y            |
 	| 2018004   | detect block ip                 | 0             | Always        | Y            |
+	| 2018005   | Humidity                        | 0             | Between       | N            |
+	| 2018005   | Temperature                     | 0             | Between       | N            |
 Given 告警條件為
 	| DEVICE_SN | TARGET_NAME                     | TARGET_VALUE |
 	| 2018001   | Traffic - Gi1/0/20 [traffic_in] | ALERT        |
 	| 2018001   | Ping                            | ERROR        |
 	| 2018001   | Ping                            | DOWN         |
+	| 2018005   | Humidity                        | 3500         |
+	| 2018005   | Humidity                        | 4500         |
+	| 2018005   | Temperature                     | 3000         |
+	| 2018005   | Temperature                     | 5000         |
 Given 前次監控訊息為
 	| RECORD_SN     | DEVICE_SN | TARGET_NAME                     | IS_EXCEPTION |
 	| 2018111200001 | 2018001   | Traffic - Gi1/0/20 [traffic_in] | N            |
@@ -32,6 +39,7 @@ Given 通知條件為
 	| 2018002   | 0                 | 1              | 0             |
 	| 2018003   | 1                 | 1              | 0             |
 	| 2018004   | 1                 | 2              | 1             |
+	| 2018005   | 0                 | 0              | 1             |
 Given 通知記錄為
 	| RECORD_SN     | DEVICE_SN | TARGET_NAME                     | TARGET_MESSAGE                                  | NOTIFICATION_TIME   |
 	| 2018111200001 | 2018002   | Traffic - Gi1/0/20 [traffic_in] | current value is 5630.6207                      | 2018/11/06 17:08:30 |
@@ -100,7 +108,7 @@ Scenario: Logmaster黑名單告警_通知
 	Given 偵測器"Logmaster" 
 	And 設備類型為"S"
 	And 原始訊息為"{ "DEVICE_ID": "10.2.253.5", "LOG_INFO": "From 10.2.253.5 detect block ip 103.210.135.136", "LOG_TIME": "2018/8/8 16:20:10" }"
-	And 來源IP為"10.2.253.5"
+	And 來源IP為""
 	When 執行EF告警作業
 	Then EF解析告警結果為
 	| DEVICE_SN | DEVICE_ID  | TARGET_NAME     | TARGET_VALUE    | TARGET_MESSAGE                                  | RECEIVE_TIME      | IS_EXCEPTION |
@@ -114,7 +122,7 @@ Scenario: Logmaster黑名單告警_不通知
 	Given 偵測器"Logmaster" 
 	And 設備類型為"S"
 	And 原始訊息為"{ "DEVICE_ID": "10.2.253.5", "LOG_INFO": "From 10.2.253.5 detect block ip 103.210.135.136", "LOG_TIME": "2018/8/8 16:14:30" }"
-	And 來源IP為"10.2.253.5"
+	And 來源IP為""
 	When 執行EF告警作業
 	Then EF解析告警結果為
 	| DEVICE_SN | DEVICE_ID  | TARGET_NAME     | TARGET_VALUE    | TARGET_MESSAGE                                  | RECEIVE_TIME      | IS_EXCEPTION |
@@ -123,3 +131,19 @@ Scenario: Logmaster黑名單告警_不通知
 	Then EF通知檢查結果為
 	| DEVICE_SN | DEVICE_ID  | TARGET_NAME     | TARGET_VALUE    | TARGET_MESSAGE                                  | RECEIVE_TIME      | IS_EXCEPTION | IS_NOTIFICATION |
 	| 2018004   | 10.2.253.5 | detect block ip | 103.210.135.136 | From 10.2.253.5 detect block ip 103.210.135.136 | 2018/8/8 16:14:30 | Y            | N               |
+
+Scenario: 溫濕度計告警
+	Given 偵測器"iFace" 
+	And 設備類型為"D"
+	And 原始訊息為"{"Date":"08/10/18","Time":"17:51:48","Name_1":"10.1.10.9","Humidity_1":3045,"Temperature_1":3266,"Name_2":"","Humidity_2":0,"Temperature_2":0,"Name_3":"","Humidity_3":0,"Temperature_3":0,"Name_4":"","Humidity_4":0,"Temperature_4":0}"
+	And 來源IP為""
+	When 執行EF告警作業
+	Then EF解析告警結果為
+	| DEVICE_SN | DEVICE_ID | TARGET_NAME | TARGET_VALUE | TARGET_MESSAGE | IS_EXCEPTION |
+	| 2018005   | 10.1.10.9 | Humidity    | 3045         | 3045           | Y            |
+	| 2018005   | 10.1.10.9 | Temperature | 3266         | 3266           | N            |
+	When 執行EF通知檢查作業
+	Then EF通知檢查結果為
+	| DEVICE_SN | DEVICE_ID | TARGET_NAME | TARGET_VALUE | TARGET_MESSAGE | IS_EXCEPTION | IS_NOTIFICATION |
+	| 2018005   | 10.1.10.9 | Humidity    | 3045         | 3045           | Y            | Y               |
+	| 2018005   | 10.1.10.9 | Temperature | 3266         | 3266           | N            | N               |
