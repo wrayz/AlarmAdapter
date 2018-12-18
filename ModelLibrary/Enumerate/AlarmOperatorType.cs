@@ -19,5 +19,10 @@
         /// 持續
         /// </summary>
         Always,
+
+        /// <summary>
+        /// 介於
+        /// </summary>
+        Between,
     }
 }

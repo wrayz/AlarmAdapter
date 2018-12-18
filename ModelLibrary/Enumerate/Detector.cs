@@ -11,6 +11,7 @@
 
         Camera,
 
-        Logmaster
+        Logmaster,
+        iFace
     }
 }

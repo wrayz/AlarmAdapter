@@ -23,7 +23,9 @@ namespace BusinessLogic.RecordAlarm
             var alarmOperator = OperatorFactory.CreateInstance(type);
             var conditions = target.ALARM_CONDITIONS.Select(x => x.TARGET_VALUE).ToList();
 
-            return alarmOperator.Check(monitor.TARGET_VALUE, conditions) ? "Y" : "N";
+            var falseResult = target.IS_EXCEPTION == "Y" ? "N" : "Y";
+
+            return alarmOperator.Check(monitor.TARGET_VALUE, conditions) ? target.IS_EXCEPTION : falseResult;
         }
     }
 }

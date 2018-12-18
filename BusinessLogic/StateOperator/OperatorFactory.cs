@@ -23,6 +23,10 @@ namespace BusinessLogic.StateOperator
                     alarmOperator = new AlwaysOperator();
                     break;
 
+                case AlarmOperatorType.Between:
+                    alarmOperator = new BetweenOperator();
+                    break;
+
                 default:
                     throw new Exception($"尚未實作 { type } 運算子判斷");
             }

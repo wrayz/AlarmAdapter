@@ -35,6 +35,10 @@ namespace BusinessLogic.RecordParser
                     parser = new LogmasterParser();
                     break;
 
+                case Detector.iFace:
+                    parser = new IfaceParser();
+                    break;
+
                 default:
                     throw new NotImplementedException($"尚未實作 { detector } 解析器");
             }
