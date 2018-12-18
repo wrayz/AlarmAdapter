@@ -1,5 +1,6 @@
 ﻿using ModelLibrary;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic.NotificationContent
 {
@@ -18,13 +19,13 @@ namespace BusinessLogic.NotificationContent
         {
             Notification = notification;
 
-            GenericInitialize();
+            ExecuteInitialize();
         }
 
         /// <summary>
-        /// 共用初始化
+        /// 初始化執行
         /// </summary>
-        private void GenericInitialize()
+        private void ExecuteInitialize()
         {
             DEVICE_SN = Notification.DEVICE_SN;
 
@@ -37,14 +38,12 @@ namespace BusinessLogic.NotificationContent
             GROUP_LIST = GetGroups();
 
             FIELD_LIST = GetFields();
-
-            Initialize();
         }
 
         /// <summary>
         /// 客製初始化
         /// </summary>
-        protected override void Initialize()
+        internal override void CustomInitialize()
         {
             BUTTON_STATUS = GetButtonStatus();
 

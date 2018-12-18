@@ -2,6 +2,7 @@
 using BusinessLogic.NotificationContent;
 using ModelLibrary;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace APIService.PushStrategy
 {
@@ -17,12 +18,19 @@ namespace APIService.PushStrategy
         {
             var notifications = GetNotifications();
 
-            notifications.ForEach(notification =>
-             {
-                 var content = NotificationContentFactory.CreateInstance(notification);
-                 PushDestination(content);
-                 Save(notification);
-             });
+            var list = notifications.GroupBy(x => x.RECORD_SN, (k, r) => new
+            {
+                Key = k,
+                Result = r.ToList()
+            });
+
+            foreach (var data in list)
+            {
+                var type = data.Result.First().DEVICE.DEVICE_TYPE;
+                var content = NotificationContentFactory.CreateInstance(type, data.Result);
+                PushDestination(content);
+                Save(data.Result);
+            }
         }
 
         /// <summary>
@@ -38,11 +46,11 @@ namespace APIService.PushStrategy
         /// <summary>
         /// 通知儲存
         /// </summary>
-        /// <param name="condition">實體條件</param>
-        private void Save(Notification condition)
+        /// <param name="data">實體資料</param>
+        private void Save(List<Notification> data)
         {
             var bll = GenericBusinessFactory.CreateInstance<Notification>();
-            (bll as Notification_BLL).Update(condition);
+            data.ForEach(x => (bll as Notification_BLL).Update(x));
         }
     }
 }

@@ -19,13 +19,13 @@ namespace BusinessLogic.NotificationContent
         {
             _repair = repair;
 
-            Initialize();
+            CustomInitialize();
         }
 
         /// <summary>
         /// 初始化
         /// </summary>
-        protected override void Initialize()
+        internal override void CustomInitialize()
         {
             _device = GetDevice();
 

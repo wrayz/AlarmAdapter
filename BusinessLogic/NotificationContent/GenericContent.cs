@@ -12,7 +12,7 @@ namespace BusinessLogic.NotificationContent
         /// <summary>
         /// 初始化
         /// </summary>
-        protected abstract void Initialize();
+        internal abstract void CustomInitialize();
 
         /// <summary>
         /// 紀錄編號

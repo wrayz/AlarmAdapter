@@ -51,5 +51,10 @@ namespace ModelLibrary
         /// 設備資訊
         /// </summary>
         public Device DEVICE { get; set; }
+
+        /// <summary>
+        /// 監控項目資訊
+        /// </summary>
+        public Target TARGET { get; set; }
     }
 }

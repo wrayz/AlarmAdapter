@@ -1,4 +1,6 @@
 ﻿using ModelLibrary;
+using System.Collections.Generic;
+using System.Configuration;
 
 namespace BusinessLogic.NotificationContent
 {
@@ -7,11 +9,14 @@ namespace BusinessLogic.NotificationContent
     /// </summary>
     public class CameraContent : CactiContent
     {
-        public CameraContent(Notification notification) : base(notification)
+        private List<Notification> _notifications;
+
+        public CameraContent(Notification notification, List<Notification> notifications) : base(notification)
         {
+            _notifications = notifications;
         }
 
-        protected override void Initialize()
+        internal override void CustomInitialize()
         {
             BUTTON_STATUS = "N";
 
@@ -19,7 +24,15 @@ namespace BusinessLogic.NotificationContent
 
             COLOR = "danger";
 
-            FIELD_LIST.Add(new Field (Notification.TARGET_NAME, Notification.TARGET_MESSAGE, true));
+            //攝像機影片
+            if (_notifications.Count > 1)
+            {
+                var camera = _notifications[1];
+                var host = ConfigurationManager.AppSettings["host"];
+                var fileUrl = $"{ host }{ camera.TARGET.FILE_DIR }/{camera.MONITOR.TARGET_VALUE}.{ camera.TARGET.FILE_TYPE }";
+
+                FIELD_LIST.Add(new Field(camera.TARGET_NAME, fileUrl, true));
+            }
         }
     }
 }
