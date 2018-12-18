@@ -11,8 +11,10 @@ namespace APIService.Controllers
     /// <summary>
     /// Logmaster 接收 API
     /// </summary>
+    [RoutePrefix("api/simplelogs")]
     public class LogmasterController : ApiController
     {
+        [Route("")]
         public IHttpActionResult Post(ReceiveFormUrlEncoded raw)
         {
             var logger = NLog.LogManager.GetLogger("Logmaster");

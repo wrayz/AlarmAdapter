@@ -10,8 +10,10 @@ namespace APIService.Controllers
     /// <summary>
     /// 攝像機接收 API
     /// </summary>
+    [RoutePrefix("api/systemlogs")]
     public class CameraController : ApiController
     {
+        [Route("")]
         public IHttpActionResult POST()
         {
             var logger = NLog.LogManager.GetLogger("Camera");
