@@ -30,16 +30,6 @@ namespace ModelLibrary
         public string IS_EXCEPTION { get; set; }
 
         /// <summary>
-        /// 設定檔案資料夾
-        /// </summary>
-        public string FILE_DIR { get; set; }
-
-        /// <summary>
-        /// 設定副檔名
-        /// </summary>
-        public string FILE_TYPE { get; set; }
-
-        /// <summary>
         /// 告警條件
         /// </summary>
         public List<AlarmCondition> ALARM_CONDITIONS { get; set; }

@@ -1,4 +1,6 @@
 ﻿using ModelLibrary;
+using ModelLibrary.Generic;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -46,13 +48,20 @@ namespace BusinessLogic.NotificationContent
             if (_notifications.Count > 1)
             {
                 var camera = _notifications[1];
+                var setting = GetCameraSetting();
                 var host = ConfigurationManager.AppSettings["host"];
-                var fileUrl = $"{ host }{ camera.TARGET.FILE_DIR }/{camera.MONITOR.TARGET_VALUE}.{ camera.TARGET.FILE_TYPE }";
+                var fileUrl = $"{ host }{ setting.FILE_DIR }/{camera.MONITOR.TARGET_VALUE}.{ setting.FILE_TYPE }";
 
                 fields.Add(new Field(camera.TARGET_NAME, fileUrl, true));
             }
 
             return fields;
+        }
+
+        private CameraSetting GetCameraSetting()
+        {
+            var bll = GenericBusinessFactory.CreateInstance<CameraSetting>();
+            return bll.Get(new QueryOption(), new UserLogin());
         }
     }
 }
