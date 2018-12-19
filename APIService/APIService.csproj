@@ -124,8 +124,6 @@
     <Compile Include="Controllers\IfaceController.cs" />
     <Compile Include="Controllers\LogmasterController.cs" />
     <Compile Include="Controllers\RepairController.cs" />
-    <Compile Include="Controllers\RecordLogsController.cs" />
-    <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\LanguagesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -142,7 +140,6 @@
     <Compile Include="NotificationPusher\PusherFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PushStrategy\MonitorPushStrategy.cs" />
-    <Compile Include="Services\PushService.cs" />
     <Compile Include="PushStrategy\RepairPushStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -179,10 +176,6 @@
     </None>
     <Content Include="Entity\MemberDevice.config" />
     <Content Include="Entity\LicenseConfig.config" />
-    <Content Include="Entity\Record.config" />
-    <Content Include="Entity\DeviceRecord.config" />
-    <Content Include="Entity\RecordLog.config" />
-    <Content Include="Entity\RecordLimit.config" />
     <Content Include="Entity\GroupService.config" />
     <Content Include="Entity\NotificationCondition.config" />
     <Content Include="Entity\NotificationRecord.config" />

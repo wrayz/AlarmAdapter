@@ -103,14 +103,8 @@
     <Compile Include="License\NetworkCard.cs" />
     <Compile Include="NotificationCondition_BLL.cs" />
     <Compile Include="NotificationContent\GenericContent.cs" />
-    <Compile Include="RemoteNotification\GenericRemoteContent.cs" />
-    <Compile Include="RemoteNotification\RecordContent.cs" />
-    <Compile Include="AlarmNotification\DigitalNotification.cs" />
-    <Compile Include="AlarmNotification\INotification.cs" />
-    <Compile Include="AlarmNotification\NotificationFactory.cs" />
     <Compile Include="RecordAlarm\Alarmer.cs" />
     <Compile Include="RecordAlarm\IAlarm.cs" />
-    <Compile Include="RecordLog_BLL.cs" />
     <Compile Include="Generic\GenericBusinessFactory.cs" />
     <Compile Include="Generic\GenericBusinessLogicT.cs" />
     <Compile Include="Generic\IBusinessLogicT.cs" />

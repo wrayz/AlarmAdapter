@@ -10,8 +10,10 @@ namespace APIService.Controllers
     /// <summary>
     /// 溫濕度計告警接收 API
     /// </summary>
+    [RoutePrefix("api/records")]
     public class IfaceController : ApiController
     {
+        [Route("")]
         public IHttpActionResult POST()
         {
             var logger = NLog.LogManager.GetLogger("iFace");
