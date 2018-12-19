@@ -128,7 +128,6 @@
     <Compile Include="Controllers\LanguagesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Director\GenericRecordDirector.cs" />
-    <Compile Include="GenericAPIService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
