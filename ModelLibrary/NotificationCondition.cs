@@ -1,6 +1,4 @@
-﻿using ModelLibrary.Enumerate;
-
-namespace ModelLibrary
+﻿namespace ModelLibrary
 {
     /// <summary>
     /// 通知條件

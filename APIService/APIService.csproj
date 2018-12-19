@@ -176,7 +176,6 @@
     <Content Include="Entity\LicenseConfig.config" />
     <Content Include="Entity\GroupService.config" />
     <Content Include="Entity\NotificationCondition.config" />
-    <Content Include="Entity\NotificationRecord.config" />
     <Content Include="Entity\AbuseIpDbSetting.config">
       <SubType>Designer</SubType>
     </Content>

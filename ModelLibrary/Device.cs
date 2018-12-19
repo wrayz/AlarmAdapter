@@ -48,11 +48,6 @@ namespace ModelLibrary
         public NotificationCondition NOTIFICATION_CONDITION { get; set; }
 
         /// <summary>
-        /// 通知記錄
-        /// </summary>
-        public List<NotificationRecord> NOTIFICATION_RECORDS { get; set; }
-
-        /// <summary>
         /// 設備群組清單
         /// </summary>
         public List<GroupDevice> GROUPS { get; set; }
