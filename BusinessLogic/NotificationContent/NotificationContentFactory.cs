@@ -2,7 +2,6 @@
 using ModelLibrary.Enumerate;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BusinessLogic.NotificationContent
 {
@@ -14,30 +13,32 @@ namespace BusinessLogic.NotificationContent
         /// <summary>
         /// 通知內容實體建立
         /// </summary>
+        /// <param name="deviceType">設備類型</param>
         /// <param name="list">通知資訊清單</param>
         /// <returns></returns>
-        public static GenericContent CreateInstance(string deviceType, List<Notification> list)
+        public static IContent CreateInstance(string deviceType, List<Notification> list)
         {
-            GenericContent content;
+            IContent content;
 
             var type = Enum.Parse(typeof(DeviceType), deviceType);
-            var notification = list.First();
 
             switch (type)
             {
                 case DeviceType.N:
-                    content = new CactiContent(notification);
+                    content = new GenericContent(list);
                     break;
 
                 case DeviceType.S:
-                    content = new CameraContent(notification, list);
+                    content = new CameraContent(list);
+                    break;
+
+                case DeviceType.D:
+                    content = new IfaceContent(list);
                     break;
 
                 default:
                     throw new Exception($"尚未實作 { type } 通知內容");
             }
-
-            content.CustomInitialize();
 
             return content;
         }

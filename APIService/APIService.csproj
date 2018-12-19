@@ -121,6 +121,7 @@
     <Compile Include="Controllers\BobCactiController.cs" />
     <Compile Include="Controllers\CactiController.cs" />
     <Compile Include="Controllers\CameraController.cs" />
+    <Compile Include="Controllers\IfaceController.cs" />
     <Compile Include="Controllers\LogmasterController.cs" />
     <Compile Include="Controllers\RepairController.cs" />
     <Compile Include="Controllers\RecordLogsController.cs" />
@@ -137,10 +138,10 @@
     <Compile Include="NotificationPusher\DesktopPusher.cs" />
     <Compile Include="NotificationPusher\MobilePusher.cs" />
     <Compile Include="NotificationPusher\IPusher.cs" />
-    <Compile Include="PushStrategy\MonitorPushStrategy.cs" />
     <Compile Include="PushStrategy\GenericPushStrategy.cs" />
     <Compile Include="NotificationPusher\PusherFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PushStrategy\MonitorPushStrategy.cs" />
     <Compile Include="Services\PushService.cs" />
     <Compile Include="PushStrategy\RepairPushStrategy.cs" />
   </ItemGroup>

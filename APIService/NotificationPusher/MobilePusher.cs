@@ -1,4 +1,4 @@
-﻿using BusinessLogic.NotificationContent;
+﻿using ModelLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace APIService.NotificationPusher
             _url = ConfigurationManager.AppSettings["im"];
         }
 
-        public HttpResponseMessage Push(GenericContent content)
+        public HttpResponseMessage Push(PushContent content)
         {
             using (var client = new HttpClient())
             {

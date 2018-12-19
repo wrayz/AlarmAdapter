@@ -1,74 +1,84 @@
 ﻿using ModelLibrary;
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BusinessLogic.NotificationContent
 {
     /// <summary>
-    /// 通用通知內容
+    /// Cacti 推送內容
     /// </summary>
-    public abstract class GenericContent
+    public class GenericContent : IContent
     {
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        internal abstract void CustomInitialize();
+        protected Notification Notification { get; private set; }
 
         /// <summary>
-        /// 紀錄編號
+        /// 建構式
         /// </summary>
-        [JsonProperty("LOG_SN")]
-        public string RECORD_SN { get; protected set; }
-
-        /// <summary>
-        /// 紀錄類型
-        /// </summary>
-        public string LOG_TYPE { get; protected set; }
-
-        /// <summary>
-        /// 設備編號
-        /// </summary>
-        public string DEVICE_SN { get; protected set; }
-
-        /// <summary>
-        /// 監控項目
-        /// </summary>
-        public string TARGET_NAME { get; protected set; }
-
-        /// <summary>
-        /// 推送名稱
-        /// </summary>
-        public string SYSTEM_NAME
+        /// <param name="notifications">通知資訊</param>
+        public GenericContent(List<Notification> notifications)
         {
-            get
-            {
-                return "EyesFree";
-            }
+            Notification = notifications.First();
         }
 
         /// <summary>
-        /// 按鈕狀態 N - 正常, E - 異常, R-修復中
+        /// 執行
         /// </summary>
-        public string BUTTON_STATUS { get; protected set; }
+        public virtual List<PushContent> Execute()
+        {
+            return new List<PushContent>
+            {
+                new PushContent
+                {
+                    DEVICE_SN = Notification.DEVICE_SN,
+                    RECORD_SN = Notification.RECORD_SN,
+                    LOG_TYPE = Notification.DEVICE.DEVICE_TYPE,
+                    GROUP_LIST = GetGroups(),
 
-        /// <summary>
-        /// 顏色
-        /// </summary>
-        public string COLOR { get; protected set; }
+                    TARGET_NAME = GetTargetName(),
+                    BUTTON_STATUS = GetButtonStatus(),
+                    TITLE = GetTitle(),
+                    COLOR = GetColor(),
+                    FIELD_LIST = GetFields()
+                }
+            };
+        }
 
-        /// <summary>
-        /// 訊息標題
-        /// </summary>
-        public string TITLE { get; protected set; }
+        protected virtual string GetTargetName()
+        {
+            return Notification.TARGET_NAME;
+        }
 
-        /// <summary>
-        /// 設備群組清單
-        /// </summary>
-        public List<GroupDevice> GROUP_LIST { get; protected set; }
+        protected virtual string GetButtonStatus()
+        {
+            return Notification.MONITOR.IS_EXCEPTION == "Y" ? "E" : "N";
+        }
 
-        /// <summary>
-        /// 附加欄位清單
-        /// </summary>
-        public List<Field> FIELD_LIST { get; protected set; }
+        protected virtual string GetTitle()
+        {
+            return Notification.MONITOR.IS_EXCEPTION == "Y" ? "設備異常資訊" : "異常設備恢復資訊";
+        }
+
+        protected virtual string GetColor()
+        {
+            return Notification.MONITOR.IS_EXCEPTION == "Y" ? "danger" : "good";
+        }
+
+        protected virtual List<Field> GetFields()
+        {
+            return new List<Field>
+            {
+                new Field("設備名稱", Notification.DEVICE.DEVICE_NAME, true),
+                new Field("設備位址", Notification.DEVICE.DEVICE_ID, true),
+                new Field("監控項目", Notification.TARGET_NAME, true),
+                new Field("發生時間", Notification.MONITOR.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
+                new Field("監控資訊", Notification.TARGET_MESSAGE, true)
+            };
+        }
+
+        protected List<GroupDevice> GetGroups()
+        {
+            var bll = GenericBusinessFactory.CreateInstance<GroupDevice>();
+            return (bll as GroupDevice_BLL).GetGroups(Notification.DEVICE_SN);
+        }
     }
 }

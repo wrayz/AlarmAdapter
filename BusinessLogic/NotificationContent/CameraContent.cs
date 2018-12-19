@@ -7,22 +7,40 @@ namespace BusinessLogic.NotificationContent
     /// <summary>
     /// 攝像機通知內容
     /// </summary>
-    public class CameraContent : CactiContent
+    public class CameraContent : GenericContent
     {
         private List<Notification> _notifications;
 
-        public CameraContent(Notification notification, List<Notification> notifications) : base(notification)
+        public CameraContent(List<Notification> notifications) : base(notifications)
         {
             _notifications = notifications;
         }
 
-        internal override void CustomInitialize()
+        protected override string GetButtonStatus()
         {
-            BUTTON_STATUS = "N";
+            return "N";
+        }
 
-            TITLE = "設備異常資訊";
+        protected override string GetTitle()
+        {
+            return "設備異常資訊";
+        }
 
-            COLOR = "danger";
+        protected override string GetColor()
+        {
+            return "danger";
+        }
+
+        protected override List<Field> GetFields()
+        {
+            var fields = new List<Field>
+            {
+                new Field("設備名稱", Notification.DEVICE.DEVICE_NAME, true),
+                new Field("設備位址", Notification.DEVICE.DEVICE_ID, true),
+                new Field("監控項目", Notification.TARGET_NAME, true),
+                new Field("發生時間", Notification.MONITOR.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
+                new Field("監控資訊", Notification.TARGET_MESSAGE, true)
+            };
 
             //攝像機影片
             if (_notifications.Count > 1)
@@ -31,8 +49,10 @@ namespace BusinessLogic.NotificationContent
                 var host = ConfigurationManager.AppSettings["host"];
                 var fileUrl = $"{ host }{ camera.TARGET.FILE_DIR }/{camera.MONITOR.TARGET_VALUE}.{ camera.TARGET.FILE_TYPE }";
 
-                FIELD_LIST.Add(new Field(camera.TARGET_NAME, fileUrl, true));
+                fields.Add(new Field(camera.TARGET_NAME, fileUrl, true));
             }
+
+            return fields;
         }
     }
 }

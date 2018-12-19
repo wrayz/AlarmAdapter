@@ -18,7 +18,7 @@ namespace APIService.PushStrategy
         {
             var notifications = GetNotifications();
 
-            var list = notifications.GroupBy(x => x.RECORD_SN, (k, r) => new
+            var list = notifications.GroupBy(x => new { x.RECORD_SN, x.DEVICE_SN }, (k, r) => new
             {
                 Key = k,
                 Result = r.ToList()
@@ -28,7 +28,9 @@ namespace APIService.PushStrategy
             {
                 var type = data.Result.First().DEVICE.DEVICE_TYPE;
                 var content = NotificationContentFactory.CreateInstance(type, data.Result);
-                PushDestination(content);
+
+                PushDestination(content.Execute());
+
                 Save(data.Result);
             }
         }
