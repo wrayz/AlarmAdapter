@@ -1,5 +1,4 @@
-﻿using APIService.Model;
-using BusinessLogic;
+﻿using BusinessLogic;
 using ModelLibrary;
 using ModelLibrary.Generic;
 using Newtonsoft.Json;
@@ -38,7 +37,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -66,7 +65,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
@@ -95,7 +94,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 

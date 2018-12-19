@@ -131,7 +131,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Model\APIResponse.cs" />
     <Compile Include="NotificationPusher\DesktopPusher.cs" />
     <Compile Include="NotificationPusher\MobilePusher.cs" />
     <Compile Include="NotificationPusher\IPusher.cs" />

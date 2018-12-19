@@ -1,5 +1,4 @@
-﻿using APIService.Model;
-using Microsoft.Speech.Synthesis;
+﻿using Microsoft.Speech.Synthesis;
 using ModelLibrary;
 using System;
 using System.Collections.Generic;
@@ -26,7 +25,7 @@ namespace APIService.Controllers
             {
                 //身分驗證
                 if (HttpContext.Current.Session["User"] == null)
-                    return Content(HttpStatusCode.Unauthorized, new APIResponse("沒有取得資源的權限"));
+                    return Content(HttpStatusCode.Unauthorized, "沒有取得資源的權限");
 
                 var voices = await GetInstalledVoice();
 
@@ -34,7 +33,7 @@ namespace APIService.Controllers
             }
             catch (Exception ex)
             {
-                return Content(HttpStatusCode.InternalServerError, new APIResponse(ex.Message));
+                return Content(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
