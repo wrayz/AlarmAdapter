@@ -1,5 +1,7 @@
 ﻿using DataAccess;
 using ModelLibrary;
+using ModelLibrary.Generic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,6 +47,22 @@ namespace BusinessLogic
         internal void UpdateList(List<Monitor> data)
         {
             _dao.ModifyList("UpdateList", data);
+        }
+
+        /// <summary>
+        /// 維修監控項目取得
+        /// </summary>
+        /// <param name="repair">維修資訊</param>
+        /// <returns></returns>
+        public string GetRepairTarget(Repair repair)
+        {
+            var monitor = new Monitor
+            {
+                RECORD_SN = repair.RECORD_SN,
+                DEVICE_SN = repair.DEVICE_SN
+            };
+
+            return _dao.Get(new QueryOption(), monitor).TARGET_NAME;
         }
     }
 }
