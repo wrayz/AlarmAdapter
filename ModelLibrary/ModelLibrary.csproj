@@ -61,7 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbuseIpDbSetting.cs" />
-    <Compile Include="Alarm.cs" />
     <Compile Include="AlarmCondition.cs" />
     <Compile Include="BlockHole.cs" />
     <Compile Include="BlockResult.cs" />
