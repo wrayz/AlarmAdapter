@@ -9,7 +9,15 @@ namespace BusinessLogic.NotificationContent
     /// </summary>
     public class GenericContent : IContent
     {
-        protected Notification Notification { get; private set; }
+        /// <summary>
+        /// 通知清單
+        /// </summary>
+        protected List<Notification> Notifications { get; private set; }
+
+        /// <summary>
+        /// 單一通知內容
+        /// </summary>
+        protected Notification Notification { get; set; }
 
         /// <summary>
         /// 建構式
@@ -17,7 +25,7 @@ namespace BusinessLogic.NotificationContent
         /// <param name="notifications">通知資訊</param>
         public GenericContent(List<Notification> notifications)
         {
-            Notification = notifications.First();
+            Notifications = notifications;
         }
 
         /// <summary>
@@ -25,6 +33,8 @@ namespace BusinessLogic.NotificationContent
         /// </summary>
         public virtual List<PushContent> Execute()
         {
+            Notification = Notifications.First();
+
             return new List<PushContent>
             {
                 new PushContent

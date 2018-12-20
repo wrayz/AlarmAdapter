@@ -9,19 +9,19 @@ namespace BusinessLogic.NotificationContent
     /// </summary>
     public class IfaceContent : GenericContent
     {
-        private readonly List<Notification> _notifications;
 
         public IfaceContent(List<Notification> notifications) : base(notifications)
         {
-            _notifications = notifications;
         }
 
         public override List<PushContent> Execute()
         {
             var contents = new List<PushContent>();
 
-            foreach (var item in _notifications)
+            foreach (var item in Notifications)
             {
+                Notification = item;
+
                 contents.Add(new PushContent
                 {
                     DEVICE_SN = Notification.DEVICE_SN,
@@ -33,24 +33,24 @@ namespace BusinessLogic.NotificationContent
                     BUTTON_STATUS = GetButtonStatus(),
                     TITLE = GetTitle(),
                     COLOR = GetColor(),
-                    FIELD_LIST = GetFields(item)
+                    FIELD_LIST = GetFields()
                 });
             }
 
             return contents;
         }
 
-        private List<Field> GetFields(Notification notification)
+        protected override List<Field> GetFields()
         {
-            var value = Convert.ToDecimal(notification.MONITOR.TARGET_MESSAGE) / 100;
-            var message = $"{ notification.TARGET_NAME }：{ value }";
+            var value = Convert.ToDecimal(Notification.MONITOR.TARGET_MESSAGE) / 100;
+            var message = $"{ Notification.TARGET_NAME }：{ value }";
 
             return new List<Field>
             {
-                new Field("設備名稱", notification.DEVICE.DEVICE_NAME, true),
-                new Field("設備位址", notification.DEVICE.DEVICE_ID, true),
-                new Field("監控項目", notification.TARGET_NAME, true),
-                new Field("發生時間", notification.MONITOR.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
+                new Field("設備名稱", Notification.DEVICE.DEVICE_NAME, true),
+                new Field("設備位址", Notification.DEVICE.DEVICE_ID, true),
+                new Field("監控項目", Notification.TARGET_NAME, true),
+                new Field("發生時間", Notification.MONITOR.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
                 new Field("監控資訊", message, true)
             };
         }

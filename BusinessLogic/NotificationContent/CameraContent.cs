@@ -1,6 +1,5 @@
 ﻿using ModelLibrary;
 using ModelLibrary.Generic;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -11,11 +10,8 @@ namespace BusinessLogic.NotificationContent
     /// </summary>
     public class CameraContent : GenericContent
     {
-        private List<Notification> _notifications;
-
         public CameraContent(List<Notification> notifications) : base(notifications)
         {
-            _notifications = notifications;
         }
 
         protected override string GetButtonStatus()
@@ -45,9 +41,9 @@ namespace BusinessLogic.NotificationContent
             };
 
             //攝像機影片
-            if (_notifications.Count > 1)
+            if (Notifications.Count > 1)
             {
-                var camera = _notifications[1];
+                var camera = Notifications[1];
                 var setting = GetCameraSetting();
                 var host = ConfigurationManager.AppSettings["host"];
                 var fileUrl = $"{ host }{ setting.FILE_DIR }/{camera.MONITOR.TARGET_VALUE}.{ setting.FILE_TYPE }";

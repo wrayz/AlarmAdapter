@@ -136,7 +136,7 @@ namespace BusinessLogic
             {
                 DEVICE_SN = condition.DEVICE_SN,
                 TARGET_NAME = condition.TARGET_NAME,
-                OPERATOR_TYPE = "Equal",
+                OPERATOR_TYPE = "In",
                 TARGET_STATUS = "0",
                 IS_EXCEPTION = "Y",
                 ALARM_CONDITIONS = new List<AlarmCondition>
