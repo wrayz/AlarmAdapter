@@ -36,9 +36,13 @@ namespace BusinessLogicTests.Fake
 
         protected override Monitor GetPreviousMonitor(Monitor monitor)
         {
-            return _previousMonitors.Where(x => x.DEVICE_SN == monitor.DEVICE_SN)
-                            .OrderByDescending(y => y.RECORD_SN)
-                            .First();
+            var result = _previousMonitors.Where(x => x.DEVICE_SN == monitor.DEVICE_SN)
+                                          .OrderByDescending(y => y.RECORD_SN);
+
+            if (result.Count() == 0)
+                return new Monitor();
+
+            return result.First();
         }
 
         protected override NotificationCondition GetNotificationCondition(string deviceSn)

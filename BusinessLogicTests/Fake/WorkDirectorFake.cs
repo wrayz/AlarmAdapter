@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Director;
 using ModelLibrary;
 using ModelLibrary.Enumerate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,20 +13,21 @@ namespace BusinessLogicTests.Fake
         private List<Target> _targets;
         private List<AlarmCondition> _alarmConditions;
 
-        public WorkDirectorFake(string detector, string originRecord, DeviceType deviceType,
+        public WorkDirectorFake(Detector detector, string originRecord, DeviceType deviceType, string sourceIp,
                                 List<Device> devices,
                                 List<Target> targets,
                                 List<AlarmCondition> alarmConditions)
-            : base(detector, originRecord, deviceType)
+            : base(detector, originRecord, deviceType, sourceIp)
         {
             _devices = devices;
             _targets = targets;
             _alarmConditions = alarmConditions;
         }
 
-        protected override Device GetDevice(string deviceId, string deviceType)
+        protected override Device GetDevice(string deviceId)
         {
-            var device = _devices.Find(x => x.DEVICE_ID == deviceId && x.DEVICE_TYPE == deviceType);
+            var type = Enum.GetName(typeof(DeviceType), _deviceType);
+            var device = _devices.Find(x => x.DEVICE_ID == deviceId && x.DEVICE_TYPE == type);
 
             return device;
         }

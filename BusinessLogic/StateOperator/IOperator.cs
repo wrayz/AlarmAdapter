@@ -1,5 +1,4 @@
-﻿using ModelLibrary;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace BusinessLogic.StateOperator
 {
@@ -8,6 +7,12 @@ namespace BusinessLogic.StateOperator
     /// </summary>
     public interface IOperator
     {
-        bool Check(string record, List<AlarmCondition> conditions);
+        /// <summary>
+        /// 檢查
+        /// </summary>
+        /// <param name="record">記錄值</param>
+        /// <param name="conditions">條件清單</param>
+        /// <returns></returns>
+        bool Check(string record, List<string> conditions);
     }
 }

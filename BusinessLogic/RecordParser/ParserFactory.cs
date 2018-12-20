@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModelLibrary.Enumerate;
+using System;
 
 namespace BusinessLogic.RecordParser
 {
@@ -10,28 +11,39 @@ namespace BusinessLogic.RecordParser
         /// <summary>
         /// 解析器產生
         /// </summary>
-        /// <param name="type">解析器類型</param>
+        /// <param name="detector">偵測器</param>
         /// <returns></returns>
-        public static IParser CreateInstance(string type)
+        public static IParser CreateInstance(Detector detector)
         {
             IParser parser;
 
-            switch (type)
+            switch (detector)
             {
-                case "Cacti":
+                case Detector.Cacti:
                     parser = new CactiParser();
                     break;
 
+                case Detector.BobCacti:
+                    parser = new BobCactiParser();
+                    break;
+
+                case Detector.Camera:
+                    parser = new CameraParser();
+                    break;
+
+                case Detector.Logmaster:
+                    parser = new LogmasterParser();
+                    break;
+
+                case Detector.iFace:
+                    parser = new IfaceParser();
+                    break;
+
                 default:
-                    throw new NotImplementedException($"尚未實作 { type } 解析器");
+                    throw new NotImplementedException($"尚未實作 { detector } 解析器");
             }
 
             return parser;
-        }
-
-        internal static object CreateInstance(object detectorType)
-        {
-            throw new NotImplementedException();
         }
     }
 }

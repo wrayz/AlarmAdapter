@@ -74,13 +74,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbuseIpDbBusinessLogic.cs" />
+    <Compile Include="BlockHole_BLL.cs" />
+    <Compile Include="NotificationContent\CameraContent.cs" />
+    <Compile Include="NotificationContent\IContent.cs" />
+    <Compile Include="NotificationContent\IfaceContent.cs" />
+    <Compile Include="NotificationContent\NotificationContentFactory.cs" />
+    <Compile Include="NotificationStrategy\LogmasterNotifierStrategy.cs" />
+    <Compile Include="RecordNotifier\ContinuityAbnormalityNotifier.cs" />
+    <Compile Include="RecordParser\BobCactiParser.cs" />
+    <Compile Include="RecordParser\CameraParser.cs" />
+    <Compile Include="RecordParser\IfaceParser.cs" />
+    <Compile Include="RecordParser\LogmasterParser.cs" />
+    <Compile Include="StateOperator\AlwaysOperator.cs" />
+    <Compile Include="StateOperator\BetweenOperator.cs" />
     <Compile Include="StateOperator\EqualOperator.cs" />
+    <Compile Include="StateOperator\InOperator.cs" />
     <Compile Include="StateOperator\IOperator.cs" />
-    <Compile Include="ContentStrategy\GenericContentStrategy.cs" />
-    <Compile Include="DeviceGroup_BLL.cs" />
-    <Compile Include="ContentStrategy\RepairContent.cs" />
+    <Compile Include="GroupDevice_BLL.cs" />
+    <Compile Include="NotificationContent\RepairContent.cs" />
     <Compile Include="Director\NotificationDirector.cs" />
-    <Compile Include="NotificationStrategy\GenericNotifier.cs" />
+    <Compile Include="NotificationStrategy\GenericNotifierStrategy.cs" />
     <Compile Include="NotificationStrategy\NotifierStrategy.cs" />
     <Compile Include="Repair_BLL.cs" />
     <Compile Include="Monitor_BLL.cs" />
@@ -88,24 +102,12 @@
     <Compile Include="Director\WorkDirector.cs" />
     <Compile Include="License\NetworkCard.cs" />
     <Compile Include="NotificationCondition_BLL.cs" />
-    <Compile Include="ContentStrategy\CactiContent.cs" />
-    <Compile Include="RemoteNotification\NotificationContent.cs" />
-    <Compile Include="RemoteNotification\RecordContent.cs" />
-    <Compile Include="RemoteNotification\SimpleContent.cs" />
-    <Compile Include="AlarmNotification\DigitalNotification.cs" />
-    <Compile Include="AlarmNotification\INotification.cs" />
-    <Compile Include="AlarmNotification\NetworkNotification.cs" />
-    <Compile Include="AlarmNotification\NotificationFactory.cs" />
-    <Compile Include="AlarmNotification\SimpleNotification.cs" />
+    <Compile Include="NotificationContent\GenericContent.cs" />
     <Compile Include="RecordAlarm\Alarmer.cs" />
     <Compile Include="RecordAlarm\IAlarm.cs" />
-    <Compile Include="RecordLog_BLL.cs" />
-    <Compile Include="Log_BLL.cs" />
-    <Compile Include="RemoteNotification\BobCactiContent.cs" />
     <Compile Include="Generic\GenericBusinessFactory.cs" />
     <Compile Include="Generic\GenericBusinessLogicT.cs" />
     <Compile Include="Generic\IBusinessLogicT.cs" />
-    <Compile Include="Event\CorrespondDeviceFactory.cs" />
     <Compile Include="License\LicenseBusinessLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Notification_BLL.cs" />
@@ -115,7 +117,6 @@
     <Compile Include="RecordParser\CactiParser.cs" />
     <Compile Include="RecordParser\IParser.cs" />
     <Compile Include="RecordParser\ParserFactory.cs" />
-    <Compile Include="SimpleLog_BLL.cs" />
     <Compile Include="StateOperator\OperatorFactory.cs" />
     <Compile Include="Target_BLL.cs" />
   </ItemGroup>

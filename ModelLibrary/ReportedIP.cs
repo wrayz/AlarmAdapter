@@ -17,6 +17,6 @@
 
         public int IsWhitelisted { get; set; }
 
-        public int abuseConfidenceScore { get; set; }
+        public int? abuseConfidenceScore { get; set; }
     }
 }

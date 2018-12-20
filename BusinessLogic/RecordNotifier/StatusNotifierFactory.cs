@@ -23,6 +23,10 @@ namespace BusinessLogic.RecordNotifier
                     notifier = new StatusChangeNotifier();
                     break;
 
+                case NotificationType.ContinuityAbnormality:
+                    notifier = new ContinuityAbnormalityNotifier();
+                    break;
+
                 default:
                     throw new Exception($"尚未實作 {type} 通知器");
             }

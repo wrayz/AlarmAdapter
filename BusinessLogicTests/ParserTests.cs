@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.RecordParser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModelLibrary;
+using ModelLibrary.Enumerate;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,8 +15,7 @@ namespace BusinessLogicTests
         public void 解析_CactiSnmp_ALERT訊息()
         {
             //Arrange
-            var type = "Cacti";
-            var parser = ParserFactory.CreateInstance(type);
+            var parser = ParserFactory.CreateInstance(Detector.Cacti);
 
             var raw = "{\"id\":\"192.168.10.99\", \"target\": \"Traffic - Gi1/0/20 [traffic_in]\", \"action\":\"ALERT\", \"info\":\"current value is 5630.6207\",\"time\":\"2018/11/06 18:08:34\"}";
 

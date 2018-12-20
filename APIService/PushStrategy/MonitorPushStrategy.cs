@@ -1,7 +1,8 @@
 ﻿using BusinessLogic;
-using BusinessLogic.ContentStrategy;
+using BusinessLogic.NotificationContent;
 using ModelLibrary;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace APIService.PushStrategy
 {
@@ -10,28 +11,28 @@ namespace APIService.PushStrategy
     /// </summary>
     internal class MonitorPushStrategy : GenericPushStrategy
     {
-        private readonly List<Notification> _notifications;
-
-        /// <summary>
-        /// 建構式
-        /// </summary>
-        /// <param name="monitors">監控資訊清單</param>
-        public MonitorPushStrategy()
-        {
-            _notifications = GetNotifications();
-        }
-
         /// <summary>
         /// 推播執行
         /// </summary>
         public override void Execute()
         {
-            _notifications.ForEach(notification =>
-             {
-                 GenericContentStrategy content = new CactiContent(notification);
-                 PushDestination(content);
-                 Save(notification);
-             });
+            var notifications = GetNotifications();
+
+            var list = notifications.GroupBy(x => new { x.RECORD_SN, x.DEVICE_SN }, (k, r) => new
+            {
+                Key = k,
+                Result = r.ToList()
+            });
+
+            foreach (var data in list)
+            {
+                var type = data.Result.First().DEVICE.DEVICE_TYPE;
+                var content = NotificationContentFactory.CreateInstance(type, data.Result);
+
+                PushDestination(content.Execute());
+
+                Save(data.Result);
+            }
         }
 
         /// <summary>
@@ -47,11 +48,11 @@ namespace APIService.PushStrategy
         /// <summary>
         /// 通知儲存
         /// </summary>
-        /// <param name="condition">實體條件</param>
-        private void Save(Notification condition)
+        /// <param name="data">實體資料</param>
+        private void Save(List<Notification> data)
         {
             var bll = GenericBusinessFactory.CreateInstance<Notification>();
-            (bll as Notification_BLL).Update(condition);
+            data.ForEach(x => (bll as Notification_BLL).Update(x));
         }
     }
 }

@@ -29,6 +29,9 @@ namespace ModelLibrary
         /// </summary>
         public string IS_EXCEPTION { get; set; }
 
+        /// <summary>
+        /// 告警條件
+        /// </summary>
         public List<AlarmCondition> ALARM_CONDITIONS { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using APIService.PushStrategy;
-using BusinessLogic.Director;
-using BusinessLogic.License;
+﻿using APIService.Director;
 using BusinessLogic.NotificationStrategy;
 using ModelLibrary.Enumerate;
 using NLog;
@@ -11,34 +9,22 @@ using System.Web.Http;
 namespace APIService.Controllers
 {
     /// <summary>
-    /// 接收 Cacti API
+    /// Cacti 接收 API
     /// </summary>
     public class CactiController : ApiController
     {
-        private const string _detector = "Cacti";
-
         [HttpPost]
         public IHttpActionResult Post()
         {
-            var logger = LogManager.GetLogger(_detector);
+            var logger = LogManager.GetLogger("Cacti");
 
             try
             {
                 var record = Request.Content.ReadAsStringAsync().Result;
                 logger.Info(record);
 
-                var license = new LicenseBusinessLogic();
-                license.Verify(DateTime.Now);
-
-                var workDirector = new WorkDirector(_detector, record, DeviceType.N);
-                workDirector.Execute();
-
-                var strategy = new GenericNotifier();
-                var notificationDirector = new NotificationDirector(strategy);
-                notificationDirector.Execute();
-
-                var pusher = new MonitorPushStrategy();
-                pusher.Execute();
+                var director = new GenericRecordDirector(Detector.Cacti, record, DeviceType.N, new GenericNotifierStrategy());
+                director.Execute();
 
                 return Ok();
             }

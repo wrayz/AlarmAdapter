@@ -74,7 +74,6 @@
   <ItemGroup>
     <Compile Include="ConnectionSetting.cs" />
     <Compile Include="ConnectionType.cs" />
-    <Compile Include="DeviceDataAccess.cs" />
     <Compile Include="Monitor_DAO.cs" />
     <Compile Include="Generic\GenericDataAccessT.cs" />
     <Compile Include="Generic\GenericFactory.cs" />
@@ -82,7 +81,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Notification_DAO.cs" />
     <Compile Include="Repair_DAO.cs" />
-    <Compile Include="SimpleLog_DAO.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entity.config" />

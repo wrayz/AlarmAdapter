@@ -111,36 +111,33 @@
   <ItemGroup>
     <Content Include="App_Data\XmlDocument.xml" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbuseIpDbService.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BobCactiController.cs" />
     <Compile Include="Controllers\CactiController.cs" />
-    <Compile Include="Controllers\DeviceLogsController.cs" />
+    <Compile Include="Controllers\CameraController.cs" />
+    <Compile Include="Controllers\IfaceController.cs" />
+    <Compile Include="Controllers\LogmasterController.cs" />
     <Compile Include="Controllers\RepairController.cs" />
-    <Compile Include="Controllers\NotificationController.cs" />
-    <Compile Include="Controllers\RecordLogsController.cs" />
-    <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\LanguagesController.cs" />
-    <Compile Include="Controllers\SimpleLogsController.cs" />
-    <Compile Include="Controllers\SystemLogsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="GenericAPIService.cs" />
+    <Compile Include="Director\GenericRecordDirector.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Model\APIResponse.cs" />
     <Compile Include="NotificationPusher\DesktopPusher.cs" />
     <Compile Include="NotificationPusher\MobilePusher.cs" />
     <Compile Include="NotificationPusher\IPusher.cs" />
-    <Compile Include="PushStrategy\MonitorPushStrategy.cs" />
     <Compile Include="PushStrategy\GenericPushStrategy.cs" />
     <Compile Include="NotificationPusher\PusherFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\PushService.cs" />
+    <Compile Include="PushStrategy\MonitorPushStrategy.cs" />
     <Compile Include="PushStrategy\RepairPushStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -154,21 +151,14 @@
     <Content Include="Entity\Device.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Entity\Log.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Entity\Supplier.config" />
     <Content Include="Entity\User.config" />
-    <Content Include="Entity\LogDetail.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Entity\Group.config" />
     <Content Include="Entity\Common.config" />
     <Content Include="Entity\DeviceMaintainer.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Entity\DeviceLog.config" />
-    <Content Include="Entity\DeviceGroup.config" />
+    <Content Include="Entity\GroupDevice.config" />
     <Content Include="Entity\GroupMember.config" />
     <None Include="ConnectionsString.Debug.config">
       <DependentUpon>ConnectionsString.config</DependentUpon>
@@ -184,16 +174,8 @@
     </None>
     <Content Include="Entity\MemberDevice.config" />
     <Content Include="Entity\LicenseConfig.config" />
-    <Content Include="Entity\DeviceReport.config" />
-    <Content Include="Entity\Record.config" />
-    <Content Include="Entity\DeviceRecord.config" />
-    <Content Include="Entity\RecordLog.config" />
-    <Content Include="Entity\RecordLimit.config" />
-    <Content Include="Entity\SimpleLog.config" />
     <Content Include="Entity\GroupService.config" />
-    <Content Include="Entity\GroupDevice.config" />
     <Content Include="Entity\NotificationCondition.config" />
-    <Content Include="Entity\NotificationRecord.config" />
     <Content Include="Entity\AbuseIpDbSetting.config">
       <SubType>Designer</SubType>
     </Content>
@@ -207,6 +189,7 @@
     <Content Include="Entity\Notification.config" />
     <Content Include="Entity\Repair.config" />
     <Content Include="Entity\AlarmCondition.config" />
+    <Content Include="Entity\CameraSetting.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>

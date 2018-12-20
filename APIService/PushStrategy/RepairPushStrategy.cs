@@ -1,4 +1,4 @@
-﻿using BusinessLogic.ContentStrategy;
+﻿using BusinessLogic.NotificationContent;
 using ModelLibrary;
 
 namespace APIService.PushStrategy
@@ -25,7 +25,8 @@ namespace APIService.PushStrategy
         public override void Execute()
         {
             var content = new RepairContent(_repair);
-            PushDestination(content);
+
+            PushDestination(content.Execute());
         }
     }
 }
