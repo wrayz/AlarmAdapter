@@ -65,6 +65,7 @@
     <Compile Include="BlockHole.cs" />
     <Compile Include="BlockResult.cs" />
     <Compile Include="CameraSetting.cs" />
+    <Compile Include="ConfigParams.cs" />
     <Compile Include="PushContent.cs" />
     <Compile Include="ReceiveFormUrlEncoded.cs" />
     <Compile Include="Config.cs" />

@@ -80,6 +80,7 @@
     <Compile Include="NotificationContent\IContent.cs" />
     <Compile Include="NotificationContent\IfaceContent.cs" />
     <Compile Include="NotificationContent\NotificationContentFactory.cs" />
+    <Compile Include="NotificationStrategy\CactiNotifierStrategy.cs" />
     <Compile Include="NotificationStrategy\LogmasterNotifierStrategy.cs" />
     <Compile Include="RecordNotifier\ContinuityAbnormalityNotifier.cs" />
     <Compile Include="RecordParser\BobCactiParser.cs" />

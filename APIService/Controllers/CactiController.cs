@@ -23,7 +23,7 @@ namespace APIService.Controllers
                 var record = Request.Content.ReadAsStringAsync().Result;
                 logger.Info(record);
 
-                var director = new GenericRecordDirector(Detector.Cacti, record, DeviceType.N, new GenericNotifierStrategy());
+                var director = new GenericRecordDirector(Detector.Cacti, record, DeviceType.N, new CactiNotifierStrategy());
                 director.Execute();
 
                 return Ok();

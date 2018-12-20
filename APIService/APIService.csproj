@@ -190,6 +190,7 @@
     <Content Include="Entity\Repair.config" />
     <Content Include="Entity\AlarmCondition.config" />
     <Content Include="Entity\CameraSetting.config" />
+    <Content Include="Entity\ConfigParams.config" />
     <None Include="File.Debug.config">
       <DependentUpon>File.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
