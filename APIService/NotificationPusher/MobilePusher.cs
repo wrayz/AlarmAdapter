@@ -16,7 +16,7 @@ namespace APIService.NotificationPusher
 
         public MobilePusher()
         {
-            _url = ConfigurationManager.AppSettings["im"];
+            _url = ConfigurationManager.AppSettings["host"];
         }
 
         public HttpResponseMessage Push(PushContent content)
