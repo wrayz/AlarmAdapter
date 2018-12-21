@@ -6,13 +6,18 @@
     public class AlarmCondition
     {
         /// <summary>
-        /// 動作類型
+        /// 設備編號
         /// </summary>
-        public string ACTION_TYPE { get; set; }
+        public string DEVICE_SN { get; set; }
 
         /// <summary>
-        /// 告警類型
+        /// 監控項目名稱
         /// </summary>
-        public string ALARM_TYPE { get; set; }
+        public string TARGET_NAME { get; set; }
+
+        /// <summary>
+        /// 監控項目值
+        /// </summary>
+        public string TARGET_VALUE { get; set; }
     }
 }

@@ -45,11 +45,11 @@ namespace ModelLibrary
         /// <summary>
         /// 通知設定
         /// </summary>
-        public NotificationSetting NOTIFICATION_SETTING { get; set; }
+        public NotificationCondition NOTIFICATION_CONDITION { get; set; }
 
         /// <summary>
-        /// 通知記錄
+        /// 設備群組清單
         /// </summary>
-        public List<NotificationRecord> NOTIFICATION_RECORDS { get; set; }
+        public List<GroupDevice> GROUPS { get; set; }
     }
 }
