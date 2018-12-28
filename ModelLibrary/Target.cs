@@ -2,6 +2,9 @@
 
 namespace ModelLibrary
 {
+    /// <summary>
+    /// 監控項目資訊
+    /// </summary>
     public class Target
     {
         /// <summary>

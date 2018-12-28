@@ -45,8 +45,7 @@ namespace BusinessLogic.NotificationContent
             {
                 var camera = Notifications[1];
                 var setting = GetCameraSetting();
-                var host = ConfigurationManager.AppSettings["host"];
-                var fileUrl = $"{ host }{ setting.FILE_DIR }/{camera.MONITOR.TARGET_VALUE}.{ setting.FILE_TYPE }";
+                var fileUrl = $"{ setting.HOST_URL }/{ setting.FILE_DIR }/{camera.MONITOR.TARGET_VALUE}.{ setting.FILE_TYPE }";
 
                 fields.Add(new Field(camera.TARGET_NAME, fileUrl, true));
             }
