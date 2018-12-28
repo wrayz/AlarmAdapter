@@ -78,7 +78,7 @@ namespace BusinessLogic.NotificationContent
             return new List<Field>
             {
                 new Field("設備名稱", Notification.DEVICE.DEVICE_NAME, true),
-                new Field("設備位址", Notification.DEVICE.DEVICE_ID, true),
+                new Field("設備識別碼", Notification.DEVICE.DEVICE_ID, true),
                 new Field("監控項目", Notification.TARGET_NAME, true),
                 new Field("發生時間", Notification.MONITOR.RECEIVE_TIME.Value.ToString(@"MM\/dd\/yyyy HH:mm"), true),
                 new Field("監控資訊", Notification.TARGET_MESSAGE, true)
