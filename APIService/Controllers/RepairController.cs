@@ -14,11 +14,41 @@ namespace APIService.Controllers
     /// <summary>
     /// 維修登記 API
     /// </summary>
-    [RoutePrefix("api/Devices")]
+    [RoutePrefix("")]
     public class RepairController : ApiController
     {
-        [Route("")]
+        [Route("api/devices")]
         public IHttpActionResult Post(Repair repair)
+        {
+            var name = "Repair";
+            var logger = NLog.LogManager.GetLogger(name);
+
+            try
+            {
+                var license = new LicenseBusinessLogic();
+                license.Verify(DateTime.Now);
+
+                var output = Save(repair);
+
+                GenericPushStrategy pusher = new RepairPushStrategy(output);
+                pusher.Execute();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex);
+                return Content(HttpStatusCode.InternalServerError, ex);
+            }
+        }
+
+        /// <summary>
+        /// 舊版溫濕度計維修登記
+        /// </summary>
+        /// <param name="repair"></param>
+        /// <returns></returns>
+        [Route("api/recordlogs")]
+        public IHttpActionResult PostOld(Repair repair)
         {
             var name = "Repair";
             var logger = NLog.LogManager.GetLogger(name);
